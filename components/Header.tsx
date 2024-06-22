@@ -26,9 +26,9 @@ const Header = async () => {
       <header className="sticky top-0 border-b-primary/10 bg-secondary">
         <Container>
           <div className="flex justify-between">
-            <div className="flex gap-2 items-center">
+            <Link href="/" className="flex gap-2 items-center cursor-pointer">
               <Logo />
-            </div>
+            </Link>
             <div className="flex gap-2 items-center">
               <div className="cursor-pointer">
                 <ModeToggle />
