@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
@@ -28,10 +29,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/*  <ClerkProvider> */}
-          <Header />
-          {children}
-          {/* </ClerkProvider> */}
+          <ClerkProvider>
+            <Header />
+            {children}
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>
