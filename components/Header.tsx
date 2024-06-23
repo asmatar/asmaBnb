@@ -23,7 +23,7 @@ const Header = async () => {
   const username = user?.username;
   return (
     <>
-      <header className="sticky top-0 border-b-primary/10 bg-secondary">
+      <header className="sticky top-0 border-b-primary/10 bg-secondary z-40">
         <Container>
           <div className="flex justify-between">
             <Link href="/" className="flex gap-2 items-center cursor-pointer">
