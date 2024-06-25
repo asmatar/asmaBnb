@@ -1,4 +1,3 @@
-import Container from "@/components/ui/Container";
 import { Metadata } from "next";
 import React from "react";
 export const metadata: Metadata = {
@@ -7,11 +6,7 @@ export const metadata: Metadata = {
 };
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <main>
-      <Container>{children}</Container>
-    </main>
-  );
+  return <main>{children}</main>;
 };
 
 export default layout;

@@ -1,3 +1,5 @@
+"use server";
+
 import { InsertData } from "@/types/tableType";
 import { createClerkSupabaseClient } from "./supabaseClient";
 export const getHotels = async () => {
@@ -34,7 +36,6 @@ export const uploadImage = async (file: File) => {
   }
   return data;
 };
-
 export const getOneHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase
@@ -46,4 +47,12 @@ export const getOneHotel = async (id: string) => {
     throw new Error("hotel not found");
   }
   return data;
+};
+export const deleteHotel = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { error } = await supabase.from("hotel").delete().eq("id", id);
+
+  if (error) {
+    throw new Error("hotel not found");
+  }
 };

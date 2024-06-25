@@ -23,7 +23,7 @@ const Header = async () => {
   const username = user?.username;
   return (
     <>
-      <header className="sticky top-0 border-b-primary/10 bg-secondary z-40">
+      <header className="sticky top-0 border border-b-primary/10 bg-secondary z-40">
         <Container>
           <div className="flex justify-between">
             <Link href="/" className="flex gap-2 items-center cursor-pointer">
@@ -44,7 +44,7 @@ const Header = async () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem className="flex items-center gap-2">
-                          <Link href="/hotel-new">
+                          <Link href="/hotel/new">
                             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
                               <HiMiniPlus />
                               Add Hotel

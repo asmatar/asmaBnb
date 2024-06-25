@@ -14,7 +14,7 @@ const HotelCard = ({
   id,
 }: HotelCardProps) => {
   return (
-    <Link href={`/hotel-details/${id}`}>
+    <Link href={`/hotel/details/${id}`}>
       <div className="col-span-1 cursor-pointer transition hover:scale-105">
         <div className=" flex gap-2 bg-background/50 border border-primary/10 rounded-lg">
           <div className="flex-1 aspect-square overflow-hidden relative w-full h-[210px] rounded-s-lg">

@@ -19,35 +19,46 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { createHotel, uploadImage } from "@/lib/supabase/supabaseApi";
+import {
+  createHotel,
+  deleteHotel,
+  uploadImage,
+} from "@/lib/supabase/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PencilLine } from "lucide-react";
+import { Pencil, Trash, View } from "lucide-react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { v4 as uuid4 } from "uuid";
 import * as z from "zod";
 
 const formSchema = z.object({
-  title: z.union([z.string(), z.null()]),
-  description: z.union([z.string(), z.null()]),
-  gym: z.union([z.boolean(), z.null()]),
-  country: z.union([z.string(), z.null()]),
-  state: z.union([z.string(), z.null()]),
-  city: z.union([z.string(), z.null()]),
-  locationDescription: z.union([z.string(), z.null()]),
-  image: z.union([z.instanceof(File), z.string()]),
-  bar: z.union([z.boolean(), z.null()]),
-  bikeRental: z.union([z.boolean(), z.null()]),
-  freeParking: z.union([z.boolean(), z.null()]),
-  freeWifi: z.union([z.boolean(), z.null()]),
-  laundry: z.union([z.boolean(), z.null()]),
-  movieNights: z.union([z.boolean(), z.null()]),
-  restaurant: z.union([z.boolean(), z.null()]),
-  shopping: z.union([z.boolean(), z.null()]),
-  spa: z.union([z.boolean(), z.null()]),
-  coffeeShop: z.union([z.boolean(), z.null()]),
-  swimingPool: z.union([z.boolean(), z.null()]),
+  title: z.string(),
+  description: z.string(),
+  gym: z.boolean(),
+  country: z.string(),
+  state: z.string(),
+  city: z.string(),
+  locationDescription: z.string(),
+  image: z.union([z.instanceof(File), z.string(), z.null()]),
+  bar: z.boolean(),
+  bikeRental: z.boolean(),
+  freeParking: z.boolean(),
+  freeWifi: z.boolean(),
+  laundry: z.boolean(),
+  movieNights: z.boolean(),
+  restaurant: z.boolean(),
+  shopping: z.boolean(),
+  spa: z.boolean(),
+  coffeeShop: z.boolean(),
+  swimingPool: z.boolean(),
 });
 
 const HotelNew = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const hotelId = searchParams.get("hotelId");
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,15 +88,32 @@ const HotelNew = () => {
   // 2. Define a submit handler.
 
   // Do something with the form values.
+  const handleDeleteHotel = async () => {
+    await deleteHotel(hotelId!);
+    router.push("/hotel/new");
+  };
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    let imageUrl = null;
-    if (values.image instanceof File) {
-      await uploadImage(values.image);
-      imageUrl = values.image.name;
-    }
+    try {
+      let imageUrl: string | undefined = "";
+      if (values.image instanceof File) {
+        await uploadImage(values.image);
+        imageUrl = values.image.name;
+      } else {
+        const id = uuid4();
+        const createHotelvalues = {
+          ...values,
+          image: imageUrl,
+          id,
+        };
+        await createHotel(createHotelvalues);
+        // i want to add a query to my link
 
-    const values2 = { ...values, image: imageUrl };
-    await createHotel(values2);
+        router.push(`/hotel/new?hotelId=${id}`);
+        form.reset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -147,7 +175,8 @@ const HotelNew = () => {
                         <FormControl>
                           <Checkbox
                             checked={
-                              field.value !== null ? field.value : undefined
+                              /*               field.value !== null ? field.value : undefined */
+                              field.value
                             }
                             onCheckedChange={field.onChange}
                           />
@@ -163,9 +192,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -180,9 +207,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -197,9 +222,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -214,9 +237,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -231,9 +252,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -248,9 +267,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -265,9 +282,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -282,9 +297,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -299,9 +312,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -316,9 +327,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -333,9 +342,7 @@ const HotelNew = () => {
                       <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                         <FormControl>
                           <Checkbox
-                            checked={
-                              field.value !== null ? field.value : undefined
-                            }
+                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
@@ -361,7 +368,6 @@ const HotelNew = () => {
                         {...field}
                         value={""}
                         onChange={(event) => {
-                          console.log();
                           const file = event.target.files?.[0];
                           field.onChange(file || "");
                         }}
@@ -385,17 +391,13 @@ const HotelNew = () => {
                       </FormDescription>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={
-                          field.value !== null ? field.value : undefined
-                        }
-                        value={field.value !== null ? field.value : undefined}
+                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <SelectTrigger className="bg-background">
                           <SelectValue
                             placeholder="select a country"
-                            defaultValue={
-                              field.value !== null ? field.value : undefined
-                            }
+                            defaultValue={field.value}
                           />
                         </SelectTrigger>
                         <SelectContent>
@@ -419,17 +421,13 @@ const HotelNew = () => {
                       </FormDescription>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={
-                          field.value !== null ? field.value : undefined
-                        }
-                        value={field.value !== null ? field.value : undefined}
+                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <SelectTrigger className="bg-background">
                           <SelectValue
                             placeholder="select a state"
-                            defaultValue={
-                              field.value !== null ? field.value : undefined
-                            }
+                            defaultValue={field.value}
                           />
                         </SelectTrigger>
                         <SelectContent>
@@ -455,17 +453,13 @@ const HotelNew = () => {
                     </FormDescription>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={
-                        field.value !== null ? field.value : undefined
-                      }
-                      value={field.value !== null ? field.value : undefined}
+                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <SelectTrigger className="bg-background">
                         <SelectValue
                           placeholder="Beach hotel is located at the very end of the beach road"
-                          defaultValue={
-                            field.value !== null ? field.value : undefined
-                          }
+                          defaultValue={field.value}
                         />
                       </SelectTrigger>
                       <SelectContent>
@@ -501,10 +495,29 @@ const HotelNew = () => {
                 )}
               />
               <div className="flex justify-between gap-2 flex-wrap">
-                <Button type="submit">
-                  <PencilLine className="w-4 h-4 mr-2" />
-                  Create Hotel
-                </Button>
+                {hotelId ? (
+                  <div>
+                    <Link href="/hotel/details/${hotelId}">
+                      <Button variant="outline" type="button">
+                        <View className="w-4 h-4 mr-3" />
+                        View
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={() => handleDeleteHotel(hotelId)}
+                    >
+                      <Trash className="w-4 h-4 mr-3" />
+                      Delete
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="outline" type="submit">
+                    <Pencil className="w-4 h-4 mr-2" />
+                    Create Hotel
+                  </Button>
+                )}
               </div>
             </div>
           </div>

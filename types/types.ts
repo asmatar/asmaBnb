@@ -7,5 +7,5 @@ export type HotelCardProps = {
   city: string;
   gym: boolean;
   pool: boolean;
-  id: number;
+  id: string;
 };

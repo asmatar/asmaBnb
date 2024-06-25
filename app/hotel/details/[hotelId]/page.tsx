@@ -34,7 +34,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
         <div className="font-semibold mt-4">
           {/* amenityitem */}
           <div className="flex items-center gap-1">
-            <MapPin className="w-4 h-4" /> {hotel.country}, {hotel.state},{" "}
+            <MapPin className="w-4 h-4" /> {hotel.country} {hotel.state},{" "}
             {hotel.city}
           </div>
         </div>
