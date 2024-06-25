@@ -2,6 +2,14 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -18,6 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Plus, Terminal } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import {
   createHotel,
@@ -88,7 +99,7 @@ const HotelNew = () => {
   // 2. Define a submit handler.
 
   // Do something with the form values.
-  const handleDeleteHotel = async () => {
+  const handleDeleteHotel = async (hotelId: string) => {
     await deleteHotel(hotelId!);
     router.push("/hotel/new");
   };
@@ -494,15 +505,30 @@ const HotelNew = () => {
                   </FormItem>
                 )}
               />
+              {hotelId && (
+                <Alert className="bg-indigo-600 text-white">
+                  <Terminal className="h-4 w-4 stroke-white" />
+                  <AlertTitle>One last step</AlertTitle>
+                  <AlertDescription>
+                    Your hotel was creatyed successfully.
+                    <p>please add some rooms to complete your hotel setup</p>
+                  </AlertDescription>
+                </Alert>
+              )}
               <div className="flex justify-between gap-2 flex-wrap">
                 {hotelId ? (
-                  <div>
+                  <>
                     <Link href="/hotel/details/${hotelId}">
-                      <Button variant="outline" type="button">
+                      <Button
+                        variant="outline"
+                        type="button"
+                        className="max-w-[150px]"
+                      >
                         <View className="w-4 h-4 mr-3" />
                         View
                       </Button>
                     </Link>
+
                     <Button
                       variant="outline"
                       type="button"
@@ -511,7 +537,27 @@ const HotelNew = () => {
                       <Trash className="w-4 h-4 mr-3" />
                       Delete
                     </Button>
-                  </div>
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button
+                          variant="outline"
+                          type="button"
+                          className="max-w-[150px]"
+                        >
+                          <Plus className="w-4 h-4 mr-3" />
+                          Add room
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Add a room</DialogTitle>
+                          <DialogDescription>
+                            All details about a room in your hotel.
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  </>
                 ) : (
                   <Button variant="outline" type="submit">
                     <Pencil className="w-4 h-4 mr-2" />
