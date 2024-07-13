@@ -1,6 +1,6 @@
 "use server";
 
-import { InsertData } from "@/types/tableType";
+import { InsertData, InsertRoom } from "@/types/tableType";
 import { createClerkSupabaseClient } from "./supabaseClient";
 export const getHotels = async () => {
   const supabase = await createClerkSupabaseClient();
@@ -55,4 +55,31 @@ export const deleteHotel = async (id: string) => {
   if (error) {
     throw new Error("hotel not found");
   }
+};
+
+/* ROOM API */
+
+export const createRoom = async (newRoom: InsertRoom) => {
+  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newRoom.image}`;
+  console.log(imagePath, "image path");
+  const supabase = await createClerkSupabaseClient();
+  console.log(newRoom);
+  const { data, error } = await supabase
+    .from("room")
+    .insert([{ ...newRoom, image: imagePath }]);
+  if (error) {
+    throw new Error("room could not be created");
+  }
+  return data;
+};
+export const uploadImageRoom = async (file: File) => {
+  const supabase = await createClerkSupabaseClient();
+  console.log(file.name);
+  const { data, error } = await supabase.storage
+    .from("room")
+    .upload(`public/${file.name}`, file);
+  if (error) {
+    throw new Error("image could not be uploaded");
+  }
+  return data;
 };

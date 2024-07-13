@@ -1,4 +1,6 @@
 "use client";
+import AddRoomForm from "@/components/AddRoomForm";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -26,9 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Terminal } from "lucide-react";
-
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import {
   createHotel,
@@ -36,7 +35,7 @@ import {
   uploadImage,
 } from "@/lib/supabase/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Trash, View } from "lucide-react";
+import { Pencil, Plus, Terminal, Trash, View } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -44,14 +43,18 @@ import { v4 as uuid4 } from "uuid";
 import * as z from "zod";
 
 const formSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z.string().min(2, {
+    message: "Hotel title must be at least 2 characters.",
+  }),
+  description: z.string().min(2, {
+    message: "Hotel title must be at least 2 characters.",
+  }),
   gym: z.boolean(),
   country: z.string(),
   state: z.string(),
   city: z.string(),
   locationDescription: z.string(),
-  image: z.union([z.instanceof(File), z.string(), z.null()]),
+  image: z.union([z.instanceof(File), z.string()]),
   bar: z.boolean(),
   bikeRental: z.boolean(),
   freeParking: z.boolean(),
@@ -107,8 +110,11 @@ const HotelNew = () => {
     try {
       let imageUrl: string | undefined = "";
       if (values.image instanceof File) {
-        await uploadImage(values.image);
         imageUrl = values.image.name;
+        const img = JSON.parse(JSON.stringify(values.image));
+        console.log("img", img);
+        /* await uploadImage(values.image); */
+        await uploadImage(img);
       } else {
         const id = uuid4();
         const createHotelvalues = {
@@ -116,6 +122,7 @@ const HotelNew = () => {
           image: imageUrl,
           id,
         };
+
         await createHotel(createHotelvalues);
         // i want to add a query to my link
 
@@ -518,7 +525,7 @@ const HotelNew = () => {
               <div className="flex justify-between gap-2 flex-wrap">
                 {hotelId ? (
                   <>
-                    <Link href="/hotel/details/${hotelId}">
+                    <Link href={`/hotel/details/${hotelId}`}>
                       <Button
                         variant="outline"
                         type="button"
@@ -539,22 +546,18 @@ const HotelNew = () => {
                     </Button>
                     <Dialog>
                       <DialogTrigger>
-                        <Button
-                          variant="outline"
-                          type="button"
-                          className="max-w-[150px]"
-                        >
-                          <Plus className="w-4 h-4 mr-3" />
-                          Add room
-                        </Button>
+                        <Plus className="w-4 h-4 mr-3" />
+                        Add room
                       </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
+                      <DialogContent className="max-w-[900px] w-[90%]">
+                        <DialogHeader className="px-2">
                           <DialogTitle>Add a room</DialogTitle>
                           <DialogDescription>
                             All details about a room in your hotel.
                           </DialogDescription>
                         </DialogHeader>
+
+                        <AddRoomForm />
                       </DialogContent>
                     </Dialog>
                   </>
