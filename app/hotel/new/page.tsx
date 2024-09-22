@@ -562,7 +562,11 @@ const HotelNew = () => {
                     </Dialog>
                   </>
                 ) : (
-                  <Button variant="outline" type="submit">
+                  <Button
+                    variant="outline"
+                    type="submit"
+                    className="hover:bg-primary-foreground  dark:border-background"
+                  >
                     <Pencil className="w-4 h-4 mr-2" />
                     Create Hotel
                   </Button>

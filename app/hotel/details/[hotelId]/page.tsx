@@ -15,7 +15,6 @@ import { FaSwimmer } from "react-icons/fa";
 import { FaSpa } from "react-icons/fa6";
 import { MdDryCleaning, MdLocalLaundryService } from "react-icons/md";
 
-export const revalidate = 216000;
 const HotelId = async ({ params }: { params: { hotelId: string } }) => {
   const hotel = await getOneHotel(params.hotelId);
 

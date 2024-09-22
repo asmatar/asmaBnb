@@ -62,6 +62,7 @@ const Header = async () => {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
+
                   <UserButton afterSignOutUrl="/" showName />
                 </>
               ) : (
