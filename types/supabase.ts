@@ -174,6 +174,7 @@ export type Database = {
           soundProofed: boolean;
           title: string | null;
           TV: boolean;
+          hotel_id: string;
         };
         Insert: {
           airCondition?: boolean;
@@ -199,6 +200,7 @@ export type Database = {
           soundProofed?: boolean;
           title?: string | null;
           TV?: boolean;
+          hotel_id: string;
         };
         Update: {
           airCondition?: boolean;

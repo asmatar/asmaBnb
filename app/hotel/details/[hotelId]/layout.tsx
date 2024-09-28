@@ -1,4 +1,3 @@
-import React from "react";
 // dynamic metadata
 type Props = {
   params: {

@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -13,11 +14,13 @@ import { Input } from "@/components/ui/input";
 import { createRoom, uploadImageRoom } from "@/lib/supabase/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { v4 as uuid4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 import { Checkbox } from "./ui/checkbox";
 import { Textarea } from "./ui/textarea";
+
 const formSchema = z.object({
   title: z.string().min(2, {
     message: "room title must be at least 2 characters.",
@@ -47,6 +50,7 @@ const formSchema = z.object({
 
 const AddRoomForm = () => {
   // 1. Define your form.
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -72,31 +76,29 @@ const AddRoomForm = () => {
       bathroomCount: 0,
     },
   });
+  const searchParams = useSearchParams();
 
+  const hotelId = searchParams.get("hotelId");
   // 2. Define a submit handler.
   async function onSubmitRoom(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
     try {
-      let imageUrl: string | undefined = "";
-      if (values.image instanceof File) {
-        console.log("if file");
-        await uploadImageRoom(values.image);
-        imageUrl = values.image.name;
-      } else {
-        console.log("elseee");
+      const file = values.image as File;
+      if (file instanceof File) {
+        const formData = new FormData();
+        formData.append("image", file);
 
-        const id = uuid4();
-        const createRoomvalues = {
-          ...values,
-          image: imageUrl,
-          id,
-        };
-        await createRoom(createRoomvalues);
-        // i want to add a query to my link
+        await uploadImageRoom(formData);
       }
+      const id = uuidv4();
+      const createRoomvalues = {
+        ...values,
+        image: (file as File).name || undefined,
+        hotel_id: hotelId as string,
+        id,
+      };
+      await createRoom(createRoomvalues);
+
+      form.reset();
     } catch (error) {
       console.log(error);
     }
@@ -436,9 +438,13 @@ const AddRoomForm = () => {
               />
             </div>
           </div>
-          <Button variant="outline" type="submit">
+          <Button
+            variant="outline"
+            type="submit"
+            disabled={!form.formState.isValid}
+          >
             <Pencil className="w-4 h-4 mr-2" />
-            Create room
+            {form.formState.isSubmitting ? "Saving..." : "create Room"}
           </Button>
         </form>
       </Form>

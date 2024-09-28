@@ -20,7 +20,6 @@ const HotelCard = ({
           <div className="flex-1 aspect-square overflow-hidden relative w-full h-[210px] rounded-s-lg">
             <Image
               fill
-              /* src="/hotel-placeholder.jpg" */
               src={image}
               alt="Logo"
               className="object-cover w-full h-full"

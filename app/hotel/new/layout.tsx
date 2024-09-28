@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import React from "react";
+
 export const metadata: Metadata = {
   title: "Create Hotel",
   description: "You can create your hotel and save it into the application ",

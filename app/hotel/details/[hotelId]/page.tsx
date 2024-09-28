@@ -19,7 +19,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
   const hotel = await getOneHotel(params.hotelId);
 
   return (
-    <div className="flex flex-col gap-6 pb-2">
+    <section className="flex flex-col gap-6 pb-2">
       <div className="aspect-square overflow-hidden relative w-full h-[350px] md:h-[600px] rounded-lg">
         <Image
           fill
@@ -126,7 +126,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
           {/* amenityitem */}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

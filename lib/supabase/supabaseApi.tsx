@@ -1,7 +1,9 @@
 "use server";
 
-import { InsertData, InsertRoom } from "@/types/tableType";
+import { InsertBooking, InsertRoom } from "@/types/tableType";
 import { createClerkSupabaseClient } from "./supabaseClient";
+
+// HOTELS API
 export const getHotels = async () => {
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase.from("hotel").select("*");
@@ -13,22 +15,23 @@ export const getHotels = async () => {
   return data;
 };
 
-export const createHotel = async (newHotel: InsertData) => {
+export const createHotel = async (newHotel: InsertBooking) => {
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
-  console.log(imagePath);
+
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase
     .from("hotel")
-    .insert([{ ...newHotel, image: imagePath }]);
-
+    .insert([
+      newHotel.image ? { ...newHotel, image: imagePath } : { ...newHotel },
+    ]);
   if (error) {
     throw new Error("hotel could not be created");
   }
   return data;
 };
-export const uploadImage = async (file: File) => {
+export const uploadImage = async (formData: FormData) => {
   const supabase = await createClerkSupabaseClient();
-  console.log(file.name);
+  const file = formData.get("image") as File;
   const { data, error } = await supabase.storage
     .from("hotels")
     .upload(`public/${file.name}`, file);
@@ -37,6 +40,7 @@ export const uploadImage = async (file: File) => {
   }
   return data;
 };
+
 export const getOneHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase
@@ -60,22 +64,60 @@ export const deleteHotel = async (id: string) => {
 
 /* ROOM API */
 
-export const createRoom = async (newRoom: InsertRoom) => {
-  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newRoom.image}`;
-  console.log(imagePath, "image path");
+export const getAllRooms = async () => {
   const supabase = await createClerkSupabaseClient();
-  console.log(newRoom);
+  const { data, error } = await supabase.from("room").select("*");
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+  return data;
+};
+export const getRoomByHotel = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase
     .from("room")
-    .insert([{ ...newRoom, image: imagePath }]);
+    .select("*")
+    .eq("hotel_id", id);
   if (error) {
+    throw new Error("room not found");
+  }
+  return data;
+};
+export const getOneRoom = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+    .from("room")
+    .select("*")
+    .eq("hotel_id", id);
+  if (error) {
+    throw new Error("room not found");
+  }
+  return data;
+};
+export const createRoom = async (newRoom: InsertRoom) => {
+  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${newRoom.image}`;
+
+  const supabase = await createClerkSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("room")
+    .insert([
+      newRoom.image
+        ? { ...newRoom, image: imagePath }
+        : { ...newRoom, image: "" },
+    ]);
+  if (error) {
+    console.log(error);
     throw new Error("room could not be created");
   }
   return data;
 };
-export const uploadImageRoom = async (file: File) => {
+export const uploadImageRoom = async (formData: FormData) => {
   const supabase = await createClerkSupabaseClient();
-  console.log(file.name);
+  const file = formData.get("image") as File;
+
   const { data, error } = await supabase.storage
     .from("room")
     .upload(`public/${file.name}`, file);
