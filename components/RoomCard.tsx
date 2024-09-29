@@ -1,10 +1,24 @@
+"use client";
+import AmenityItem from "@/components/AmenityItem";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { deleteRoom } from "@/services/supabaseApi";
 import { Room } from "@/types/tableType";
 import {
   AirVent,
@@ -15,7 +29,9 @@ import {
   Castle,
   Home,
   MountainSnow,
+  Plus,
   Ship,
+  Trash,
   Trees,
   Users,
   UtensilsCrossed,
@@ -23,14 +39,23 @@ import {
   Wifi,
 } from "lucide-react";
 import Image from "next/image";
-import AmenityItem from "./AmenityItem";
+import AddRoomForm from "./AddRoomForm";
 
-const roomCard = ({ room }: { room: Room }) => {
+const roomCard = ({
+  params,
+  room,
+}: {
+  params?: { hotelId: string };
+  room: Room;
+}) => {
+  const hotelId = params?.hotelId;
   return (
     <Card>
       <CardHeader>
         <CardTitle>{room.title}</CardTitle>
-        <CardDescription>{room.description}</CardDescription>
+        <CardDescription className="min-h-[120px]">
+          {room.description}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4 relative h-[55vw] sm:h-[30vw] xl:h-[20vw] max-h-[380px] mb-4">
@@ -130,7 +155,51 @@ const roomCard = ({ room }: { room: Room }) => {
             </AmenityItem>
           )}
         </div>
+        <Separator className="my-4" />
+        <div className="flex gap-4 justify-between">
+          <div className="">
+            Room Price: <span className="font-bold">${room.roomPrice}</span>
+            <span className="text-xs"> /24hrs</span>
+          </div>
+          {!!room.breakfastPrice && (
+            <div>
+              Breakfast Price:{" "}
+              <span className="font-bold">${room.breakfastPrice}</span>
+            </div>
+          )}
+        </div>
       </CardContent>
+      <CardFooter>
+        {hotelId ? (
+          <div className="">detail</div>
+        ) : (
+          <div className="flex w-full justify-between">
+            <Button
+              type="button"
+              variant="ghost"
+              className="bg-secondary"
+              onClick={() => deleteRoom(room.id)}
+            >
+              <Trash className="h-4 w-4 mr-2" /> Delete
+            </Button>
+            <Dialog>
+              <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
+                <Plus className="w-4 h-4 mr-3" />
+                Update
+              </DialogTrigger>
+              <DialogContent className="max-w-[900px] w-[90%]">
+                <DialogHeader className="px-2">
+                  <DialogTitle>Update your room</DialogTitle>
+                  <DialogDescription>
+                    Make changes to this room
+                  </DialogDescription>
+                </DialogHeader>
+                <AddRoomForm />
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
+      </CardFooter>
     </Card>
   );
 };

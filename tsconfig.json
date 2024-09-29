@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/loading.tsx"
+    "app/loading.tsx",
+    "app/hotel/details/loading.tsx"
   ],
   "exclude": ["node_modules"]
 }

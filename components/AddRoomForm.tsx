@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createRoom, uploadImageRoom } from "@/lib/supabase/supabaseApi";
+import { createRoom, uploadImageRoom } from "@/services/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -67,13 +67,13 @@ const AddRoomForm = () => {
       airCondition: false,
       soundProofed: false,
       image: "",
-      roomPrice: 0,
-      breakfastPrice: 0,
-      bedCount: 0,
-      kingBed: 0,
-      guestCount: 0,
-      queenBed: 0,
-      bathroomCount: 0,
+      roomPrice: undefined,
+      breakfastPrice: undefined,
+      bedCount: undefined,
+      kingBed: undefined,
+      guestCount: undefined,
+      queenBed: undefined,
+      bathroomCount: undefined,
     },
   });
   const searchParams = useSearchParams();

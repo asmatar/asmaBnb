@@ -29,15 +29,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  createHotel,
-  deleteHotel,
-  uploadImage,
-} from "@/lib/supabase/supabaseApi";
+import { createHotel, deleteHotel, uploadImage } from "@/services/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Country } from "country-state-city";
 import { Pencil, Plus, Terminal, Trash, View } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
@@ -70,7 +68,9 @@ const hotelSchema = z.object({
 const AddHotelForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const [countries, setCountries] = useState<{ name: string }[]>([]);
+  //const [states, setStates] = useState<IState[]>([]);
+  //const [countries, setCountries] = useState<ICity[]>([]);
   const hotelId = searchParams.get("hotelId");
   const form = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
@@ -96,6 +96,7 @@ const AddHotelForm = () => {
       swimingPool: false,
     },
   });
+
   const handleDeleteHotel = async (hotelId: string) => {
     await deleteHotel(hotelId!);
     router.push("/hotel/new");
@@ -124,6 +125,27 @@ const AddHotelForm = () => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    const countries = Country.getAllCountries().map((country) => ({
+      name: country.name,
+    }));
+    setCountries(countries);
+  }, []);
+
+  const countryOption = countries.map((country) => (
+    <SelectItem key={country.name} value={country.name}>
+      {country.name}
+    </SelectItem>
+  ));
+  /*   console.log(State.getStatesOfCountry("FR"));
+  const stateOption = State.getStatesOfCountry("FR").map((state) => (
+    <SelectItem key={state.name} value={state.name}>
+      {state.name}
+    </SelectItem>
+  )); */
+  //console.log(City.getAllCities());
+  //console.log(City.getCitiesOfState("FR", "NOR").map((city) => city.name));
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -408,10 +430,11 @@ const AddHotelForm = () => {
                         />
                       </SelectTrigger>
                       <SelectContent>
+                        {countryOption}
                         {/* dynamic from package country-state-city*/}
-                        <SelectItem value="light">country one</SelectItem>
+                        {/*       <SelectItem value="light">country one</SelectItem>
                         <SelectItem value="dark">counmtry 2</SelectItem>
-                        <SelectItem value="system">country 3</SelectItem>
+                        <SelectItem value="system">country 3</SelectItem> */}
                       </SelectContent>
                     </Select>
                   </FormItem>
@@ -439,9 +462,10 @@ const AddHotelForm = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {/* dynamic from package country-state-city*/}
-                        <SelectItem value="light">country one</SelectItem>
+                        {/*    <SelectItem value="light">country one</SelectItem>
                         <SelectItem value="dark">counmtry 2</SelectItem>
-                        <SelectItem value="system">country 3</SelectItem>
+                        <SelectItem value="system">country 3</SelectItem> */}
+                        {countryOption}
                       </SelectContent>
                     </Select>
                   </FormItem>
@@ -474,6 +498,7 @@ const AddHotelForm = () => {
                       <SelectItem value="light">country one</SelectItem>
                       <SelectItem value="dark">counmtry 2</SelectItem>
                       <SelectItem value="system">country 3</SelectItem>
+                      {/* {stateOption} */}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -534,7 +559,7 @@ const AddHotelForm = () => {
                     Delete
                   </Button>
                   <Dialog>
-                    <DialogTrigger>
+                    <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
                       <Plus className="w-4 h-4 mr-3" />
                       Add room
                     </DialogTrigger>

@@ -1,4 +1,4 @@
-import { getHotels } from "@/lib/supabase/supabaseApi";
+import { getHotels } from "@/services/supabaseApi";
 
 import HotelCard from "./HotelCard";
 async function HotelList() {

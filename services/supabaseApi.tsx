@@ -1,7 +1,7 @@
 "use server";
 
 import { InsertBooking, InsertRoom } from "@/types/tableType";
-import { createClerkSupabaseClient } from "./supabaseClient";
+import { createClerkSupabaseClient } from "../lib/supabase/supabaseClient";
 
 // HOTELS API
 export const getHotels = async () => {
@@ -43,6 +43,8 @@ export const uploadImage = async (formData: FormData) => {
 
 export const getOneHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
+  await new Promise((resolve) => setTimeout(resolve, 2000)); // attend 2 secondes
+
   const { data, error } = await supabase
     .from("hotel")
     .select("*")
@@ -125,4 +127,14 @@ export const uploadImageRoom = async (formData: FormData) => {
     throw new Error("image could not be uploaded");
   }
   return data;
+};
+export const deleteRoom = async (id: string) => {
+  console.log("first", id);
+  const supabase = await createClerkSupabaseClient();
+  const { error } = await supabase.from("room").delete().eq("id", id);
+
+  if (error) {
+    console.log(error);
+    throw new Error("hotel not found");
+  }
 };

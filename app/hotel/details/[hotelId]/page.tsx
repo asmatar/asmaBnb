@@ -1,5 +1,6 @@
-import { getOneHotel } from "@/lib/supabase/supabaseApi";
+import { getOneHotel, getRoomByHotel } from "@/services/supabaseApi";
 
+import RoomCard from "@/components/RoomCard";
 import {
   Bike,
   Car,
@@ -16,7 +17,8 @@ import { FaSpa } from "react-icons/fa6";
 import { MdDryCleaning, MdLocalLaundryService } from "react-icons/md";
 
 const HotelId = async ({ params }: { params: { hotelId: string } }) => {
-  const hotel = await getOneHotel(params.hotelId);
+  const hotel = await getOneHotel(params.hotelId ?? "");
+  const rooms = await getRoomByHotel(params.hotelId ?? "");
 
   return (
     <section className="flex flex-col gap-6 pb-2">
@@ -28,8 +30,8 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
           className="object-cover"
         ></Image>
       </div>
-      <div>
-        <h3 className="font-semibold text-xl md:text-3xl">{hotel.title}</h3>
+      <section className="mb-8">
+        <h1 className="font-semibold text-xl md:text-3xl">{hotel.title}</h1>
         <div className="font-semibold mt-4">
           {/* amenityitem */}
           <div className="flex items-center gap-1">
@@ -125,7 +127,15 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
           )}
           {/* amenityitem */}
         </div>
-      </div>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold my-4">Rooms availiable</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          {rooms.map((room) => (
+            <RoomCard key={room.id} room={room} params={params} />
+          ))}
+        </div>
+      </section>
     </section>
   );
 };
