@@ -29,13 +29,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { getAllCountries } from "@/services/Location";
 import { createHotel, deleteHotel, uploadImage } from "@/services/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Country } from "country-state-city";
+import { useQuery } from "@tanstack/react-query";
 import { Pencil, Plus, Terminal, Trash, View } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
@@ -68,7 +68,7 @@ const hotelSchema = z.object({
 const AddHotelForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [countries, setCountries] = useState<{ name: string }[]>([]);
+  //const [countries, setCountries] = useState<{ name: string }[]>([]);
   //const [states, setStates] = useState<IState[]>([]);
   //const [countries, setCountries] = useState<ICity[]>([]);
   const hotelId = searchParams.get("hotelId");
@@ -95,6 +95,10 @@ const AddHotelForm = () => {
       spa: false,
       swimingPool: false,
     },
+  });
+  const { data: countries, error: countriesError } = useQuery({
+    queryKey: ["countries"],
+    queryFn: getAllCountries,
   });
 
   const handleDeleteHotel = async (hotelId: string) => {
@@ -126,14 +130,7 @@ const AddHotelForm = () => {
     }
   }
 
-  useEffect(() => {
-    const countries = Country.getAllCountries().map((country) => ({
-      name: country.name,
-    }));
-    setCountries(countries);
-  }, []);
-
-  const countryOption = countries.map((country) => (
+  const countryOption = countries?.map((country) => (
     <SelectItem key={country.name} value={country.name}>
       {country.name}
     </SelectItem>

@@ -1,6 +1,12 @@
 import AddHotelForm from "@/components/AddHotelForm";
 import RoomCard from "@/components/RoomCard";
+import { getAllCountries } from "@/services/Location";
 import { getRoomByHotel } from "@/services/supabaseApi";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
 async function HotelNew({
   searchParams,
@@ -8,11 +14,20 @@ async function HotelNew({
   searchParams: { hotelId: string };
 }) {
   const hotelId = searchParams.hotelId ?? "";
+
   const rooms = hotelId ? await getRoomByHotel(hotelId) : [];
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["countries"],
+    queryFn: getAllCountries,
+  });
 
   return (
     <section>
-      <AddHotelForm />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <AddHotelForm />
+      </HydrationBoundary>
       {rooms.length > 0 ? (
         <div className="mt-8">
           <h2 className="text-xl font-semibold my-4 mb-4">Hotel Rooms</h2>
