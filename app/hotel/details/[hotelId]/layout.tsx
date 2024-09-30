@@ -1,5 +1,3 @@
-import Container from "@/components/ui/Container";
-import React from "react";
 // dynamic metadata
 type Props = {
   params: {
@@ -14,11 +12,7 @@ export const generateMetadata = ({ params }: Props) => {
 };
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <main>
-      <Container>{children}</Container>
-    </main>
-  );
+  return <main>{children}</main>;
 };
 
 export default layout;

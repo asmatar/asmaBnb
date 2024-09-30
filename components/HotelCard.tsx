@@ -14,17 +14,18 @@ const HotelCard = ({
   id,
 }: HotelCardProps) => {
   return (
-    <Link href={`/hotel-details/${id}`}>
+    <Link href={`/hotel/details/${id}`}>
       <div className="col-span-1 cursor-pointer transition hover:scale-105">
         <div className=" flex gap-2 bg-background/50 border border-primary/10 rounded-lg">
           <div className="flex-1 aspect-square overflow-hidden relative w-full h-[210px] rounded-s-lg">
-            <Image
-              fill
-              /* src="/hotel-placeholder.jpg" */
-              src={image}
-              alt="Logo"
-              className="object-cover w-full h-full"
-            ></Image>
+            {image && (
+              <Image
+                fill
+                src={image}
+                alt="Logo"
+                className="object-cover w-full h-full"
+              ></Image>
+            )}
           </div>
           <div className="flex-1 flex flex-col justify-between h-[210px] gap-1 p-1 py-2 text-sm">
             <h3 className="font-semibold text-xl">{title}</h3>
