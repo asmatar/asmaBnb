@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { createRoom, uploadImageRoom } from "@/services/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
@@ -76,9 +76,10 @@ const AddRoomForm = () => {
       bathroomCount: undefined,
     },
   });
-  const searchParams = useSearchParams();
 
-  const hotelId = searchParams.get("hotelId");
+  const params = useParams();
+  const hotelId = params?.hotelId;
+
   // 2. Define a submit handler.
   async function onSubmitRoom(values: z.infer<typeof formSchema>) {
     try {
