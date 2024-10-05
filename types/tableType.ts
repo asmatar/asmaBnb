@@ -1,31 +1,15 @@
 import { Database } from "@/types/supabase";
+//bookings
+export type Booking = Database["public"]["Tables"]["booking"]["Row"];
+export type InsertBooking = Database["public"]["Tables"]["booking"]["Insert"];
+export type UpdateBooking = Database["public"]["Tables"]["booking"]["Update"];
 
-/* export type hHotel = Tables<"hotel">; */
-/* export type Hotel = {
-  bar?: boolean | null;
-  bikeRental?: boolean | null;
-  bookings?: string[] | null;
-  city?: string | null;
-  coffeeShop?: boolean | null;
-  country?: string | null;
-  created_at?: string;
-  description?: string | null;
-  freeParking?: boolean | null;
-  freeWifi?: boolean | null;
-  gym?: boolean | null;
-  id?: number;
-  image?: string | null;
-  laundry?: boolean | null;
-  locationDescription?: string | null;
-  movieNights?: boolean | null;
-  restaurant?: boolean | null;
-  rooms?: string[] | null;
-  shopping?: boolean | null;
-  spa?: boolean | null;
-  state?: string | null;
-  swimingPool?: boolean | null;
-  title?: string | null;
-  update_at?: string | null;
-  user_id?: string | null;
-}; */
-export type InsertData = Database["public"]["Tables"]["hotel"]["Insert"];
+//hotel
+export type Hotel = Database["public"]["Tables"]["hotel"]["Row"];
+export type InsertHotel = Database["public"]["Tables"]["hotel"]["Insert"];
+export type UpdateHotel = Database["public"]["Tables"]["hotel"]["Update"];
+
+// room
+export type Room = Database["public"]["Tables"]["room"]["Row"];
+export type InsertRoom = Database["public"]["Tables"]["room"]["Insert"];
+export type UpdateRoom = Database["public"]["Tables"]["room"]["Update"];
