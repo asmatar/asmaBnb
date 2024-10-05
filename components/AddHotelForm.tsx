@@ -29,13 +29,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { getAllCountries } from "@/services/Location";
+import { getCitiesByState, getStatesByCountry } from "@/services/Location";
 import { createHotel, deleteHotel, uploadImage } from "@/services/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { ICity, ICountry, IState } from "country-state-city";
 import { Pencil, Plus, Terminal, Trash, View } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
@@ -65,13 +66,13 @@ const hotelSchema = z.object({
   swimingPool: z.boolean(),
 });
 
-const AddHotelForm = () => {
+const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
+  const params = useParams();
+  const { hotelId } = params;
+  const [states, setStates] = useState<IState[]>([]);
+  const [cities, setCities] = useState<ICity[]>([]);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  //const [countries, setCountries] = useState<{ name: string }[]>([]);
-  //const [states, setStates] = useState<IState[]>([]);
-  //const [countries, setCountries] = useState<ICity[]>([]);
-  const hotelId = searchParams.get("hotelId");
+
   const form = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     defaultValues: {
@@ -96,10 +97,10 @@ const AddHotelForm = () => {
       swimingPool: false,
     },
   });
-  const { data: countries, error: countriesError } = useQuery({
+  /*   const { data: countries, error: countriesError } = useQuery({
     queryKey: ["countries"],
     queryFn: getAllCountries,
-  });
+  }); */
 
   const handleDeleteHotel = async (hotelId: string) => {
     await deleteHotel(hotelId!);
@@ -123,26 +124,45 @@ const AddHotelForm = () => {
       };
 
       await createHotel(createHotelvalues);
-      router.push(`/hotel/new?hotelId=${id}`);
-      form.reset();
+      router.push(`/hotel/${id}`);
+      //form.reset();
     } catch (error) {
       console.log(error);
     }
   }
 
-  const countryOption = countries?.map((country) => (
+  const fetchStates = async (value: string) => {
+    const currentCountry =
+      countries && countries.find((country) => country.name === value);
+    const states = await getStatesByCountry(currentCountry!.isoCode);
+
+    setStates(states);
+  };
+  const fetchCities = async (value: string) => {
+    const currentState = states.find((state) => state.name === value);
+
+    const cities = await getCitiesByState(
+      currentState!.countryCode,
+      currentState!.isoCode,
+    );
+    setCities(cities);
+  };
+  const countryOptions = (countries as ICountry[])?.map((country) => (
     <SelectItem key={country.name} value={country.name}>
       {country.name}
     </SelectItem>
   ));
-  /*   console.log(State.getStatesOfCountry("FR"));
-  const stateOption = State.getStatesOfCountry("FR").map((state) => (
-    <SelectItem key={state.name} value={state.name}>
-      {state.name}
+  const statesOptions = states?.map((states) => (
+    <SelectItem key={states.name} value={states.name}>
+      {states.name}
     </SelectItem>
-  )); */
-  //console.log(City.getAllCities());
-  //console.log(City.getCitiesOfState("FR", "NOR").map((city) => city.name));
+  ));
+  const citiesOptions = cities?.map((city) => (
+    <SelectItem key={city.name} value={city.name}>
+      {city.name}
+    </SelectItem>
+  ));
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -200,10 +220,7 @@ const AddHotelForm = () => {
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
                       <FormControl>
                         <Checkbox
-                          checked={
-                            /*               field.value !== null ? field.value : undefined */
-                            field.value
-                          }
+                          checked={field.value}
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
@@ -411,12 +428,15 @@ const AddHotelForm = () => {
                 name="country"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select a Country</FormLabel>
+                    <FormLabel>Select a Country *</FormLabel>
                     <FormDescription>
                       Choose a country where your hotel is located.
                     </FormDescription>
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(country) => {
+                        field.onChange(country);
+                        fetchStates(country);
+                      }}
                       defaultValue={field.value}
                       value={field.value}
                     >
@@ -426,13 +446,7 @@ const AddHotelForm = () => {
                           defaultValue={field.value}
                         />
                       </SelectTrigger>
-                      <SelectContent>
-                        {countryOption}
-                        {/* dynamic from package country-state-city*/}
-                        {/*       <SelectItem value="light">country one</SelectItem>
-                        <SelectItem value="dark">counmtry 2</SelectItem>
-                        <SelectItem value="system">country 3</SelectItem> */}
-                      </SelectContent>
+                      <SelectContent>{countryOptions}</SelectContent>
                     </Select>
                   </FormItem>
                 )}
@@ -442,12 +456,15 @@ const AddHotelForm = () => {
                 name="state"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select a State</FormLabel>
+                    <FormLabel>Select a State *</FormLabel>
                     <FormDescription>
                       Choose a state where your hotel is located.
                     </FormDescription>
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(city) => {
+                        field.onChange(city);
+                        fetchCities(city);
+                      }}
                       defaultValue={field.value}
                       value={field.value}
                     >
@@ -457,13 +474,7 @@ const AddHotelForm = () => {
                           defaultValue={field.value}
                         />
                       </SelectTrigger>
-                      <SelectContent>
-                        {/* dynamic from package country-state-city*/}
-                        {/*    <SelectItem value="light">country one</SelectItem>
-                        <SelectItem value="dark">counmtry 2</SelectItem>
-                        <SelectItem value="system">country 3</SelectItem> */}
-                        {countryOption}
-                      </SelectContent>
+                      <SelectContent>{statesOptions}</SelectContent>
                     </Select>
                   </FormItem>
                 )}
@@ -490,13 +501,7 @@ const AddHotelForm = () => {
                         defaultValue={field.value}
                       />
                     </SelectTrigger>
-                    <SelectContent>
-                      {/* dynamic from package country-state-city*/}
-                      <SelectItem value="light">country one</SelectItem>
-                      <SelectItem value="dark">counmtry 2</SelectItem>
-                      <SelectItem value="system">country 3</SelectItem>
-                      {/* {stateOption} */}
-                    </SelectContent>
+                    <SelectContent>{citiesOptions}</SelectContent>
                   </Select>
                 </FormItem>
               )}
@@ -550,7 +555,7 @@ const AddHotelForm = () => {
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={() => handleDeleteHotel(hotelId)}
+                    onClick={() => handleDeleteHotel(hotelId as string)}
                   >
                     <Trash className="w-4 h-4 mr-3" />
                     Delete
