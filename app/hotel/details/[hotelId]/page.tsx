@@ -32,13 +32,16 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
       </div>
       <section className="mb-8">
         <h1 className="font-semibold text-xl md:text-3xl">{hotel.title}</h1>
-        <div className="font-semibold mt-4">
-          {/* amenityitem */}
-          <div className="flex items-center gap-1">
-            <MapPin className="w-4 h-4" /> {hotel.country} {hotel.state},{" "}
-            {hotel.city}
+        {hotel.country || hotel.state || hotel.city ? (
+          <div className="font-semibold mt-4">
+            {/* amenityitem */}
+            <div className="flex items-center gap-1">
+              <MapPin className="w-4 h-4" /> {hotel.country}{" "}
+              {hotel.state + ", "}
+              {hotel.city}
+            </div>
           </div>
-        </div>
+        ) : null}
         {/* amenityitem */}
         <h3 className="font-semibold text-lg mt-4 mb-2">Location Details</h3>
         <p className="text-primary/90 mb-2">{hotel.locationDescription}</p>

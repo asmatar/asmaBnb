@@ -3,7 +3,8 @@ import { HotelCardProps } from "@/types/types";
 import { Dumbbell, MapPin, Waves } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-const HotelCard = ({
+
+const HotelCard = async ({
   title,
   description,
   image,
@@ -22,6 +23,7 @@ const HotelCard = ({
               <Image
                 fill
                 src={image}
+                quality={50}
                 alt="Logo"
                 className="object-cover w-full h-full"
               ></Image>
@@ -34,9 +36,11 @@ const HotelCard = ({
             </div>
             <div className="text-primary/90">
               {/* amanity item */}
-              <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" /> {country}, {city}
-              </div>
+              {country || city ? (
+                <div className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4" /> {country + ",  "} {city}
+                </div>
+              ) : null}
               {/* amanity item */}
               {/* amanity item */}
               <div className="flex items-center gap-1">

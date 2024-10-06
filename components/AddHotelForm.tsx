@@ -461,6 +461,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                       Choose a state where your hotel is located.
                     </FormDescription>
                     <Select
+                      disabled={form.getValues("country") === "" ? true : false}
                       onValueChange={(city) => {
                         field.onChange(city);
                         fetchCities(city);
@@ -491,6 +492,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                     In wich city is your hotel located.
                   </FormDescription>
                   <Select
+                    disabled={form.getValues("state") === "" ? true : false}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     value={field.value}

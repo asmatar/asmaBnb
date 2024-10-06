@@ -1,11 +1,16 @@
 /* import FramerDiv from "@/components/framer/div"; */
 
 import HotelList from "@/components/HotelList";
+import SearchBar from "@/components/SearchBar/SearchBar";
 import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
+
 import { Suspense } from "react";
 
-//export const revalidate = 3600;
-export default function Home() {
+export const revalidate = 3600;
+export default async function Home({ searchParams }: { searchParams: any }) {
+  console.log(searchParams);
+  const country = searchParams.country;
+  console.log(country);
   return (
     <>
       {/*  <FramerDiv></FramerDiv> */}
@@ -30,8 +35,9 @@ export default function Home() {
           </p>
         </div>
       </section>
+      <SearchBar />
       <Suspense fallback={<HomeSkeleton />}>
-        <HotelList />
+        <HotelList searchParams={searchParams} />
       </Suspense>
     </>
   );

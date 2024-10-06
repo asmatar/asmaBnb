@@ -22,9 +22,9 @@ const Header = async () => {
   const username = user?.username;
   return (
     <>
-      <header className="sticky top-0 border border-b-primary/10 bg-secondary z-40 max-w-[1920px] w-full max-auto py-4 xl:px-20">
+      <header className="sticky top-0 border border-b-primary/10 bg-secondary z-40   py-4 ">
         {/* <Container> */}
-        <div className="flex justify-between">
+        <div className="flex justify-between mx-auto max-w-[1920px] xl:px-20 w-full max-auto">
           <Link href="/" className="flex gap-2 items-center cursor-pointer">
             <Logo />
           </Link>

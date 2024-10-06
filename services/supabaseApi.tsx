@@ -138,3 +138,57 @@ export const deleteRoom = async (id: string) => {
     throw new Error("hotel not found");
   }
 };
+
+/*  Get location */
+export const getHotelLocation = async () => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+    .from("hotel")
+    .select("country, state, city");
+
+  if (error) {
+    throw new Error("hotel not found");
+  }
+  return data;
+};
+
+/* filters hotel */
+
+export async function getFilteredHotels(filters: {
+  country?: string;
+  state?: string;
+  city?: string;
+}) {
+  const supabase = await createClerkSupabaseClient();
+  const { country, state, city } = filters;
+  console.log("filtre moi", filters);
+  // Construit la requête
+  let query = supabase.from("hotel").select("*");
+
+  // Filtre par 'country' si le 'country' est trouvé
+  if (country) {
+    query = query.eq("country", country);
+  }
+
+  // Filtre par 'state' si le 'state' est présent
+  if (state) {
+    query = query.eq("state", state);
+  }
+
+  // Filtre par 'city' si le 'city' est présent
+  if (city) {
+    query = query.eq("city", city);
+  }
+
+  // Exécute la requête
+  const { data, error } = await query;
+
+  // Gérer les erreurs
+  if (error) {
+    console.error("Error fetching hotels:", error);
+    throw new Error(error.message);
+  }
+
+  // Retourne les données filtrées
+  return data;
+}
