@@ -135,7 +135,12 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
     const currentCountry =
       countries && countries.find((country) => country.name === value);
     const states = await getStatesByCountry(currentCountry!.isoCode);
-
+    if (form.getValues("state") !== "") {
+      form.resetField("state");
+    }
+    if (form.getValues("city") !== "") {
+      form.resetField("city");
+    }
     setStates(states);
   };
   const fetchCities = async (value: string) => {
@@ -145,6 +150,9 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
       currentState!.countryCode,
       currentState!.isoCode,
     );
+    if (form.getValues("city") !== "") {
+      form.resetField("city");
+    }
     setCities(cities);
   };
   const countryOptions = (countries as ICountry[])?.map((country) => (

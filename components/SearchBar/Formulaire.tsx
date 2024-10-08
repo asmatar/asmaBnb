@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/select";
 import { getFilteredHotels } from "@/services/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+//import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -64,7 +64,10 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
 
     const filteredStates = [...new Set(filteredStatesDuplicate)];
     if (form.getValues("state") !== "") {
-      //const query = new URLSearchParams({ state: "" });
+      form.resetField("state");
+    }
+    if (form.getValues("city") !== "") {
+      form.resetField("city");
     }
     setFilteredStates(filteredStates as string[]);
   };
@@ -73,9 +76,12 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     const filteredCitiesDuplicate = location
       .filter((location) => location.state === value)
       .map((location) => location.city);
-    console.log(filteredCitiesDuplicate);
 
     const filteredCities = [...new Set(filteredCitiesDuplicate)];
+
+    if (form.getValues("city") !== "") {
+      form.resetField("city");
+    }
     setFilteredCities(filteredCities as string[]);
   };
   const statesOptions = filteredStates?.map((states) => (
@@ -88,14 +94,30 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
       {city}
     </SelectItem>
   ));
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Input
-          title="country"
-          type="search"
-          placeholder="Search..."
-          className="w-full border-0"
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            console.log(field),
+            (
+              <Input
+                title="country"
+                type="search"
+                {...field}
+                placeholder="Search..."
+                className="w-full border-0"
+                value={field.value}
+                onChange={(event) => {
+                  field.onChange(event.target.value);
+                  // fgaire use debouncxe de react hook
+                }}
+              />
+            )
+          )}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
@@ -105,7 +127,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               <FormItem>
                 <Select
                   onValueChange={(country) => {
-                    console.log(country);
                     field.onChange(country);
                     fetchStates(country);
                     form.handleSubmit(onSubmit)();
