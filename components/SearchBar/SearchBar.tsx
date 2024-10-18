@@ -14,7 +14,8 @@ export default async function SearchBar() {
   ));
 
   return (
-    <div className="flex w-full max-w-sm items-center border border-gray-300 rounded-lg justify-between">
+    <div className="flex flex-col w-full  items-center  justify-end gap-6 mb-16 ">
+      <p className="">Search Your best Hotel</p>
       <Formulaire location={location} countryOptions={countryOptions} />
     </div>
   );

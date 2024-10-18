@@ -18,6 +18,7 @@ import { MdDryCleaning, MdLocalLaundryService } from "react-icons/md";
 
 const HotelId = async ({ params }: { params: { hotelId: string } }) => {
   const hotel = await getOneHotel(params.hotelId ?? "");
+  console.log(hotel);
   const rooms = await getRoomByHotel(params.hotelId ?? "");
 
   return (

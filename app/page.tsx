@@ -8,9 +8,6 @@ import { Suspense } from "react";
 
 export const revalidate = 3600;
 export default async function Home({ searchParams }: { searchParams: any }) {
-  console.log(searchParams);
-  const country = searchParams.country;
-  console.log(country);
   return (
     <>
       {/*  <FramerDiv></FramerDiv> */}

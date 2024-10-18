@@ -39,6 +39,7 @@ export type Database = {
           totalPrice?: number | null;
           user_id?: string | null;
           username?: string | null;
+          image?: string | null;
         };
         Update: {
           booked_At?: string | null;
@@ -159,7 +160,7 @@ export type Database = {
           breakfastPrice: number | null;
           cityView: boolean;
           created_at: string;
-          description: string | null;
+          roomDescription: string | null;
           forestView: boolean;
           freeWifi: boolean;
           guestCount: number | null;
@@ -170,9 +171,9 @@ export type Database = {
           oceanView: boolean;
           queenBed: number | null;
           roomPrice: number | null;
-          roomservice: boolean;
+          roomService: boolean;
           soundProofed: boolean;
-          title: string | null;
+          roomTitle: string | null;
           TV: boolean;
           hotel_id: string;
         };
@@ -185,7 +186,7 @@ export type Database = {
           breakfastPrice?: number | null;
           cityView?: boolean;
           created_at?: string;
-          description?: string | null;
+          roomDescription?: string | null;
           forestView?: boolean;
           freeWifi?: boolean;
           guestCount?: number | null;
@@ -196,9 +197,9 @@ export type Database = {
           oceanView?: boolean;
           queenBed?: number | null;
           roomPrice?: number | null;
-          roomservice?: boolean;
+          roomService?: boolean;
           soundProofed?: boolean;
-          title?: string | null;
+          roomTitle?: string | null;
           TV?: boolean;
           hotel_id: string;
         };
@@ -211,7 +212,7 @@ export type Database = {
           breakfastPrice?: number | null;
           cityView?: boolean;
           created_at?: string;
-          description?: string | null;
+          roomDescription?: string | null;
           forestView?: boolean;
           freeWifi?: boolean;
           guestCount?: number | null;
@@ -222,9 +223,9 @@ export type Database = {
           oceanView?: boolean;
           queenBed?: number | null;
           roomPrice?: number | null;
-          roomservice?: boolean;
+          roomService?: boolean;
           soundProofed?: boolean;
-          title?: string | null;
+          roomTitle?: string | null;
           TV?: boolean;
         };
         Relationships: [];

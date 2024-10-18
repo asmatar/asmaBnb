@@ -1,16 +1,17 @@
 import AddHotelForm from "@/components/AddHotelForm";
 import RoomCard from "@/components/RoomCard";
 import { getAllCountries } from "@/services/Location";
-import { getRoomByHotel } from "@/services/supabaseApi";
+import { getOneHotel, getRoomByHotel } from "@/services/supabaseApi";
 async function page({ params }: { params: { hotelId: string } }) {
   const hotelId = params.hotelId ?? "";
   const rooms = hotelId ? await getRoomByHotel(hotelId) : [];
-
+  const hotel = await getOneHotel(params.hotelId ?? "");
   /*   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["countries"],
     queryFn: getAllCountries,
   }); */
+  console.log(hotel);
   const countries = await getAllCountries();
 
   return (
@@ -18,7 +19,7 @@ async function page({ params }: { params: { hotelId: string } }) {
       {/*      <HydrationBoundary state={dehydrate(queryClient)}>
         <AddHotelForm />
       </HydrationBoundary> */}
-      <AddHotelForm countries={countries} />
+      <AddHotelForm countries={countries} hotel={hotel} />
 
       {rooms.length > 0 ? (
         <div className="mt-8">

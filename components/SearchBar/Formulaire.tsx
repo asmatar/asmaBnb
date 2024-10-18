@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/select";
 import { getFilteredHotels } from "@/services/supabaseApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-//import { useDebounce } from "@uidotdev/usehooks";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Button } from "../ui/button";
 
 type FormProps = {
   countryOptions: JSX.Element[];
@@ -44,15 +44,19 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     },
   });
   const router = useRouter();
-
+  const pathname = usePathname();
+  const cleanForm = () => {
+    form.reset();
+    setFilteredStates([]);
+    setFilteredCities([]);
+    router.push(pathname);
+  };
   async function onSubmit(values: z.infer<typeof searchHotelSchema>) {
-    console.log("value", values);
-    const dataFilterted = await getFilteredHotels(values);
-    // si country cahnge alors reset state et city
-    // si state cahnge alors reset citi
-    // si title change alors reset country-state-city
-
-    console.log(dataFilterted);
+    console.log("submit");
+    await getFilteredHotels({
+      ...values,
+      title: values.title,
+    });
     const query = new URLSearchParams(values).toString();
     router.push(`?${query}`);
   }
@@ -97,7 +101,10 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className=" flex items-center gap-6"
+      >
         <FormField
           control={form.control}
           name="title"
@@ -109,17 +116,17 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                 type="search"
                 {...field}
                 placeholder="Search..."
-                className="w-full border-0"
+                className="w-[270px] border-0 "
                 value={field.value}
                 onChange={(event) => {
                   field.onChange(event.target.value);
-                  // fgaire use debouncxe de react hook
+                  form.handleSubmit(onSubmit)();
                 }}
               />
             )
           )}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className=" grid grid-cols-4 gap-4 max-w-[690px]">
           <FormField
             control={form.control}
             name="country"
@@ -134,7 +141,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                   defaultValue={field.value}
                   value={field.value}
                 >
-                  <SelectTrigger className="bg-background">
+                  <SelectTrigger className="bg-background ">
                     <SelectValue
                       placeholder="select a country"
                       defaultValue={field.value}
@@ -185,7 +192,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                   defaultValue={field.value}
                   value={field.value}
                 >
-                  <SelectTrigger className="bg-background">
+                  <SelectTrigger className="bg-background ">
                     <SelectValue
                       placeholder="Beach hotel is located at the very end of the beach road"
                       defaultValue={field.value}
@@ -196,6 +203,9 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               </FormItem>
             )}
           />
+          <Button type="button" onClick={() => cleanForm()}>
+            Reset fields
+          </Button>
         </div>
       </form>
     </Form>

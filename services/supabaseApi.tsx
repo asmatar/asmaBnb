@@ -1,6 +1,12 @@
 "use server";
 
-import { InsertBooking, InsertRoom } from "@/types/tableType";
+import {
+  InsertBooking,
+  InsertRoom,
+  UpdateBooking,
+  UpdateRoom,
+} from "@/types/tableType";
+import { revalidatePath } from "next/cache";
 import { createClerkSupabaseClient } from "../lib/supabase/supabaseClient";
 
 // HOTELS API
@@ -29,8 +35,10 @@ export const createHotel = async (newHotel: InsertBooking) => {
   }
   return data;
 };
+
 export const uploadImage = async (formData: FormData) => {
   const supabase = await createClerkSupabaseClient();
+  console.log(formData.get("image"));
   const file = formData.get("image") as File;
   const { data, error } = await supabase.storage
     .from("hotels")
@@ -64,8 +72,40 @@ export const deleteHotel = async (id: string) => {
   }
 };
 
-/* ROOM API */
+export const updateHotel = async (hotel: UpdateBooking) => {
+  const supabase = await createClerkSupabaseClient();
+  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
+  console.log("here", { hotel });
+  const { data, error } = await supabase
+    .from("hotel")
+    .update({ ...hotel, image: imagePath })
+    .eq("id", hotel.id!)
+    .select();
 
+  if (error) {
+    throw new Error("hotel not found");
+  }
+  revalidatePath("/hotel/[hotelId]");
+  return data;
+};
+
+/* ROOM API */
+export const updateRoom = async (room: UpdateRoom) => {
+  const supabase = await createClerkSupabaseClient();
+  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${room.image}`;
+  console.log("here", room);
+  const { data, error } = await supabase
+    .from("room")
+    .update({ ...room, image: imagePath })
+    .eq("id", room.id!)
+    .select();
+  console.log("data", data);
+  if (error) {
+    throw new Error("room not found");
+  }
+  revalidatePath("/hotel/[hotelId]");
+  return data;
+};
 export const getAllRooms = async () => {
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase.from("room").select("*");
@@ -114,6 +154,7 @@ export const createRoom = async (newRoom: InsertRoom) => {
     console.log(error);
     throw new Error("room could not be created");
   }
+  revalidatePath(`/hotel/${newRoom.id}`);
   return data;
 };
 export const uploadImageRoom = async (formData: FormData) => {
@@ -153,19 +194,22 @@ export const getHotelLocation = async () => {
 };
 
 /* filters hotel */
-
 export async function getFilteredHotels(filters: {
+  title?: string;
   country?: string;
   state?: string;
   city?: string;
 }) {
   const supabase = await createClerkSupabaseClient();
-  const { country, state, city } = filters;
+  const { country, state, city, title } = filters;
   console.log("filtre moi", filters);
   // Construit la requête
   let query = supabase.from("hotel").select("*");
 
   // Filtre par 'country' si le 'country' est trouvé
+  if (title) {
+    query = query.ilike("title", `%${title}%`);
+  }
   if (country) {
     query = query.eq("country", country);
   }

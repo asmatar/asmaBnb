@@ -39,22 +39,25 @@ import {
   Wifi,
 } from "lucide-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import AddRoomForm from "./AddRoomForm";
-
-const roomCard = ({
+const RoomCard = ({
   params,
   room,
 }: {
   params?: { hotelId: string };
   room: Room;
 }) => {
+  const pathname = usePathname();
   const hotelId = params?.hotelId;
+
+  console.log(pathname);
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{room.title}</CardTitle>
+        <CardTitle>{room.roomTitle}</CardTitle>
         <CardDescription className="min-h-[120px]">
-          {room.description}
+          {room.roomDescription}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -62,7 +65,7 @@ const roomCard = ({
           <Image
             fill
             src={room.image as string}
-            alt={room.title as string}
+            alt={room.roomTitle as string}
             className="object-cover"
           />
         </div>
@@ -94,10 +97,10 @@ const roomCard = ({
               {room.queenBed} Queen Bed
             </AmenityItem>
           )}
-          {room.roomservice && (
+          {room.roomService && (
             <AmenityItem>
               <UtensilsCrossed className="h-4 w-4" />
-              {room.roomservice} Room service
+              {room.roomService} Room service
             </AmenityItem>
           )}
           {room.TV && (
@@ -170,7 +173,7 @@ const roomCard = ({
         </div>
       </CardContent>
       <CardFooter>
-        {hotelId ? (
+        {pathname.includes("details") ? (
           <div className="">detail</div>
         ) : (
           <div className="flex w-full justify-between">
@@ -185,7 +188,7 @@ const roomCard = ({
             <Dialog>
               <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
                 <Plus className="w-4 h-4 mr-3" />
-                Update
+                Edit
               </DialogTrigger>
               <DialogContent className="max-w-[900px] w-[90%]">
                 <DialogHeader className="px-2">
@@ -194,7 +197,7 @@ const roomCard = ({
                     Make changes to this room
                   </DialogDescription>
                 </DialogHeader>
-                <AddRoomForm />
+                <AddRoomForm room={room} />
               </DialogContent>
             </Dialog>
           </div>
@@ -204,4 +207,4 @@ const roomCard = ({
   );
 };
 
-export default roomCard;
+export default RoomCard;

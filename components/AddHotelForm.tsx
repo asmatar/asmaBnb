@@ -30,7 +30,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getCitiesByState, getStatesByCountry } from "@/services/Location";
-import { createHotel, deleteHotel, uploadImage } from "@/services/supabaseApi";
+import {
+  createHotel,
+  deleteHotel,
+  updateHotel,
+  uploadImage,
+} from "@/services/supabaseApi";
+import { Hotel } from "@/types/tableType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
 import { Pencil, Plus, Terminal, Trash, View } from "lucide-react";
@@ -38,6 +44,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { MdUpdate } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 const hotelSchema = z.object({
@@ -48,54 +55,66 @@ const hotelSchema = z.object({
     message: "Hotel title must be at least 2 characters.",
   }),
   gym: z.boolean(),
-  country: z.string(),
+  country: z.string().min(2, {
+    message: "Please select a country.",
+  }),
   state: z.string(),
   city: z.string(),
+  /*   locationDescription: z.string().min(10, {
+    message: "location description must be at least 10 characters.",
+  }), */
   locationDescription: z.string(),
   image: z.union([z.instanceof(File), z.string()]),
-  bar: z.boolean(),
-  bikeRental: z.boolean(),
-  freeParking: z.boolean(),
-  freeWifi: z.boolean(),
-  laundry: z.boolean(),
-  movieNights: z.boolean(),
-  restaurant: z.boolean(),
-  shopping: z.boolean(),
-  spa: z.boolean(),
-  coffeeShop: z.boolean(),
-  swimingPool: z.boolean(),
+  bar: z.boolean().optional().optional(),
+  bikeRental: z.boolean().optional(),
+  freeParking: z.boolean().optional(),
+  freeWifi: z.boolean().optional(),
+  laundry: z.boolean().optional(),
+  movieNights: z.boolean().optional(),
+  restaurant: z.boolean().optional(),
+  shopping: z.boolean().optional(),
+  spa: z.boolean().optional(),
+  coffeeShop: z.boolean().optional(),
+  swimingPool: z.boolean().optional(),
 });
 
-const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
+const AddHotelForm = ({
+  countries,
+  hotel,
+}: {
+  countries: ICountry[];
+  hotel: Hotel;
+}) => {
   const params = useParams();
   const { hotelId } = params;
   const [states, setStates] = useState<IState[]>([]);
   const [cities, setCities] = useState<ICity[]>([]);
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof hotelSchema>>({
+  const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      gym: false,
-      country: "",
-      state: "",
-      city: "",
-      image: "",
-      locationDescription: "",
-      bar: false,
-      bikeRental: false,
-      freeParking: false,
-      freeWifi: false,
-      laundry: false,
-      movieNights: false,
-      restaurant: false,
-      shopping: false,
-      coffeeShop: false,
-      spa: false,
-      swimingPool: false,
+      title: hotel?.title || "",
+      description: hotel?.description || "",
+      gym: hotel?.gym || false,
+      country: hotel?.country || "",
+      state: hotel?.state || "",
+      city: hotel?.city || "",
+      image: hotel?.image || "",
+      locationDescription: hotel?.locationDescription || "",
+      bar: hotel?.bar || false,
+      bikeRental: hotel?.bikeRental || false,
+      freeParking: hotel?.freeParking || false,
+      freeWifi: hotel?.freeWifi || false,
+      laundry: hotel?.laundry || false,
+      movieNights: hotel?.movieNights || false,
+      restaurant: hotel?.restaurant || false,
+      shopping: hotel?.shopping || false,
+      coffeeShop: hotel?.coffeeShop || false,
+      spa: hotel?.spa || false,
+      swimingPool: hotel?.swimingPool || false,
     },
+    shouldUnregister: true,
   });
   /*   const { data: countries, error: countriesError } = useQuery({
     queryKey: ["countries"],
@@ -107,16 +126,28 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
     router.push("/hotel/new");
   };
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
+    console.log("submit add hotel form", values);
     try {
       const file = values.image as File;
 
+      if (hotelId) {
+        const updatingHotelValues = {
+          ...values,
+          image: (file as File).name || undefined,
+          id: hotelId as string,
+        };
+        console.log("dans if hotel id");
+        await updateHotel(updatingHotelValues);
+        return;
+      }
       if (file instanceof File) {
         const formData = new FormData();
         formData.append("image", file);
-
+        console.log("iamge function");
         await uploadImage(formData);
       }
       const id = uuidv4();
+      console.log(values.image);
       const createHotelvalues = {
         ...values,
         image: (file as File).name || undefined,
@@ -125,7 +156,6 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
 
       await createHotel(createHotelvalues);
       router.push(`/hotel/${id}`);
-      //form.reset();
     } catch (error) {
       console.log(error);
     }
@@ -135,11 +165,11 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
     const currentCountry =
       countries && countries.find((country) => country.name === value);
     const states = await getStatesByCountry(currentCountry!.isoCode);
-    if (form.getValues("state") !== "") {
-      form.resetField("state");
+    if (formHotel.getValues("state") !== "") {
+      formHotel.resetField("state");
     }
-    if (form.getValues("city") !== "") {
-      form.resetField("city");
+    if (formHotel.getValues("city") !== "") {
+      formHotel.resetField("city");
     }
     setStates(states);
   };
@@ -150,8 +180,8 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
       currentState!.countryCode,
       currentState!.isoCode,
     );
-    if (form.getValues("city") !== "") {
-      form.resetField("city");
+    if (formHotel.getValues("city") !== "") {
+      formHotel.resetField("city");
     }
     setCities(cities);
   };
@@ -172,13 +202,17 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
   ));
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <Form {...formHotel}>
+      <form
+        onSubmit={formHotel.handleSubmit(onSubmit)}
+        className="space-y-6"
+        id="addHotelForm"
+      >
         <h3 className="font-semibold text-lg">Describe your hotel</h3>
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex-1 flex flex-col gap-6">
             <FormField
-              control={form.control}
+              control={formHotel.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -196,7 +230,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
               )}
             />
             <FormField
-              control={form.control}
+              control={formHotel.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
@@ -222,7 +256,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
               </FormDescription>
               <div className="grid grid-cols-2 gap-4 mt-2">
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="gym"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -237,7 +271,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="spa"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -252,7 +286,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="bar"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -267,7 +301,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="laundry"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -282,7 +316,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="restaurant"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -297,7 +331,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="shopping"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -312,7 +346,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="freeParking"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -327,7 +361,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="bikeRental"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -342,7 +376,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="freeWifi"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -357,7 +391,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="movieNights"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -372,7 +406,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="swimingPool"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -387,7 +421,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formHotel.control}
                   name="coffeeShop"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
@@ -404,7 +438,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
               </div>
             </div>
             <FormField
-              control={form.control}
+              control={formHotel.control}
               name="image"
               render={({ field }) => (
                 <FormItem>
@@ -432,7 +466,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
           <div className="flex-1 flex flex-col  gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
-                control={form.control}
+                control={formHotel.control}
                 name="country"
                 render={({ field }) => (
                   <FormItem>
@@ -460,7 +494,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={formHotel.control}
                 name="state"
                 render={({ field }) => (
                   <FormItem>
@@ -469,7 +503,9 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                       Choose a state where your hotel is located.
                     </FormDescription>
                     <Select
-                      disabled={form.getValues("country") === "" ? true : false}
+                      disabled={
+                        formHotel.getValues("country") === "" ? true : false
+                      }
                       onValueChange={(city) => {
                         field.onChange(city);
                         fetchCities(city);
@@ -491,7 +527,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
             </div>
 
             <FormField
-              control={form.control}
+              control={formHotel.control}
               name="city"
               render={({ field }) => (
                 <FormItem>
@@ -500,7 +536,9 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                     In wich city is your hotel located.
                   </FormDescription>
                   <Select
-                    disabled={form.getValues("state") === "" ? true : false}
+                    disabled={
+                      formHotel.getValues("state") === "" ? true : false
+                    }
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     value={field.value}
@@ -517,7 +555,7 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
               )}
             />
             <FormField
-              control={form.control}
+              control={formHotel.control}
               name="locationDescription"
               render={({ field }) => (
                 <FormItem>
@@ -561,7 +599,14 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                       View
                     </Button>
                   </Link>
-
+                  <Button
+                    variant="outline"
+                    type="submit"
+                    //onClick={() => handleUpdateHotel(hotelId as string)}
+                  >
+                    <MdUpdate className="w-4 h-4 mr-3" />
+                    Update
+                  </Button>
                   <Button
                     variant="outline"
                     type="button"
@@ -582,7 +627,6 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                           All details about a room in your hotel.
                         </DialogDescription>
                       </DialogHeader>
-
                       <AddRoomForm />
                     </DialogContent>
                   </Dialog>
@@ -592,10 +636,13 @@ const AddHotelForm = ({ countries }: { countries: ICountry[] }) => {
                   variant="outline"
                   type="submit"
                   className="hover:bg-primary-foreground  dark:border-background"
-                  disabled={!form.formState.isValid}
+                  disabled={!formHotel.formState.isValid}
+                  form="addHotelForm"
                 >
                   <Pencil className="w-4 h-4 mr-2" />
-                  {form.formState.isSubmitting ? "Saving..." : "create Hotel"}
+                  {formHotel.formState.isSubmitting
+                    ? "Saving..."
+                    : "create Hotel"}
                 </Button>
               )}
             </div>
