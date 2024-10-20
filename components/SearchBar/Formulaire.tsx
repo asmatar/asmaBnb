@@ -52,7 +52,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     router.push(pathname);
   };
   async function onSubmit(values: z.infer<typeof searchHotelSchema>) {
-    console.log("submit");
     await getFilteredHotels({
       ...values,
       title: values.title,
@@ -109,21 +108,18 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
           control={form.control}
           name="title"
           render={({ field }) => (
-            console.log(field),
-            (
-              <Input
-                title="country"
-                type="search"
-                {...field}
-                placeholder="Search..."
-                className="w-[270px] border-0 "
-                value={field.value}
-                onChange={(event) => {
-                  field.onChange(event.target.value);
-                  form.handleSubmit(onSubmit)();
-                }}
-              />
-            )
+            <Input
+              title="country"
+              type="search"
+              {...field}
+              placeholder="Search..."
+              className="w-[270px] border-0 "
+              value={field.value}
+              onChange={(event) => {
+                field.onChange(event.target.value);
+                form.handleSubmit(onSubmit)();
+              }}
+            />
           )}
         />
         <div className=" grid grid-cols-4 gap-4 max-w-[690px]">

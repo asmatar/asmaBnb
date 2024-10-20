@@ -38,7 +38,7 @@ export const createHotel = async (newHotel: InsertBooking) => {
 
 export const uploadImage = async (formData: FormData) => {
   const supabase = await createClerkSupabaseClient();
-  console.log(formData.get("image"));
+
   const file = formData.get("image") as File;
   const { data, error } = await supabase.storage
     .from("hotels")
@@ -59,6 +59,7 @@ export const getOneHotel = async (id: string) => {
     .eq("id", id)
     .single();
   if (error) {
+    console.log("msg", error.message);
     throw new Error("hotel not found");
   }
   return data;
@@ -75,7 +76,7 @@ export const deleteHotel = async (id: string) => {
 export const updateHotel = async (hotel: UpdateBooking) => {
   const supabase = await createClerkSupabaseClient();
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
-  console.log("here", { hotel });
+
   const { data, error } = await supabase
     .from("hotel")
     .update({ ...hotel, image: imagePath })
@@ -93,13 +94,13 @@ export const updateHotel = async (hotel: UpdateBooking) => {
 export const updateRoom = async (room: UpdateRoom) => {
   const supabase = await createClerkSupabaseClient();
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${room.image}`;
-  console.log("here", room);
+
   const { data, error } = await supabase
     .from("room")
     .update({ ...room, image: imagePath })
     .eq("id", room.id!)
     .select();
-  console.log("data", data);
+
   if (error) {
     throw new Error("room not found");
   }
@@ -107,7 +108,7 @@ export const updateRoom = async (room: UpdateRoom) => {
   return data;
 };
 export const getAllRooms = async () => {
-  const supabase = await createClerkSupabaseClient();
+  const supabase = createClerkSupabaseClient();
   const { data, error } = await supabase.from("room").select("*");
 
   if (error) {
@@ -117,7 +118,7 @@ export const getAllRooms = async () => {
   return data;
 };
 export const getRoomByHotel = async (id: string) => {
-  const supabase = await createClerkSupabaseClient();
+  const supabase = createClerkSupabaseClient();
   const { data, error } = await supabase
     .from("room")
     .select("*")
@@ -170,7 +171,6 @@ export const uploadImageRoom = async (formData: FormData) => {
   return data;
 };
 export const deleteRoom = async (id: string) => {
-  console.log("first", id);
   const supabase = await createClerkSupabaseClient();
   const { error } = await supabase.from("room").delete().eq("id", id);
 
@@ -180,9 +180,9 @@ export const deleteRoom = async (id: string) => {
   }
 };
 
-/*  Get location */
 export const getHotelLocation = async () => {
-  const supabase = await createClerkSupabaseClient();
+  const supabase = createClerkSupabaseClient();
+  //console.log("supabase", supabase);
   const { data, error } = await supabase
     .from("hotel")
     .select("country, state, city");
@@ -193,7 +193,6 @@ export const getHotelLocation = async () => {
   return data;
 };
 
-/* filters hotel */
 export async function getFilteredHotels(filters: {
   title?: string;
   country?: string;
@@ -202,37 +201,38 @@ export async function getFilteredHotels(filters: {
 }) {
   const supabase = await createClerkSupabaseClient();
   const { country, state, city, title } = filters;
-  console.log("filtre moi", filters);
-  // Construit la requête
+
   let query = supabase.from("hotel").select("*");
 
-  // Filtre par 'country' si le 'country' est trouvé
   if (title) {
     query = query.ilike("title", `%${title}%`);
   }
   if (country) {
     query = query.eq("country", country);
   }
-
-  // Filtre par 'state' si le 'state' est présent
   if (state) {
     query = query.eq("state", state);
   }
-
-  // Filtre par 'city' si le 'city' est présent
   if (city) {
     query = query.eq("city", city);
   }
-
-  // Exécute la requête
   const { data, error } = await query;
-
-  // Gérer les erreurs
   if (error) {
     console.error("Error fetching hotels:", error);
     throw new Error(error.message);
   }
-
-  // Retourne les données filtrées
+  return data;
+}
+export async function getMyHotel(id: string) {
+  const supabase = await createClerkSupabaseClient();
+  console.log("id", id);
+  const { data, error } = await supabase
+    .from("hotel")
+    .select("*")
+    .eq("user_id", id);
+  if (error) {
+    console.error("Error fetching hotels:", error);
+    throw new Error(error.message);
+  }
   return data;
 }

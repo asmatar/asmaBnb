@@ -37,6 +37,7 @@ import {
   uploadImage,
 } from "@/services/supabaseApi";
 import { Hotel } from "@/types/tableType";
+import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
 import { Pencil, Plus, Terminal, Trash, View } from "lucide-react";
@@ -90,7 +91,9 @@ const AddHotelForm = ({
   const [states, setStates] = useState<IState[]>([]);
   const [cities, setCities] = useState<ICity[]>([]);
   const router = useRouter();
-
+  const { user } = useUser();
+  const isOwner = user?.id === hotel?.user_id;
+  console.log(user);
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     defaultValues: {
@@ -126,7 +129,6 @@ const AddHotelForm = ({
     router.push("/hotel/new");
   };
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
-    console.log("submit add hotel form", values);
     try {
       const file = values.image as File;
 
@@ -136,18 +138,18 @@ const AddHotelForm = ({
           image: (file as File).name || undefined,
           id: hotelId as string,
         };
-        console.log("dans if hotel id");
+
         await updateHotel(updatingHotelValues);
         return;
       }
       if (file instanceof File) {
         const formData = new FormData();
         formData.append("image", file);
-        console.log("iamge function");
+
         await uploadImage(formData);
       }
       const id = uuidv4();
-      console.log(values.image);
+
       const createHotelvalues = {
         ...values,
         image: (file as File).name || undefined,
@@ -599,37 +601,37 @@ const AddHotelForm = ({
                       View
                     </Button>
                   </Link>
-                  <Button
-                    variant="outline"
-                    type="submit"
-                    //onClick={() => handleUpdateHotel(hotelId as string)}
-                  >
-                    <MdUpdate className="w-4 h-4 mr-3" />
-                    Update
-                  </Button>
-                  <Button
-                    variant="outline"
-                    type="button"
-                    onClick={() => handleDeleteHotel(hotelId as string)}
-                  >
-                    <Trash className="w-4 h-4 mr-3" />
-                    Delete
-                  </Button>
-                  <Dialog>
-                    <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
-                      <Plus className="w-4 h-4 mr-3" />
-                      Add room
-                    </DialogTrigger>
-                    <DialogContent className="max-w-[900px] w-[90%]">
-                      <DialogHeader className="px-2">
-                        <DialogTitle>Add a room</DialogTitle>
-                        <DialogDescription>
-                          All details about a room in your hotel.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <AddRoomForm />
-                    </DialogContent>
-                  </Dialog>
+                  {isOwner ? (
+                    <>
+                      <Button variant="outline" type="submit">
+                        <MdUpdate className="w-4 h-4 mr-3" />
+                        Update
+                      </Button>
+                      <Button
+                        variant="outline"
+                        type="button"
+                        onClick={() => handleDeleteHotel(hotelId as string)}
+                      >
+                        <Trash className="w-4 h-4 mr-3" />
+                        Delete
+                      </Button>{" "}
+                      <Dialog>
+                        <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
+                          <Plus className="w-4 h-4 mr-3" />
+                          Add room
+                        </DialogTrigger>
+                        <DialogContent className="max-w-[900px] w-[90%]">
+                          <DialogHeader className="px-2">
+                            <DialogTitle>Add a room</DialogTitle>
+                            <DialogDescription>
+                              All details about a room in your hotel.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <AddRoomForm />
+                        </DialogContent>
+                      </Dialog>
+                    </>
+                  ) : null}
                 </>
               ) : (
                 <Button

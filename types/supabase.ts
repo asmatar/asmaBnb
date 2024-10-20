@@ -22,7 +22,7 @@ export type Database = {
           paymentStatus: boolean | null;
           startDate: string | null;
           totalPrice: number | null;
-          user_id: string | null;
+          user_id?: string;
           username: string | null;
         };
         Insert: {
@@ -37,7 +37,7 @@ export type Database = {
           paymentStatus?: boolean | null;
           startDate?: string | null;
           totalPrice?: number | null;
-          user_id?: string | null;
+          user_id?: string;
           username?: string | null;
           image?: string | null;
         };
@@ -53,7 +53,7 @@ export type Database = {
           paymentStatus?: boolean | null;
           startDate?: string | null;
           totalPrice?: number | null;
-          user_id?: string | null;
+          user_id?: string;
           username?: string | null;
         };
         Relationships: [
@@ -92,7 +92,7 @@ export type Database = {
           swimingPool: boolean;
           title: string | null;
           update_at: string | null;
-          user_id: string | null;
+          user_id?: string;
         };
         Insert: {
           bar?: boolean;
@@ -119,7 +119,7 @@ export type Database = {
           swimingPool?: boolean;
           title?: string | null;
           update_at?: string | null;
-          user_id?: string | null;
+          user_id?: string;
         };
         Update: {
           bar?: boolean;
@@ -146,7 +146,7 @@ export type Database = {
           swimingPool?: boolean;
           title?: string | null;
           update_at?: string | null;
-          user_id?: string | null;
+          user_id?: string;
         };
         Relationships: [];
       };
@@ -176,6 +176,7 @@ export type Database = {
           roomTitle: string | null;
           TV: boolean;
           hotel_id: string;
+          user_id?: string;
         };
         Insert: {
           airCondition?: boolean;
@@ -202,6 +203,7 @@ export type Database = {
           roomTitle?: string | null;
           TV?: boolean;
           hotel_id: string;
+          user_id?: string;
         };
         Update: {
           airCondition?: boolean;
@@ -227,6 +229,7 @@ export type Database = {
           soundProofed?: boolean;
           roomTitle?: string | null;
           TV?: boolean;
+          user_id?: string;
         };
         Relationships: [];
       };

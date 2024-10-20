@@ -11,7 +11,7 @@ async function page({ params }: { params: { hotelId: string } }) {
     queryKey: ["countries"],
     queryFn: getAllCountries,
   }); */
-  console.log(hotel);
+
   const countries = await getAllCountries();
 
   return (

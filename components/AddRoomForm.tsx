@@ -17,6 +17,7 @@ import {
   uploadImageRoom,
 } from "@/services/supabaseApi";
 import { Room } from "@/types/tableType";
+import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -85,14 +86,13 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
 
     shouldUnregister: true,
   });
-
+  const { user } = useUser();
+  const isOwner = user?.id === room?.user_id;
   const params = useParams();
   const hotelId = params?.hotelId;
 
   // 2. Define a submit handler.
   async function onSubmitRoom(values: z.infer<typeof formSchema>) {
-    console.log("submit add room form 1", room);
-    console.log("values", values.roomTitle);
     try {
       const file = values.image as File;
       if (room) {
@@ -101,7 +101,7 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
           image: (file as File).name || undefined,
           id: room.id as string,
         };
-        console.log("dans if hotel id", room);
+
         await updateRoom(updatingRoomValues);
         return;
       }
@@ -145,7 +145,6 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="roomDescription"
@@ -462,7 +461,8 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
               />
             </div>
           </div>
-          {room ? (
+
+          {room && isOwner ? (
             <Button variant="outline" type="submit" form="addRoomForm">
               <MdUpdate className="w-4 h-4 mr-2" />
               Update

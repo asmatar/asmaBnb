@@ -41,17 +41,9 @@ import {
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import AddRoomForm from "./AddRoomForm";
-const RoomCard = ({
-  params,
-  room,
-}: {
-  params?: { hotelId: string };
-  room: Room;
-}) => {
+const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
-  const hotelId = params?.hotelId;
 
-  console.log(pathname);
   return (
     <Card>
       <CardHeader>

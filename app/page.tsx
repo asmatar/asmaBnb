@@ -7,7 +7,11 @@ import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
 import { Suspense } from "react";
 
 export const revalidate = 3600;
-export default async function Home({ searchParams }: { searchParams: any }) {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Record<string, string | string[] | undefined>;
+}) {
   return (
     <>
       {/*  <FramerDiv></FramerDiv> */}
