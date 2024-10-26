@@ -1,4 +1,4 @@
-import MyHotelList from "@/components/MyHotelList";
+import MyHotelList from "@/components/myHotels/MyHotelList";
 async function MyHotels() {
   return <MyHotelList />;
 }

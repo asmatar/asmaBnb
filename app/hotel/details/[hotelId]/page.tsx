@@ -1,4 +1,5 @@
-import { getOneHotel, getRoomByHotel } from "@/services/supabaseApi";
+import { getOneHotel } from "@/services/hotelService";
+import { getRoomByHotel } from "@/services/roomService";
 
 import RoomCard from "@/components/RoomCard";
 import {
@@ -35,7 +36,6 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
         <h1 className="font-semibold text-xl md:text-3xl">{hotel.title}</h1>
         {hotel.country || hotel.state || hotel.city ? (
           <div className="font-semibold mt-4">
-            {/* amenityitem */}
             <div className="flex items-center gap-1">
               <MapPin className="w-4 h-4" /> {hotel.country}{" "}
               {hotel.state + ", "}
@@ -43,56 +43,49 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
             </div>
           </div>
         ) : null}
-        {/* amenityitem */}
+
         <h3 className="font-semibold text-lg mt-4 mb-2">Location Details</h3>
         <p className="text-primary/90 mb-2">{hotel.locationDescription}</p>
         <h3 className="font-semibold text-lg mt-4 mb-2">About this hotel</h3>
         <p className="text-primary/90 mb-2">{hotel.description}</p>
         <h3 className="font-semibold text-lg mt-4 mb-2">popular amenities</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 content-start text-sm">
-          {/* amenityitem */}
           {hotel.swimingPool && (
             <div className="flex items-center gap-1">
               <FaSwimmer className="w-4 h-4" /> Pool
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.gym && (
             <div className="flex items-center gap-1">
               <Dumbbell className="w-4 h-4" /> Gym
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.spa && (
             <div className="flex items-center gap-1">
               <FaSpa className="w-4 h-4" /> Spa
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.bar && (
             <div className="flex items-center gap-1">
               <Wine className="w-4 h-4" /> Bar
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.freeWifi && (
             <div className="flex items-center gap-1">
               <MdDryCleaning className="w-4 h-4" /> Laundry Facilities
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.restaurant && (
             <div className="flex items-center gap-1">
               <Utensils className="w-4 h-4" /> Restaurants
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.shopping && (
             <div className="flex items-center gap-1">
               <ShoppingBasket className="w-4 h-4" /> Shopping
@@ -103,8 +96,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
               <Bike className="w-4 h-4" /> free Parking
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.freeParking && (
             <div className="flex items-center gap-1">
               <Car className="w-4 h-4" /> free Parking
@@ -115,21 +107,18 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
               <MdLocalLaundryService className="w-4 h-4" /> Laundry Facilities
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.movieNights && (
             <div className="flex items-center gap-1">
               <Clapperboard className="w-4 h-4" /> Movie Nights
             </div>
           )}
-          {/* amenityitem */}
-          {/* amenityitem */}
+
           {hotel.coffeeShop && (
             <div className="flex items-center gap-1">
               <Wine className="w-4 h-4" /> Coffee shop
             </div>
           )}
-          {/* amenityitem */}
         </div>
       </section>
       <section>

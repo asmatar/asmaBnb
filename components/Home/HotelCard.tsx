@@ -35,25 +35,21 @@ const HotelCard = async ({
               {description.slice(0, 60) + "..."}
             </div>
             <div className="text-primary/90">
-              {/* amanity item */}
               {country || city ? (
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" /> {country + ",  "} {city}
                 </div>
               ) : null}
-              {/* amanity item */}
-              {/* amanity item */}
+
               <div className="flex items-center gap-1">
                 <Waves className="w-4 h-4" />
                 {pool ? "pool availiable" : "No pool"}
               </div>
-              {/* amanity item */}
-              {/* amanity item */}
+
               <div className="flex items-center gap-1">
                 <Dumbbell className="w-4 h-4" />
                 {gym ? "gym availiable" : "No gym"}
               </div>
-              {/* amanity item */}
             </div>
             {/*    <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">

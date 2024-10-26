@@ -11,11 +11,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  createRoom,
-  updateRoom,
-  uploadImageRoom,
-} from "@/services/supabaseApi";
+import { roomSchema } from "@/schema/formSchema";
+import { uploadImageRoom } from "@/services/imageService";
+import { createRoom, updateRoom } from "@/services/roomService";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,40 +25,13 @@ import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 import { Checkbox } from "./ui/checkbox";
 import { Textarea } from "./ui/textarea";
-const formSchema = z.object({
-  roomTitle: z.string().min(2, {
-    message: "room title must be at least 2 characters.",
-  }),
-  roomDescription: z.string().min(2, {
-    message: "room description must be at least 2 characters.",
-  }),
-  roomPrice: z.coerce.number().optional(),
-  breakfastPrice: z.coerce.number().optional(),
-  bedCount: z.coerce.number().optional(),
-  kingBed: z.coerce.number().optional(),
-  guestCount: z.coerce.number().optional(),
-  queenBed: z.coerce.number().optional(),
-  bathroomCount: z.coerce.number(),
-  image: z.union([z.instanceof(File), z.string()]),
-  roomService: z.boolean(),
-  TV: z.boolean(),
-  balcony: z.boolean(),
-  freeWifi: z.boolean(),
-  cityView: z.boolean(),
-  oceanView: z.boolean(),
-  forestView: z.boolean(),
-  mountainView: z.boolean(),
-  airCondition: z.boolean(),
-  soundProofed: z.boolean(),
-});
+
 type AddRoomFormProps = {
   room?: Room;
 };
 const AddRoomForm = ({ room }: AddRoomFormProps) => {
-  // 1. Define your form.
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof roomSchema>>({
+    resolver: zodResolver(roomSchema),
     defaultValues: {
       roomTitle: room?.roomTitle || "",
       roomDescription: room?.roomDescription || "",
@@ -83,7 +54,6 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
       queenBed: room?.queenBed || undefined,
       bathroomCount: room?.bathroomCount || undefined,
     },
-
     shouldUnregister: true,
   });
   const { user } = useUser();
@@ -91,8 +61,7 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
   const params = useParams();
   const hotelId = params?.hotelId;
 
-  // 2. Define a submit handler.
-  async function onSubmitRoom(values: z.infer<typeof formSchema>) {
+  async function onSubmitRoom(values: z.infer<typeof roomSchema>) {
     try {
       const file = values.image as File;
       if (room) {

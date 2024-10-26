@@ -1,5 +1,5 @@
 import AddHotelForm from "@/components/AddHotelForm";
-import { getAllCountries } from "@/services/Location";
+import { getAllCountries } from "@/services/locationService";
 
 async function HotelNew() {
   const countries = await getAllCountries();

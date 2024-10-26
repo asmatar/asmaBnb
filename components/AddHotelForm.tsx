@@ -29,13 +29,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { getCitiesByState, getStatesByCountry } from "@/services/Location";
+import { hotelSchema } from "@/schema/formSchema";
+import { createHotel, deleteHotel, updateHotel } from "@/services/hotelService";
+import { uploadImage } from "@/services/imageService";
 import {
-  createHotel,
-  deleteHotel,
-  updateHotel,
-  uploadImage,
-} from "@/services/supabaseApi";
+  getCitiesByState,
+  getStatesByCountry,
+} from "@/services/locationService";
 import { Hotel } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,37 +48,6 @@ import { useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
-const hotelSchema = z.object({
-  title: z.string().min(2, {
-    message: "Hotel title must be at least 2 characters.",
-  }),
-  description: z.string().min(2, {
-    message: "Hotel title must be at least 2 characters.",
-  }),
-  gym: z.boolean(),
-  country: z.string().min(2, {
-    message: "Please select a country.",
-  }),
-  state: z.string(),
-  city: z.string(),
-  /*   locationDescription: z.string().min(10, {
-    message: "location description must be at least 10 characters.",
-  }), */
-  locationDescription: z.string(),
-  image: z.union([z.instanceof(File), z.string()]),
-  bar: z.boolean().optional().optional(),
-  bikeRental: z.boolean().optional(),
-  freeParking: z.boolean().optional(),
-  freeWifi: z.boolean().optional(),
-  laundry: z.boolean().optional(),
-  movieNights: z.boolean().optional(),
-  restaurant: z.boolean().optional(),
-  shopping: z.boolean().optional(),
-  spa: z.boolean().optional(),
-  coffeeShop: z.boolean().optional(),
-  swimingPool: z.boolean().optional(),
-});
-
 const AddHotelForm = ({
   countries,
   hotel,
@@ -93,7 +62,7 @@ const AddHotelForm = ({
   const router = useRouter();
   const { user } = useUser();
   const isOwner = user?.id === hotel?.user_id;
-  console.log(user);
+
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     defaultValues: {

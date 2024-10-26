@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { deleteHotel } from "@/services/supabaseApi";
+import { deleteHotel } from "@/services/hotelService";
 import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,7 +22,7 @@ const MyHotelCard = ({
   const handleDeleteHotel = async (id: string) => {
     await deleteHotel(id!);
   };
-  console.log("idd", id);
+
   return (
     <div
       key={id}

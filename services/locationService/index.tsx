@@ -1,4 +1,3 @@
-"use server";
 import { City, Country, State } from "country-state-city";
 
 export const getAllCountries = async () => {

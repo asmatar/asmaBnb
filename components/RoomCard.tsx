@@ -1,5 +1,7 @@
 "use client";
+import AddRoomForm from "@/components/AddRoomForm";
 import AmenityItem from "@/components/AmenityItem";
+import { DatePickerWithRange } from "@/components/DatePickerWithRange";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { deleteRoom } from "@/services/supabaseApi";
+import { deleteRoom } from "@/services/roomService";
 import { Room } from "@/types/tableType";
 import {
   AirVent,
@@ -40,7 +42,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import AddRoomForm from "./AddRoomForm";
 const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
 
@@ -166,7 +167,14 @@ const RoomCard = ({ room }: { room: Room }) => {
       </CardContent>
       <CardFooter>
         {pathname.includes("details") ? (
-          <div className="">detail</div>
+          <>
+            <div className="flex flex-col gap-2">
+              <p className="dark:text-slate-400">
+                select days that you will spend in this room
+              </p>
+              <DatePickerWithRange />
+            </div>
+          </>
         ) : (
           <div className="flex w-full justify-between">
             <Button

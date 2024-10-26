@@ -1,7 +1,8 @@
 import AddHotelForm from "@/components/AddHotelForm";
 import RoomCard from "@/components/RoomCard";
-import { getAllCountries } from "@/services/Location";
-import { getOneHotel, getRoomByHotel } from "@/services/supabaseApi";
+import { getOneHotel } from "@/services/hotelService";
+import { getAllCountries } from "@/services/locationService";
+import { getRoomByHotel } from "@/services/roomService";
 async function page({ params }: { params: { hotelId: string } }) {
   const hotelId = params.hotelId ?? "";
   const rooms = hotelId ? await getRoomByHotel(hotelId) : [];

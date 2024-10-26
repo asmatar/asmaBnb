@@ -1,7 +1,7 @@
 /* import FramerDiv from "@/components/framer/div"; */
 
-import HotelList from "@/components/HotelList";
-import SearchBar from "@/components/SearchBar/SearchBar";
+import HotelList from "@/components/Home/HotelList";
+import SearchBar from "@/components/Home/SearchBar/SearchBar";
 import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
 
 import { Suspense } from "react";

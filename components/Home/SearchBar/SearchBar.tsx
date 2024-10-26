@@ -1,11 +1,12 @@
-import { getHotelLocation } from "@/services/supabaseApi";
+import { getHotelLocation } from "@/services/hotelService";
 
-import { SelectItem } from "../ui/select";
-import Formulaire from "./Formulaire";
+import Formulaire from "@/components/Home/SearchBar/Formulaire";
+import { SelectItem } from "@/components/ui/select";
 
 export default async function SearchBar() {
   const location = await getHotelLocation();
-  const countriesAvailiable = location.map((location) => location.country);
+  const countriesAvailiable =
+    location && location.map((location) => location.country);
   const singletonCountries = [...new Set(countriesAvailiable)].sort();
   const countryOptions = (singletonCountries as string[])?.map((country) => (
     <SelectItem key={country} value={country}>

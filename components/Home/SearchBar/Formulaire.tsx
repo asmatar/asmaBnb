@@ -8,13 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getFilteredHotels } from "@/services/supabaseApi";
+import { getFilteredHotels } from "@/services/hotelService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 type FormProps = {
   countryOptions: JSX.Element[];
