@@ -3,7 +3,8 @@ import { HotelCardProps } from "@/types/types";
 import { Dumbbell, MapPin, Waves } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-const HotelCard = ({
+
+const HotelCard = async ({
   title,
   description,
   image,
@@ -22,6 +23,7 @@ const HotelCard = ({
               <Image
                 fill
                 src={image}
+                quality={50}
                 alt="Logo"
                 className="object-cover w-full h-full"
               ></Image>
@@ -33,23 +35,21 @@ const HotelCard = ({
               {description.slice(0, 60) + "..."}
             </div>
             <div className="text-primary/90">
-              {/* amanity item */}
-              <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" /> {country}, {city}
-              </div>
-              {/* amanity item */}
-              {/* amanity item */}
+              {country || city ? (
+                <div className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4" /> {country + ",  "} {city}
+                </div>
+              ) : null}
+
               <div className="flex items-center gap-1">
                 <Waves className="w-4 h-4" />
                 {pool ? "pool availiable" : "No pool"}
               </div>
-              {/* amanity item */}
-              {/* amanity item */}
+
               <div className="flex items-center gap-1">
                 <Dumbbell className="w-4 h-4" />
                 {gym ? "gym availiable" : "No gym"}
               </div>
-              {/* amanity item */}
             </div>
             {/*    <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">

@@ -1,5 +1,7 @@
 "use client";
+import AddRoomForm from "@/components/AddRoomForm";
 import AmenityItem from "@/components/AmenityItem";
+import { DatePickerWithRange } from "@/components/DatePickerWithRange";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { deleteRoom } from "@/services/supabaseApi";
+import { deleteRoom } from "@/services/roomService";
 import { Room } from "@/types/tableType";
 import {
   AirVent,
@@ -39,22 +41,16 @@ import {
   Wifi,
 } from "lucide-react";
 import Image from "next/image";
-import AddRoomForm from "./AddRoomForm";
+import { usePathname } from "next/navigation";
+const RoomCard = ({ room }: { room: Room }) => {
+  const pathname = usePathname();
 
-const roomCard = ({
-  params,
-  room,
-}: {
-  params?: { hotelId: string };
-  room: Room;
-}) => {
-  const hotelId = params?.hotelId;
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{room.title}</CardTitle>
+        <CardTitle>{room.roomTitle}</CardTitle>
         <CardDescription className="min-h-[120px]">
-          {room.description}
+          {room.roomDescription}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -62,7 +58,7 @@ const roomCard = ({
           <Image
             fill
             src={room.image as string}
-            alt={room.title as string}
+            alt={room.roomTitle as string}
             className="object-cover"
           />
         </div>
@@ -94,10 +90,10 @@ const roomCard = ({
               {room.queenBed} Queen Bed
             </AmenityItem>
           )}
-          {room.roomservice && (
+          {room.roomService && (
             <AmenityItem>
               <UtensilsCrossed className="h-4 w-4" />
-              {room.roomservice} Room service
+              {room.roomService} Room service
             </AmenityItem>
           )}
           {room.TV && (
@@ -170,8 +166,15 @@ const roomCard = ({
         </div>
       </CardContent>
       <CardFooter>
-        {hotelId ? (
-          <div className="">detail</div>
+        {pathname.includes("details") ? (
+          <>
+            <div className="flex flex-col gap-2">
+              <p className="dark:text-slate-400">
+                select days that you will spend in this room
+              </p>
+              <DatePickerWithRange />
+            </div>
+          </>
         ) : (
           <div className="flex w-full justify-between">
             <Button
@@ -185,7 +188,7 @@ const roomCard = ({
             <Dialog>
               <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
                 <Plus className="w-4 h-4 mr-3" />
-                Update
+                Edit
               </DialogTrigger>
               <DialogContent className="max-w-[900px] w-[90%]">
                 <DialogHeader className="px-2">
@@ -194,7 +197,7 @@ const roomCard = ({
                     Make changes to this room
                   </DialogDescription>
                 </DialogHeader>
-                <AddRoomForm />
+                <AddRoomForm room={room} />
               </DialogContent>
             </Dialog>
           </div>
@@ -204,4 +207,4 @@ const roomCard = ({
   );
 };
 
-export default roomCard;
+export default RoomCard;
