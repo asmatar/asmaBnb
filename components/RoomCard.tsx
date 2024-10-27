@@ -41,10 +41,22 @@ import {
   Wifi,
 } from "lucide-react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { TbReservedLine } from "react-icons/tb";
+
 const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
 
+  const handleCheckout = async () => {
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ room }),
+    });
+    const intentPayement = await response.json();
+    console.log("response body", intentPayement);
+    redirect("/checkout");
+  };
   return (
     <Card>
       <CardHeader>
@@ -169,10 +181,24 @@ const RoomCard = ({ room }: { room: Room }) => {
         {pathname.includes("details") ? (
           <>
             <div className="flex flex-col gap-2">
-              <p className="dark:text-slate-400">
-                select days that you will spend in this room
+              <div className="flex flex-col gap-2">
+                <p className="dark:text-slate-400">
+                  select days that you will spend in this room
+                </p>
+                <DatePickerWithRange />
+                <p>Do you want to include breakfast in the reservation ?</p>
+              </div>
+              <p>
+                Total price: <span className="font-bold">200eur</span> for{" "}
+                <span className="font-bold">2 days</span>
               </p>
-              <DatePickerWithRange />
+              <Button
+                variant={"secondary"}
+                className="w-full"
+                onClick={handleCheckout}
+              >
+                <TbReservedLine className="h-4 w-4 mr-2" /> Book room
+              </Button>
             </div>
           </>
         ) : (
