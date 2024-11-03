@@ -16,9 +16,17 @@ import { cn } from "@/lib/utils";
 
 export function DatePickerWithRange({
   className,
-}: React.HTMLAttributes<HTMLDivElement> & { className?: string }) {
-  const [date, setDate] = React.useState<DateRange | undefined>();
-
+  date,
+  dateAlreadyBooked,
+  setDate,
+}: React.HTMLAttributes<HTMLDivElement> & {
+  className?: string;
+  date: DateRange | undefined;
+  dateAlreadyBooked: Date[];
+  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+}) {
+  // const [date, setDate] = React.useState<DateRange | undefined>();
+  console.log("date-------------", dateAlreadyBooked);
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -54,7 +62,9 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
-            disabled={{ before: new Date() }}
+            disabled={[...dateAlreadyBooked, { before: new Date() }]}
+
+            //disabled={{ before: new Date() }}
           />
         </PopoverContent>
       </Popover>

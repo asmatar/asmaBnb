@@ -33,7 +33,7 @@ export const getRoomByHotel = async (id: string) => {
   const supabase = createClerkSupabaseClient();
   const { data, error } = await supabase
     .from("room")
-    .select("*")
+    .select("*, booking(*)")
     .eq("hotel_id", id);
   if (error) {
     throw new Error("room not found");
