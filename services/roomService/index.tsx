@@ -79,3 +79,43 @@ export const deleteRoom = async (id: string) => {
     throw new Error("hotel not found");
   }
 };
+
+export const getBookedIMade = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+
+    .from("booking")
+    .select(
+      `
+      roomBooked (
+        *
+      )
+    `,
+    )
+    .eq("user_id", id);
+
+  const rooms = data.map((booking) => booking.roomBooked);
+
+  return rooms;
+};
+
+export const getRoomVisitorHaveMade = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+    .from("booking")
+    .select(
+      `
+      room (*) 
+    `,
+    )
+    .eq("room.user_id", id)
+    .neq("user_id", id);
+  if (error) {
+    console.log(error);
+    throw new Error("hotel not found");
+  }
+
+  const rooms = data.map((booking) => booking.room);
+
+  return rooms;
+};

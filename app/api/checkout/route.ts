@@ -10,10 +10,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { room } = body;
+    const { room, totalePrice } = body;
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: room.roomPrice * 100,
+      amount: totalePrice,
       currency: "usd",
       automatic_payment_methods: {
         enabled: true,

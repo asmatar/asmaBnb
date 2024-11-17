@@ -14,7 +14,7 @@ export function Logo() {
       <Image
         /* src="/logo-light.png" */
         fill
-        src={`${theme === "light" ? "/logo-dark.png" : "/logo-light.png"}`}
+        src={`${theme === "light" ? "/logo-light.png" : "/logo-light.png"}`}
         alt="Logo"
         /*      width={100}
       height={100} */

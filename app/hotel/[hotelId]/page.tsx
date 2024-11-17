@@ -13,8 +13,6 @@ async function page({ params }: { params: { hotelId: string } }) {
     getOneHotel(hotelId),
   ])) as [Room[], Hotel];
 
-  console.log("--------------------------------", rooms);
-
   const countries = await getAllCountries();
 
   return (

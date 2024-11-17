@@ -24,7 +24,7 @@ import { deleteRoom } from "@/services/roomService";
 import useBookingStore from "@/store/BookingStore";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/clerk-react";
-import { eachDayOfInterval, format } from "date-fns";
+import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import {
   AirVent,
   Bath,
@@ -49,7 +49,6 @@ import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
 import { Input } from "./ui/input";
-
 const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -58,24 +57,30 @@ const RoomCard = ({ room }: { room: Room }) => {
   /*   const handleClick = () => {
     addBooking(newBooking);
   }; */
-  console.log(room);
+
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
-  console.log(date);
+
+  const numberOfNights =
+    differenceInDays(date?.to ?? new Date(), date?.from ?? new Date()) < 0
+      ? 0
+      : differenceInDays(date?.to ?? new Date(), date?.from ?? new Date());
+  const totalePrice = hasBreakfastIncluded
+    ? numberOfNights * room.roomPrice + numberOfNights * room.breakfastPrice
+    : numberOfNights * room.roomPrice;
   const dateAlreadyBooked = room.booking?.flatMap((booking) => {
     return eachDayOfInterval({
       start: new Date(booking.startDate),
       end: new Date(booking.endDate),
     });
   });
-  console.log("render");
-  console.log(dateAlreadyBooked);
+
   const handleCheckout = async () => {
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ room }),
+      body: JSON.stringify({ room, totalePrice }),
     });
     const intentPayement = await response.json();
 
@@ -225,6 +230,18 @@ const RoomCard = ({ room }: { room: Room }) => {
               </div>
             )}
           </div>
+          <Separator className="my-4" />
+          <div className="flex flex-col gap-2">
+            <CardTitle>Booking Details</CardTitle>
+            <div className="text-primary/90">
+              <div className="">
+                Room booked by Arthur en dur for nb nuit en dur - dnas nb jour
+                en dur
+              </div>
+              <div className="">Check-in: date en dur at 11am</div>
+              <div className="">Check-out: date en dur at 17pm</div>
+            </div>
+          </div>
         </CardContent>
         <CardFooter>
           {pathname.includes("details") ? (
@@ -239,21 +256,40 @@ const RoomCard = ({ room }: { room: Room }) => {
                     setDate={setDate}
                     dateAlreadyBooked={dateAlreadyBooked}
                   />
-                  <p>Do you want to include breakfast in the reservation ?</p>
-                  <Input
-                    type="checkbox"
-                    checked={hasBreakfastIncluded}
-                    onChange={() => setHasBreakfastIncluded((prev) => !prev)}
-                  />
+
+                  {numberOfNights > 0 && (
+                    <>
+                      <p className="mt-2">
+                        Do you want to include breakfast in the reservation ?
+                      </p>
+                      <div className="flex items-center gap-1 mb-2">
+                        <Input
+                          type="checkbox"
+                          checked={hasBreakfastIncluded}
+                          onChange={() =>
+                            setHasBreakfastIncluded((prev) => !prev)
+                          }
+                          className="w-4 h-4"
+                        />
+                        Include Breakfast
+                      </div>
+                    </>
+                  )}
                 </div>
-                <p>
-                  Total price: <span className="font-bold">200eur</span> for{" "}
-                  <span className="font-bold">2 days</span>
+                <p className="mb-4">
+                  Total price:{" "}
+                  <span className="font-bold">
+                    {totalePrice}
+                    eur
+                  </span>{" "}
+                  for <span className="font-bold">{numberOfNights} days</span>
                 </p>
+
                 <Button
-                  variant={"secondary"}
+                  variant={"default"}
                   className="w-full"
                   onClick={handleCheckout}
+                  disabled={numberOfNights < 1}
                 >
                   <TbReservedLine className="h-4 w-4 mr-2" /> Book room
                 </Button>
