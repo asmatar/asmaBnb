@@ -11,79 +11,69 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createRoom, uploadImageRoom } from "@/services/supabaseApi";
+import { roomSchema } from "@/schema/formSchema";
+import { uploadImageRoom } from "@/services/imageService";
+import { createRoom, updateRoom } from "@/services/roomService";
+import { Room } from "@/types/tableType";
+import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { MdUpdate } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 import { Checkbox } from "./ui/checkbox";
 import { Textarea } from "./ui/textarea";
 
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "room title must be at least 2 characters.",
-  }),
-  description: z.string().min(2, {
-    message: "room description must be at least 2 characters.",
-  }),
-  roomPrice: z.coerce.number(),
-  breakfastPrice: z.coerce.number(),
-  bedCount: z.coerce.number(),
-  kingBed: z.coerce.number(),
-  guestCount: z.coerce.number(),
-  queenBed: z.coerce.number(),
-  bathroomCount: z.coerce.number(),
-  image: z.union([z.instanceof(File), z.string()]),
-  roomService: z.boolean(),
-  TV: z.boolean(),
-  balcony: z.boolean(),
-  freeWifi: z.boolean(),
-  cityView: z.boolean(),
-  oceanView: z.boolean(),
-  forestView: z.boolean(),
-  mountainView: z.boolean(),
-  airCondition: z.boolean(),
-  soundProofed: z.boolean(),
-});
-
-const AddRoomForm = () => {
-  // 1. Define your form.
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+type AddRoomFormProps = {
+  room?: Room;
+};
+const AddRoomForm = ({ room }: AddRoomFormProps) => {
+  const form = useForm<z.infer<typeof roomSchema>>({
+    resolver: zodResolver(roomSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      roomService: false,
-      TV: false,
-      balcony: false,
-      freeWifi: false,
-      cityView: false,
-      oceanView: false,
-      forestView: false,
-      mountainView: false,
-      airCondition: false,
-      soundProofed: false,
-      image: "",
-      roomPrice: undefined,
-      breakfastPrice: undefined,
-      bedCount: undefined,
-      kingBed: undefined,
-      guestCount: undefined,
-      queenBed: undefined,
-      bathroomCount: undefined,
+      roomTitle: room?.roomTitle || "",
+      roomDescription: room?.roomDescription || "",
+      roomService: room?.roomService || false,
+      TV: room?.TV || false,
+      balcony: room?.balcony || false,
+      freeWifi: room?.freeWifi || false,
+      cityView: room?.cityView || false,
+      oceanView: room?.oceanView || false,
+      forestView: room?.forestView || false,
+      mountainView: room?.mountainView || false,
+      airCondition: room?.airCondition || false,
+      soundProofed: room?.soundProofed || false,
+      image: room?.image || "",
+      roomPrice: room?.roomPrice || undefined,
+      breakfastPrice: room?.breakfastPrice || undefined,
+      bedCount: room?.bedCount || undefined,
+      kingBed: room?.kingBed || undefined,
+      guestCount: room?.guestCount || undefined,
+      queenBed: room?.queenBed || undefined,
+      bathroomCount: room?.bathroomCount || undefined,
     },
+    shouldUnregister: true,
   });
-
+  const { user } = useUser();
+  const isOwner = user?.id === room?.user_id;
   const params = useParams();
   const hotelId = params?.hotelId;
 
-  // 2. Define a submit handler.
-  async function onSubmitRoom(values: z.infer<typeof formSchema>) {
+  async function onSubmitRoom(values: z.infer<typeof roomSchema>) {
     try {
       const file = values.image as File;
+      if (room) {
+        const updatingRoomValues = {
+          ...values,
+          image: (file as File).name || undefined,
+          id: room.id as string,
+        };
+
+        await updateRoom(updatingRoomValues);
+        return;
+      }
       if (file instanceof File) {
         const formData = new FormData();
         formData.append("image", file);
@@ -98,8 +88,6 @@ const AddRoomForm = () => {
         id,
       };
       await createRoom(createRoomvalues);
-
-      form.reset();
     } catch (error) {
       console.log(error);
     }
@@ -107,10 +95,14 @@ const AddRoomForm = () => {
   return (
     <div className="max-h-[75vh] overflow-y-auto px-2">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmitRoom)} className="space-y-8">
+        <form
+          id="addRoomForm"
+          onSubmit={form.handleSubmit(onSubmitRoom)}
+          className="space-y-8"
+        >
           <FormField
             control={form.control}
-            name="title"
+            name="roomTitle"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Room Title *</FormLabel>
@@ -122,10 +114,9 @@ const AddRoomForm = () => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
-            name="description"
+            name="roomDescription"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Room description *</FormLabel>
@@ -439,14 +430,23 @@ const AddRoomForm = () => {
               />
             </div>
           </div>
-          <Button
-            variant="outline"
-            type="submit"
-            disabled={!form.formState.isValid}
-          >
-            <Pencil className="w-4 h-4 mr-2" />
-            {form.formState.isSubmitting ? "Saving..." : "create Room"}
-          </Button>
+
+          {room && isOwner ? (
+            <Button variant="outline" type="submit" form="addRoomForm">
+              <MdUpdate className="w-4 h-4 mr-2" />
+              Update
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              type="submit"
+              form="addRoomForm"
+              //disabled={!form.formState.isValid}
+            >
+              <Pencil className="w-4 h-4 mr-2" />
+              {form.formState.isSubmitting ? "Saving..." : "create Room"}
+            </Button>
+          )}
         </form>
       </Form>
     </div>

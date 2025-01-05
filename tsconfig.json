@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    /* deux ligne aue j'ai rajouter pour map sur un set dans le composant searchbar */
+    "target": "es2015",
+    "downlevelIteration": true,
+    /* remove ces deux lignes si problem */
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

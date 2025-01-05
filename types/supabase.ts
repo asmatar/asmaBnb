@@ -22,7 +22,7 @@ export type Database = {
           paymentStatus: boolean | null;
           startDate: string | null;
           totalPrice: number | null;
-          user_id: string | null;
+          user_id?: string;
           username: string | null;
         };
         Insert: {
@@ -37,8 +37,9 @@ export type Database = {
           paymentStatus?: boolean | null;
           startDate?: string | null;
           totalPrice?: number | null;
-          user_id?: string | null;
+          user_id?: string;
           username?: string | null;
+          image?: string | null;
         };
         Update: {
           booked_At?: string | null;
@@ -52,7 +53,7 @@ export type Database = {
           paymentStatus?: boolean | null;
           startDate?: string | null;
           totalPrice?: number | null;
-          user_id?: string | null;
+          user_id?: string;
           username?: string | null;
         };
         Relationships: [
@@ -91,7 +92,7 @@ export type Database = {
           swimingPool: boolean;
           title: string | null;
           update_at: string | null;
-          user_id: string | null;
+          user_id?: string;
         };
         Insert: {
           bar?: boolean;
@@ -118,7 +119,7 @@ export type Database = {
           swimingPool?: boolean;
           title?: string | null;
           update_at?: string | null;
-          user_id?: string | null;
+          user_id?: string;
         };
         Update: {
           bar?: boolean;
@@ -145,7 +146,7 @@ export type Database = {
           swimingPool?: boolean;
           title?: string | null;
           update_at?: string | null;
-          user_id?: string | null;
+          user_id?: string;
         };
         Relationships: [];
       };
@@ -159,7 +160,7 @@ export type Database = {
           breakfastPrice: number | null;
           cityView: boolean;
           created_at: string;
-          description: string | null;
+          roomDescription: string | null;
           forestView: boolean;
           freeWifi: boolean;
           guestCount: number | null;
@@ -170,11 +171,12 @@ export type Database = {
           oceanView: boolean;
           queenBed: number | null;
           roomPrice: number | null;
-          roomservice: boolean;
+          roomService: boolean;
           soundProofed: boolean;
-          title: string | null;
+          roomTitle: string | null;
           TV: boolean;
           hotel_id: string;
+          user_id?: string;
         };
         Insert: {
           airCondition?: boolean;
@@ -185,7 +187,7 @@ export type Database = {
           breakfastPrice?: number | null;
           cityView?: boolean;
           created_at?: string;
-          description?: string | null;
+          roomDescription?: string | null;
           forestView?: boolean;
           freeWifi?: boolean;
           guestCount?: number | null;
@@ -196,11 +198,12 @@ export type Database = {
           oceanView?: boolean;
           queenBed?: number | null;
           roomPrice?: number | null;
-          roomservice?: boolean;
+          roomService?: boolean;
           soundProofed?: boolean;
-          title?: string | null;
+          roomTitle?: string | null;
           TV?: boolean;
           hotel_id: string;
+          user_id?: string;
         };
         Update: {
           airCondition?: boolean;
@@ -211,7 +214,7 @@ export type Database = {
           breakfastPrice?: number | null;
           cityView?: boolean;
           created_at?: string;
-          description?: string | null;
+          roomDescription?: string | null;
           forestView?: boolean;
           freeWifi?: boolean;
           guestCount?: number | null;
@@ -222,10 +225,11 @@ export type Database = {
           oceanView?: boolean;
           queenBed?: number | null;
           roomPrice?: number | null;
-          roomservice?: boolean;
+          roomService?: boolean;
           soundProofed?: boolean;
-          title?: string | null;
+          roomTitle?: string | null;
           TV?: boolean;
+          user_id?: string;
         };
         Relationships: [];
       };
