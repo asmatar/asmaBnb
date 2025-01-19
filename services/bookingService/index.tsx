@@ -15,6 +15,13 @@ export const createBooking = async (booking: bookings) => {
   return data;
 };
 
+export const deleteBooking = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { error } = await supabase.from("booking").delete().eq("id", id);
+  if (error) {
+    error.message;
+  }
+};
 export const getBookingFromOneRoom = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase

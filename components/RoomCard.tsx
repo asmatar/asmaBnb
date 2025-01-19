@@ -20,9 +20,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { createBooking } from "@/services/bookingService";
+import { createBooking, deleteBooking } from "@/services/bookingService";
 import { deleteRoom } from "@/services/roomService";
-import useBookingStore from "@/store/BookingStore";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/clerk-react";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
@@ -57,7 +56,7 @@ const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { addBooking, setPaymentStatus, setClientSecret } = useBookingStore();
+  //const { addBooking, setPaymentStatus, setClientSecret } = useBookingStore();
   /*   const handleClick = () => {
     addBooking(newBooking);
   }; */
@@ -110,9 +109,9 @@ const RoomCard = ({ room }: { room: Room }) => {
     };
     await createBooking(newBooking);
 
-    setPaymentStatus(intentPayement.paymentIntent.status);
+    /*     setPaymentStatus(intentPayement.paymentIntent.status);
     setClientSecret(intentPayement.paymentIntent.client_secret);
-    addBooking(newBooking);
+    addBooking(newBooking); */
 
     router.push(`/checkout/${intentPayement.paymentIntent.id}`);
   };
@@ -242,6 +241,8 @@ const RoomCard = ({ room }: { room: Room }) => {
             )}
           </div>
           <Separator className="my-4" />
+        </CardContent>
+        <CardFooter>
           {pathname.includes("my-bookings") && (
             <div className="flex flex-col gap-2">
               <CardTitle>Booking Details</CardTitle>
@@ -279,7 +280,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                   variant="ghost"
                   className="bg-secondary"
                   onClick={() => {
-                    router.push("/checkout");
+                    router.push(`/checkout/${room.paymentIntentId}`);
                   }}
                 >
                   Pay now
@@ -288,15 +289,13 @@ const RoomCard = ({ room }: { room: Room }) => {
                   type="button"
                   variant="ghost"
                   className="bg-secondary"
-                  onClick={() => deleteRoom(room.id)}
+                  onClick={() => deleteBooking(room.id)}
                 >
-                  <Trash className="h-4 w-4 mr-2" /> Delete
+                  <Trash className="h-4 w-4 mr-2" /> Delete reservation
                 </Button>
               </div>
             </div>
           )}
-        </CardContent>
-        <CardFooter>
           {pathname.includes("details") && (
             <>
               <div className="flex flex-col gap-2">
@@ -349,7 +348,7 @@ const RoomCard = ({ room }: { room: Room }) => {
               </div>
             </>
           )}
-          {pathname.includes("new") && (
+          {pathname.includes("hotel") && !pathname.includes("details") && (
             <div className="flex w-full justify-between">
               <Button
                 type="button"

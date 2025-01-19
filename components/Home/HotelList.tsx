@@ -18,7 +18,7 @@ async function HotelList(searchParams: any) {
             city={hotel.city!}
             country={hotel.country!}
             /* price={hotel.price!} */
-            image={hotel.image!}
+            image={hotel.image}
           />
         ))}
     </section>

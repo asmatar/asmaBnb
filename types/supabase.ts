@@ -53,7 +53,7 @@ export type Database = {
           paymentIntentId?: string;
           paymentStatus?: boolean;
           startDate?: string;
-          totalPrice?: number;
+          totalPrice: number;
           user_email?: string;
           user_id?: string;
           username?: string;
