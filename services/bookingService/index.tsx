@@ -1,7 +1,9 @@
+"use server";
 import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
 import { bookings } from "@/store/BookingStore";
 
 export const createBooking = async (booking: bookings) => {
+  console.log("fff");
   const supabase = await createClerkSupabaseClient();
   console.log(booking);
   const { error, data } = await supabase.from("booking").insert({ ...booking });

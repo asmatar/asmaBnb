@@ -26,7 +26,7 @@ export function DatePickerWithRange({
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
 }) {
   // const [date, setDate] = React.useState<DateRange | undefined>();
-  console.log("date-------------", dateAlreadyBooked);
+
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>

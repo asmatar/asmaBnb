@@ -33,7 +33,6 @@ export const createHotel = async (newHotel: InsertBooking) => {
 
 export const getOneHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
-  await new Promise((resolve) => setTimeout(resolve, 2000)); // attend 2 secondes
 
   const { data, error } = await supabase
     .from("hotel")

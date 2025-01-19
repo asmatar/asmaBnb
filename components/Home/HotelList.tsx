@@ -17,6 +17,7 @@ async function HotelList(searchParams: any) {
             pool={hotel.swimingPool!}
             city={hotel.city!}
             country={hotel.country!}
+            /* price={hotel.price!} */
             image={hotel.image!}
           />
         ))}

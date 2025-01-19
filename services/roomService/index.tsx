@@ -87,14 +87,24 @@ export const getBookedIMade = async (id: string) => {
     .from("booking")
     .select(
       `
-      roomBooked (
+      *,
+      room (
         *
       )
     `,
     )
     .eq("user_id", id);
 
-  const rooms = data.map((booking) => booking.roomBooked);
+  const rooms =
+    data &&
+    data.map((booking) => {
+      const { room, ...reservationDetails } = booking;
+
+      return {
+        ...room,
+        ...reservationDetails,
+      };
+    });
 
   return rooms;
 };
@@ -105,6 +115,7 @@ export const getRoomVisitorHaveMade = async (id: string) => {
     .from("booking")
     .select(
       `
+      *,
       room (*) 
     `,
     )
@@ -115,7 +126,14 @@ export const getRoomVisitorHaveMade = async (id: string) => {
     throw new Error("hotel not found");
   }
 
-  const rooms = data.map((booking) => booking.room);
+  const rooms = data.map((booking) => {
+    const { room, ...reservationDetails } = booking;
+
+    return {
+      ...room,
+      ...reservationDetails,
+    };
+  });
 
   return rooms;
 };

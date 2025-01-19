@@ -1,58 +1,65 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { useRouter } from "next/navigation";
+
 function StripeProvider() {
-  /*  const stripePromise = loadStripe(
-    "pk_test_51JmxBgFkr8gEJezM0gPQ7Ugs9M4PPDdHk54S4Rs9JQjJfr8GJbXe1r0LFafzlupFGTfZKhMNdTLf6kRBMCJTWsiP00gaYhPXQd",
-  );
-  const options = {
-    // passing the client secret obtained in step 3
-    //clientSecret: "{{CLIENT_SECRET}}",
-    clientSecret:
-      "pi_3QEIJMFkr8gEJezM0cKvX9Ke_secret_UNRFeqrNPjt8AKXN9FkBtXUZG",
-    // Fully customizable with appearance API.
-    // appearance: {
-    // ...
-    //},
-  }; */
+  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
-
+  //const { clientSecret } = useBookingStore();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
     event.preventDefault();
-    const cardElement = elements?.getElement("card");
-    if (!stripe || !cardElement) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
+
+    if (!stripe || !elements) {
       return;
     }
-
-    await stripe.confirmCardPayment(clientSecret, {
-      //`Elements` instance that was used to create the Payment Element
-      //elements,
-      payment_method: { card: cardElement },
-    });
-
-    if (error) {
-      // This point will only be reached if there is an immediate error when
-      // confirming the payment. Show error to your customer (for example, payment
-      // details incomplete)
-    } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
+    console.log("after close guard");
+    //const clientSecret ="pi_3QOea7Fkr8gEJezM0dzwerez_secret_jIxOVw6sanH3qvJl7X7tRMK0d";
+    try {
+      const result = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: "",
+        },
+        redirect: "if_required",
+      }); /* as {
+        paymentIntent: Stripe.PaymentIntent;
+        error: Stripe.StripeRawError;
+      }; */
+      const { paymentIntent, error } = result;
+      if (error) {
+        console.error("Error confirming payment:", error.message);
+      } else if (paymentIntent && paymentIntent.status === "succeeded") {
+        router.push("/my-bookings");
+        console.log("Payment succeeded:", paymentIntent);
+        // Vous pouvez effectuer des actions personnalisées ici
+      }
+      console.log(paymentIntent);
+      console.log(error);
+    } catch (error) {
+      console.log(error);
     }
+
+    /*     if (error) {
+      console.log("error", error);
+    } else if (paymentIntent && paymentIntent.status === "succeeded") {
+      console.log("first");
+    } */
   };
+
   return (
     <>
       {/* <RoomCard room={room} /> */}
-      {/* <Elements stripe={stripePromise} options={options}> */}
-      <form onSubmit={handleSubmit}>
-        {/*   <PaymentElement /> */}
-        <CardElement />
-        <button>Submit</button>
+
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <PaymentElement id="payment-element" />
+        <button disabled={!stripe || !elements} id="submit">
+          <span id="button-text">Pay now</span>
+        </button>
       </form>
-      {/*  </Elements> */}
     </>
   );
 }

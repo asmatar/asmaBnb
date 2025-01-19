@@ -22,7 +22,7 @@ export async function POST(req: Request) {
         id: room.id,
       },
     });
-
+    console.log(paymentIntent);
     return NextResponse.json({ paymentIntent });
   } catch (err) {
     return NextResponse.json(

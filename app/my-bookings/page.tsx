@@ -7,8 +7,7 @@ const page = async () => {
 
   const roomBooked = await getBookedIMade(userId as string);
   const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId as string);
-  console.log("roomVisitorHaveMade", roomVisitorHaveMade);
-  //console.log("roomVisitorHaveMade", roomVisitorHaveMade);
+
   return (
     <section className="flex flex-col gap-10">
       <h2 className="text-xl md:text-2xl font-semibold mb-6 mt-2">

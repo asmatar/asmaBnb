@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { createBooking } from "@/services/bookingService";
 import { deleteRoom } from "@/services/roomService";
 import useBookingStore from "@/store/BookingStore";
 import { Room } from "@/types/tableType";
@@ -44,11 +45,14 @@ import {
   Wifi,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
+import { v4 as uuidv4 } from "uuid";
 import { Input } from "./ui/input";
+
 const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -67,8 +71,9 @@ const RoomCard = ({ room }: { room: Room }) => {
       ? 0
       : differenceInDays(date?.to ?? new Date(), date?.from ?? new Date());
   const totalePrice = hasBreakfastIncluded
-    ? numberOfNights * room.roomPrice + numberOfNights * room.breakfastPrice
-    : numberOfNights * room.roomPrice;
+    ? numberOfNights * (room.roomPrice ?? 0) +
+      numberOfNights * (room.breakfastPrice ?? 0)
+    : numberOfNights * (room.roomPrice ?? 0);
   const dateAlreadyBooked = room.booking?.flatMap((booking) => {
     return eachDayOfInterval({
       start: new Date(booking.startDate),
@@ -77,17 +82,17 @@ const RoomCard = ({ room }: { room: Room }) => {
   });
 
   const handleCheckout = async () => {
-    const response = await fetch("/api/checkout", {
+    const response = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ room, totalePrice }),
     });
     const intentPayement = await response.json();
 
-    // const id = uuidv4();
+    const id = uuidv4();
 
     const newBooking = {
-      //id,
+      id,
       username: user!.firstName,
       user_email: user!.emailAddresses[0].emailAddress,
       user_id: user!.id,
@@ -100,16 +105,22 @@ const RoomCard = ({ room }: { room: Room }) => {
       currency: "usd",
       paymentStatus: intentPayement.paymentIntent.status,
       paymentIntentId: intentPayement.paymentIntent.id,
+      clientSecret: intentPayement.paymentIntent.client_secret,
       breakfastIncluded: hasBreakfastIncluded,
     };
-    /*await createBooking(newBooking); */
+    await createBooking(newBooking);
 
     setPaymentStatus(intentPayement.paymentIntent.status);
     setClientSecret(intentPayement.paymentIntent.client_secret);
     addBooking(newBooking);
 
-    //router.push("/checkout");
+    router.push(`/checkout/${intentPayement.paymentIntent.id}`);
   };
+  //const bookings = localStorage.getItem("booking-storage");
+
+  //const newData = JSON.parse(bookings!);
+  //const roomFromLocalStorage = newData?.state.bookings;
+
   return (
     <>
       <Card>
@@ -231,20 +242,62 @@ const RoomCard = ({ room }: { room: Room }) => {
             )}
           </div>
           <Separator className="my-4" />
-          <div className="flex flex-col gap-2">
-            <CardTitle>Booking Details</CardTitle>
-            <div className="text-primary/90">
-              <div className="">
-                Room booked by Arthur en dur for nb nuit en dur - dnas nb jour
-                en dur
+          {pathname.includes("my-bookings") && (
+            <div className="flex flex-col gap-2">
+              <CardTitle>Booking Details</CardTitle>
+              <div className="text-primary/90">
+                <div className="">
+                  Room booked by {room.username} for nb nuit en dur - dnas nb
+                  jour en dur
+                </div>
+                <div className="">Check-in: {room.startDate} at 11am</div>
+                <div className="">Check-out: {room.endDate} at 17pm</div>
+                {room.breakfastIncluded && <p>breakfast will be served</p>}
+                {room.paymentStatus === "requires_payment_method" ? (
+                  <span className="text-red-600">
+                    not paid ${room.totalPrice} - room not reserved
+                  </span>
+                ) : (
+                  <span className="text-green-600">
+                    Paid ${room.totalPrice} - room Reserved
+                  </span>
+                )}
               </div>
-              <div className="">Check-in: date en dur at 11am</div>
-              <div className="">Check-out: date en dur at 17pm</div>
+              <Separator className="my-4" />
+              <div className="flex items-center gap-4 justify-between">
+                <Link href={`/hotel/details/${room.id}`}>
+                  <Button
+                    variant="outline"
+                    type="button"
+                    className=" text-white py-2 px-4 rounded-lg w-full"
+                  >
+                    View Details
+                  </Button>
+                </Link>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="bg-secondary"
+                  onClick={() => {
+                    router.push("/checkout");
+                  }}
+                >
+                  Pay now
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="bg-secondary"
+                  onClick={() => deleteRoom(room.id)}
+                >
+                  <Trash className="h-4 w-4 mr-2" /> Delete
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </CardContent>
         <CardFooter>
-          {pathname.includes("details") ? (
+          {pathname.includes("details") && (
             <>
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-2">
@@ -295,7 +348,8 @@ const RoomCard = ({ room }: { room: Room }) => {
                 </Button>
               </div>
             </>
-          ) : (
+          )}
+          {pathname.includes("new") && (
             <div className="flex w-full justify-between">
               <Button
                 type="button"
