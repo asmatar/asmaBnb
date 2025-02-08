@@ -62,8 +62,10 @@ const Header = async () => {
                         </>
                       )}
                       <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                        <TbBrandBooking />
-                        My Bookings
+                        <Link href="/my-bookings">
+                          <TbBrandBooking />
+                          My Bookings
+                        </Link>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

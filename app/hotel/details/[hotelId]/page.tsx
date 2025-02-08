@@ -27,8 +27,8 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
       <div className="aspect-square overflow-hidden relative w-full h-[350px] md:h-[600px] rounded-lg">
         <Image
           fill
-          src={hotel.image!}
-          alt={hotel.title!}
+          src={hotel.image}
+          alt={hotel.title}
           className="object-cover"
         ></Image>
       </div>

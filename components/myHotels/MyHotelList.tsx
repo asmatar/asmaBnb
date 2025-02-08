@@ -20,7 +20,7 @@ async function MyHotelList() {
             id={hotel.id}
             title={hotel.title!}
             description={hotel.description!}
-            image={hotel.image!}
+            image={hotel.image}
             price={hotel.price!}
           />
         ))}

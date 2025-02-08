@@ -1,0 +1,35 @@
+"use server";
+import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
+import { bookings } from "@/store/BookingStore";
+
+export const createBooking = async (booking: bookings) => {
+  console.log("fff");
+  const supabase = await createClerkSupabaseClient();
+  console.log(booking);
+  const { error, data } = await supabase.from("booking").insert({ ...booking });
+
+  if (error) {
+    console.log("error", error);
+    error.message;
+  }
+  return data;
+};
+
+export const deleteBooking = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { error } = await supabase.from("booking").delete().eq("id", id);
+  if (error) {
+    error.message;
+  }
+};
+export const getBookingFromOneRoom = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+    .from("booking")
+    .select("*")
+    .eq("room_id", id);
+  if (error) {
+    error.message;
+  }
+  return data;
+};

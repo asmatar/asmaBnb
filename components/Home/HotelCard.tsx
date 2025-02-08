@@ -1,9 +1,14 @@
 /* eslint-disable react/prop-types */
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { HotelCardProps } from "@/types/types";
 import { Dumbbell, MapPin, Waves } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
 const HotelCard = async ({
   title,
   description,
@@ -12,6 +17,7 @@ const HotelCard = async ({
   gym,
   pool,
   city,
+/*   price, */
   id,
 }: HotelCardProps) => {
   return (
@@ -32,12 +38,21 @@ const HotelCard = async ({
           <div className="flex-1 flex flex-col justify-between h-[210px] gap-1 p-1 py-2 text-sm">
             <h3 className="font-semibold text-xl">{title}</h3>
             <div className="text-primary/90">
-              {description.slice(0, 60) + "..."}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="text-left">
+                    {description.slice(0, 60) + "..."}
+                  </TooltipTrigger>
+                  <TooltipContent className="w-[300px]">
+                    {description}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
             <div className="text-primary/90">
               {country || city ? (
                 <div className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" /> {country + ",  "} {city}
+                  <MapPin className="w-4 h-4" /> {country + ",  "} {city}hhh
                 </div>
               ) : null}
 
@@ -51,12 +66,12 @@ const HotelCard = async ({
                 {gym ? "gym availiable" : "No gym"}
               </div>
             </div>
-            {/*    <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1">
-              <div className="font-semibold text-base">price</div>
-              <div className="text-xs">/24hrs</div>
-            </div>
-          </div> */}
+            {/*      <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1">
+                <div className="font-semibold text-base">{price}</div>
+                <div className="text-xs">/24hrs</div>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>

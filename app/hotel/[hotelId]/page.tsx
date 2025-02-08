@@ -3,23 +3,20 @@ import RoomCard from "@/components/RoomCard";
 import { getOneHotel } from "@/services/hotelService";
 import { getAllCountries } from "@/services/locationService";
 import { getRoomByHotel } from "@/services/roomService";
+import { Hotel, Room } from "@/types/tableType";
+
 async function page({ params }: { params: { hotelId: string } }) {
   const hotelId = params.hotelId ?? "";
-  const rooms = hotelId ? await getRoomByHotel(hotelId) : [];
-  const hotel = await getOneHotel(params.hotelId ?? "");
-  /*   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["countries"],
-    queryFn: getAllCountries,
-  }); */
+
+  const [rooms, hotel] = (await Promise.all([
+    hotelId && getRoomByHotel(hotelId),
+    getOneHotel(hotelId),
+  ])) as [Room[], Hotel];
 
   const countries = await getAllCountries();
 
   return (
     <>
-      {/*      <HydrationBoundary state={dehydrate(queryClient)}>
-        <AddHotelForm />
-      </HydrationBoundary> */}
       <AddHotelForm countries={countries} hotel={hotel} />
 
       {rooms.length > 0 ? (

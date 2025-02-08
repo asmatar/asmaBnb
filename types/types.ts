@@ -2,7 +2,7 @@ export type HotelCardProps = {
   title: string;
   description: string;
   image: string;
-  /* price: number; */
+  /*   price: number; */
   country: string;
   city: string;
   gym: boolean;
