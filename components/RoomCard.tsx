@@ -60,7 +60,7 @@ const RoomCard = ({ room }: { room: Room }) => {
   /*   const handleClick = () => {
     addBooking(newBooking);
   }; */
-
+  console.log(room);
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
@@ -69,6 +69,7 @@ const RoomCard = ({ room }: { room: Room }) => {
     differenceInDays(date?.to ?? new Date(), date?.from ?? new Date()) < 0
       ? 0
       : differenceInDays(date?.to ?? new Date(), date?.from ?? new Date());
+  console.log(room);
   const totalePrice = hasBreakfastIncluded
     ? numberOfNights * (room.roomPrice ?? 0) +
       numberOfNights * (room.breakfastPrice ?? 0)
@@ -266,13 +267,13 @@ const RoomCard = ({ room }: { room: Room }) => {
               </div>
               <Separator className="my-4" />
               <div className="flex items-center gap-4 justify-between">
-                <Link href={`/hotel/details/${room.id}`}>
+                <Link href={`/hotel/details/${room.hotel_id}`}>
                   <Button
                     variant="outline"
                     type="button"
                     className=" text-white py-2 px-4 rounded-lg w-full"
                   >
-                    View Details
+                    View Hotel
                   </Button>
                 </Link>
                 <Button

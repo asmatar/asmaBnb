@@ -1,49 +1,33 @@
-"use client";
-import StripeProvider from "@/components/checkout/StripeProvider";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import { useEffect, useState } from "react";
+/* "use client"; */
+import RoomCard from "@/components/RoomCard";
+import { getOneRoomInBooking } from "@/services/roomService";
+import StripePayment from "./StripePayment";
 
-const stripePromise = loadStripe(
+/* const stripePromise = loadStripe(
   "pk_test_51JmxBgFkr8gEJezM0gPQ7Ugs9M4PPDdHk54S4Rs9JQjJfr8GJbXe1r0LFafzlupFGTfZKhMNdTLf6kRBMCJTWsiP00gaYhPXQd",
-);
+); */
 
-const Page = ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const [clientSecret, setClientSecret] = useState();
 
-  //const roomBooked = await getOneRoom(room);
-  useEffect(() => {
-    const fetchPaymentIntent = async () => {
-      try {
-        const response = await fetch(
-          `/api/stripe/retrievePaymentIntent?id=${id}`,
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to retrieve payment intent");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        setClientSecret(data.client_secret);
-      } catch (err: any) {
-        console.log(err);
-      }
-    };
-
-    fetchPaymentIntent();
-  }, [clientSecret]);
-
+  const room = await getOneRoomInBooking(id);
   return (
-    <>
-      <p className="mt-40"></p>
-      {clientSecret && (
-        <Elements options={{ clientSecret }} stripe={stripePromise}>
-          <StripeProvider />
-        </Elements>
-      )}
-    </>
+    <section className="max-w-[700px] mx-auto mb-10">
+      <h3 className="text-2xl font-semibold mb-6">
+        Complete payment to reserve this room !
+      </h3>
+      <div className="mb-6">
+        <RoomCard room={room[0]} />
+      </div>
+      <StripePayment
+        id={id}
+        startDate={room[0].startDate}
+        endDate={room[0].endDate}
+        totalPrice={room[0].totalPrice}
+        breakfastPrice={room[0].breakfastPrice}
+        breakfastIncluded={room[0].breakfastIncluded}
+      />
+    </section>
   );
 };
 

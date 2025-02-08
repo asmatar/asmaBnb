@@ -42,10 +42,7 @@ export const getRoomByHotel = async (id: string) => {
 };
 export const getOneRoom = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
-  const { data, error } = await supabase
-    .from("room")
-    .select("*")
-    .eq("hotel_id", id);
+  const { data, error } = await supabase.from("room").select("*").eq("id", id);
   if (error) {
     throw new Error("room not found");
   }
@@ -109,7 +106,34 @@ export const getBookedIMade = async (id: string) => {
 
   return rooms;
 };
+export const getOneRoomInBooking = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
 
+    .from("booking")
+    .select(
+      `
+      *,
+      room (
+        *
+      )
+    `,
+    )
+    .eq("paymentIntentId", id);
+
+  const rooms =
+    data &&
+    data.map((booking) => {
+      const { room, ...reservationDetails } = booking;
+
+      return {
+        ...room,
+        ...reservationDetails,
+      };
+    });
+
+  return rooms;
+};
 export const getRoomVisitorHaveMade = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase
