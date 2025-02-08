@@ -51,7 +51,7 @@ function StripeProvider({
       console.log(error);
     }
   };
-
+  l;
   return (
     <>
       <form id="payment-form" onSubmit={handleSubmit}>
