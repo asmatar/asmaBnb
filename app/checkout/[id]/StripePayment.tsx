@@ -35,7 +35,7 @@ const StripePayment = ({
         }
 
         const data = await response.json();
-        console.log(data);
+
         setClientSecret(data.client_secret);
       } catch (err: any) {
         console.log(err);
@@ -52,9 +52,6 @@ const StripePayment = ({
         <Elements
           options={{
             clientSecret,
-            /* appearance: {
-              theme: "stripe",
-            }, */
           }}
           stripe={stripePromise}
         >
