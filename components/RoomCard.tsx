@@ -77,16 +77,8 @@ const RoomCard = ({ room }: { room: Room }) => {
   });
 
   const handleCheckout = async () => {
-    const response = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ room, totalePrice }),
-    });
-    const intentPayement = await response.json();
-
     const id = uuidv4();
-
-    const newBooking = {
+    const newBookingOne = {
       id,
       username: user!.firstName,
       user_email: user!.emailAddresses[0].emailAddress,
@@ -96,18 +88,25 @@ const RoomCard = ({ room }: { room: Room }) => {
       hotelOwnerId: room.user_id,
       startDate: format(date?.from ?? "", "LLL dd, y"),
       endDate: format(date?.to ?? "", "LLL dd, y"),
-      totalPrice: intentPayement.paymentIntent.amount,
       currency: "usd",
+
+      breakfastIncluded: hasBreakfastIncluded,
+    };
+    const response = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ newBookingOne, totalePrice }),
+    });
+    const intentPayement = await response.json();
+
+    const newBooking = {
+      ...newBookingOne,
+      totalPrice: intentPayement.paymentIntent.amount,
       paymentStatus: intentPayement.paymentIntent.status,
       paymentIntentId: intentPayement.paymentIntent.id,
       clientSecret: intentPayement.paymentIntent.client_secret,
-      breakfastIncluded: hasBreakfastIncluded,
     };
     await createBooking(newBooking);
-
-    /*     setPaymentStatus(intentPayement.paymentIntent.status);
-    setClientSecret(intentPayement.paymentIntent.client_secret);
-    addBooking(newBooking); */
 
     router.push(`/checkout/${intentPayement.paymentIntent.id}`);
   };
