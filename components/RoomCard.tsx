@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { createBooking, deleteBooking } from "@/services/bookingService";
-import { deleteRoom } from "@/services/roomService";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/clerk-react";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
@@ -50,17 +49,13 @@ import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
 import { v4 as uuidv4 } from "uuid";
+import SubmitButton from "./SubmitButton";
 import { Input } from "./ui/input";
 
 const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  //const { addBooking, setPaymentStatus, setClientSecret } = useBookingStore();
-  /*   const handleClick = () => {
-    addBooking(newBooking);
-  }; */
-  console.log(room);
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
@@ -116,10 +111,6 @@ const RoomCard = ({ room }: { room: Room }) => {
 
     router.push(`/checkout/${intentPayement.paymentIntent.id}`);
   };
-  //const bookings = localStorage.getItem("booking-storage");
-
-  //const newData = JSON.parse(bookings!);
-  //const roomFromLocalStorage = newData?.state.bookings;
 
   return (
     <>
@@ -276,24 +267,25 @@ const RoomCard = ({ room }: { room: Room }) => {
                     View Hotel
                   </Button>
                 </Link>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="bg-secondary"
-                  onClick={() => {
-                    router.push(`/checkout/${room.paymentIntentId}`);
-                  }}
-                >
-                  Pay now
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="bg-secondary"
-                  onClick={() => deleteBooking(room.id)}
-                >
-                  <Trash className="h-4 w-4 mr-2" /> Delete reservation
-                </Button>
+                <form action={() => deleteBooking(room.id)}>
+                  <SubmitButton
+                    type="button"
+                    variant="ghost"
+                    className="bg-secondary"
+                    text="Pay now"
+                    onClick={() => {
+                      router.push(`/checkout/${room.paymentIntentId}`);
+                    }}
+                  />
+                </form>
+                <form action={() => deleteBooking(room.id)}>
+                  <SubmitButton
+                    variant="ghost"
+                    className="bg-secondary"
+                    text="Delete reservation"
+                    loadingText="deleting reservation..."
+                  />
+                </form>
               </div>
             </div>
           )}
@@ -337,28 +329,34 @@ const RoomCard = ({ room }: { room: Room }) => {
                   </span>{" "}
                   for <span className="font-bold">{numberOfNights} days</span>
                 </p>
-
-                <Button
-                  variant={"default"}
-                  className="w-full"
-                  onClick={handleCheckout}
-                  disabled={numberOfNights < 1}
-                >
-                  <TbReservedLine className="h-4 w-4 mr-2" /> Book room
-                </Button>
+                <form action={handleCheckout}>
+                  <SubmitButton
+                    variant="default"
+                    className="w-full"
+                    text="Book room"
+                    loadingText="Booking room..."
+                    onClick={handleCheckout}
+                    disabled={numberOfNights < 1}
+                  >
+                    <TbReservedLine className="h-4 w-4 mr-2" />
+                  </SubmitButton>
+                </form>
               </div>
             </>
           )}
           {pathname.includes("hotel") && !pathname.includes("details") && (
             <div className="flex w-full justify-between">
-              <Button
-                type="button"
-                variant="ghost"
-                className="bg-secondary"
-                onClick={() => deleteRoom(room.id)}
-              >
-                <Trash className="h-4 w-4 mr-2" /> Delete
-              </Button>
+              <form action={() => deleteBooking(room.id)}>
+                <SubmitButton
+                  type="button"
+                  variant="ghost"
+                  className="bg-secondary"
+                  text="Delete room"
+                  loadingText="deleting room..."
+                >
+                  <Trash className="h-4 w-4 mr-2" />
+                </SubmitButton>
+              </form>
               <Dialog>
                 <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
                   <Plus className="w-4 h-4 mr-3" />
