@@ -34,7 +34,10 @@ export async function POST(req: Request) {
       POINT 9
       POINT 10
       POINT 11
+      POINT 13
+      POINT 14
       POINT 2
+      PAGINATION + verifier filtre meme si pas encore fetch
       */
     if (error) {
       console.error("Error checking existing bookings:", error);
