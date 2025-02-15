@@ -68,7 +68,13 @@ const RoomCard = ({ room }: { room: Room }) => {
     differenceInDays(date?.to ?? new Date(), date?.from ?? new Date()) < 0
       ? 0
       : differenceInDays(date?.to ?? new Date(), date?.from ?? new Date());
-  console.log(room);
+
+  const leftDays = differenceInDays(date?.from ?? room.startDate, new Date());
+  const numberOfNightsBooked = differenceInDays(
+    date?.to ?? room.endDate,
+    date?.from ?? room.startDate,
+  );
+
   const totalPrice = hasBreakfastIncluded
     ? numberOfNights * (room.roomPrice ?? 0) +
       numberOfNights * (room.breakfastPrice ?? 0)
@@ -97,9 +103,7 @@ const RoomCard = ({ room }: { room: Room }) => {
       breakfastIncluded: hasBreakfastIncluded,
     };
     const existedBooking = await existingBooking(newBookingOne);
-    console.log(existedBooking);
     if (existedBooking?.length > 0) {
-      console.log("change date");
       return;
     }
     const response = await fetch("/api/stripe/checkout", {
@@ -248,8 +252,8 @@ const RoomCard = ({ room }: { room: Room }) => {
               <CardTitle>Booking Details</CardTitle>
               <div className="text-primary/90">
                 <div className="">
-                  Room booked by {room.username} for nb nuit en dur - dnas nb
-                  jour en dur
+                  Room booked by {room.username} for {numberOfNightsBooked}{" "}
+                  nuit(s) - dans {leftDays} jour(s)
                 </div>
                 <div className="">Check-in: {room.startDate} at 11am</div>
                 <div className="">Check-out: {room.endDate} at 17pm</div>
@@ -275,25 +279,28 @@ const RoomCard = ({ room }: { room: Room }) => {
                     View Hotel
                   </Button>
                 </Link>
-                <form action={() => deleteBooking(room.id)}>
-                  <SubmitButton
-                    type="button"
-                    variant="ghost"
-                    className="bg-secondary"
-                    text="Pay now"
-                    onClick={() => {
-                      router.push(`/checkout/${room.paymentIntentId}`);
-                    }}
-                  />
-                </form>
-                <form action={() => deleteBooking(room.id)}>
-                  <SubmitButton
-                    variant="ghost"
-                    className="bg-secondary"
-                    text="Delete reservation"
-                    loadingText="deleting reservation..."
-                  />
-                </form>
+                {room.paymentStatus === "requires_payment_method" ? (
+                  <>
+                    <Link href={`/checkout/${room.paymentIntentId}`}>
+                      <Button
+                        variant="default"
+                        type="button"
+                        className=" text-white py-2 px-4 rounded-lg w-full"
+                      >
+                        Pay now
+                      </Button>
+                    </Link>
+
+                    <form action={() => deleteBooking(room.id)}>
+                      <SubmitButton
+                        variant="ghost"
+                        className="bg-secondary"
+                        text="Delete reservation"
+                        loadingText="deleting reservation..."
+                      />
+                    </form>
+                  </>
+                ) : null}
               </div>
             </div>
           )}
