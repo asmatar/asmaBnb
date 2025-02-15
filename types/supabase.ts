@@ -15,46 +15,48 @@ export type Database = {
           breakfastIncluded: boolean | null;
           created_at: string;
           currency: string | null;
-          endDate: string | null;
-          hotelOwnerId: string | null;
+          endDate: string;
+          hotelOwnerId: string;
           id: string;
-          paymentIntentId: string | null;
-          paymentStatus: boolean | null;
-          startDate: string | null;
-          totalPrice: number | null;
-          user_id?: string;
-          username: string | null;
+          paymentIntentId: string;
+          paymentStatus: boolean;
+          startDate: string;
+          totalPrice: number;
+          user_email: string;
+          user_id: string;
+          username: string;
         };
         Insert: {
           booked_At?: string | null;
           breakfastIncluded?: boolean | null;
           created_at?: string;
           currency?: string | null;
-          endDate?: string | null;
-          hotelOwnerId?: string | null;
+          endDate: string;
+          hotelOwnerId: string;
           id: string;
-          paymentIntentId?: string | null;
-          paymentStatus?: boolean | null;
-          startDate?: string | null;
-          totalPrice?: number | null;
+          paymentIntentId: string;
+          paymentStatus?: boolean;
+          startDate: string;
+          totalPrice: number;
+          user_email: string;
           user_id?: string;
-          username?: string | null;
-          image?: string | null;
+          username: string;
         };
         Update: {
           booked_At?: string | null;
           breakfastIncluded?: boolean | null;
           created_at?: string;
           currency?: string | null;
-          endDate?: string | null;
-          hotelOwnerId?: string | null;
+          endDate?: string;
+          hotelOwnerId?: string;
           id?: string;
-          paymentIntentId?: string | null;
-          paymentStatus?: boolean | null;
-          startDate?: string | null;
-          totalPrice?: number | null;
+          paymentIntentId?: string;
+          paymentStatus?: boolean;
+          startDate?: string;
+          totalPrice: number;
+          user_email?: string;
           user_id?: string;
-          username?: string | null;
+          username?: string;
         };
         Relationships: [
           {
@@ -85,14 +87,13 @@ export type Database = {
           locationDescription: string | null;
           movieNights: boolean;
           restaurant: boolean;
-          rooms: string[] | null;
           shopping: boolean;
           spa: boolean;
           state: string | null;
           swimingPool: boolean;
           title: string | null;
           update_at: string | null;
-          user_id?: string;
+          user_id: string;
         };
         Insert: {
           bar?: boolean;
@@ -112,7 +113,6 @@ export type Database = {
           locationDescription?: string | null;
           movieNights?: boolean;
           restaurant?: boolean;
-          rooms?: string[] | null;
           shopping?: boolean;
           spa?: boolean;
           state?: string | null;
@@ -139,7 +139,6 @@ export type Database = {
           locationDescription?: string | null;
           movieNights?: boolean;
           restaurant?: boolean;
-          rooms?: string[] | null;
           shopping?: boolean;
           spa?: boolean;
           state?: string | null;
@@ -152,86 +151,95 @@ export type Database = {
       };
       room: {
         Row: {
-          airCondition: boolean;
-          balcony: boolean;
+          airCondition: boolean | null;
+          balcony: boolean | null;
           bathroomCount: number | null;
           bedCount: number | null;
           booking: string[] | null;
           breakfastPrice: number | null;
-          cityView: boolean;
+          cityView: boolean | null;
           created_at: string;
-          roomDescription: string | null;
-          forestView: boolean;
-          freeWifi: boolean;
+          forestView: boolean | null;
+          freeWifi: boolean | null;
           guestCount: number | null;
+          hotel_id: string | null;
           id: string;
           image: string | null;
           kingBed: number | null;
-          mountainView: boolean;
-          oceanView: boolean;
+          mountainView: boolean | null;
+          oceanView: boolean | null;
           queenBed: number | null;
+          roomDescription: string | null;
           roomPrice: number | null;
-          roomService: boolean;
-          soundProofed: boolean;
+          roomService: boolean | null;
           roomTitle: string | null;
-          TV: boolean;
-          hotel_id: string;
-          user_id?: string;
+          soundProofed: boolean | null;
+          TV: boolean | null;
+          user_id: string;
         };
         Insert: {
-          airCondition?: boolean;
-          balcony?: boolean;
+          airCondition?: boolean | null;
+          balcony?: boolean | null;
           bathroomCount?: number | null;
           bedCount?: number | null;
           booking?: string[] | null;
           breakfastPrice?: number | null;
-          cityView?: boolean;
+          cityView?: boolean | null;
           created_at?: string;
-          roomDescription?: string | null;
-          forestView?: boolean;
-          freeWifi?: boolean;
+          forestView?: boolean | null;
+          freeWifi?: boolean | null;
           guestCount?: number | null;
+          hotel_id?: string | null;
           id: string;
           image?: string | null;
           kingBed?: number | null;
-          mountainView?: boolean;
-          oceanView?: boolean;
+          mountainView?: boolean | null;
+          oceanView?: boolean | null;
           queenBed?: number | null;
+          roomDescription?: string | null;
           roomPrice?: number | null;
-          roomService?: boolean;
-          soundProofed?: boolean;
+          roomService?: boolean | null;
           roomTitle?: string | null;
-          TV?: boolean;
-          hotel_id: string;
+          soundProofed?: boolean | null;
+          TV?: boolean | null;
           user_id?: string;
         };
         Update: {
-          airCondition?: boolean;
-          balcony?: boolean;
+          airCondition?: boolean | null;
+          balcony?: boolean | null;
           bathroomCount?: number | null;
           bedCount?: number | null;
           booking?: string[] | null;
           breakfastPrice?: number | null;
-          cityView?: boolean;
+          cityView?: boolean | null;
           created_at?: string;
-          roomDescription?: string | null;
-          forestView?: boolean;
-          freeWifi?: boolean;
+          forestView?: boolean | null;
+          freeWifi?: boolean | null;
           guestCount?: number | null;
+          hotel_id?: string | null;
           id?: string;
           image?: string | null;
           kingBed?: number | null;
-          mountainView?: boolean;
-          oceanView?: boolean;
+          mountainView?: boolean | null;
+          oceanView?: boolean | null;
           queenBed?: number | null;
+          roomDescription?: string | null;
           roomPrice?: number | null;
-          roomService?: boolean;
-          soundProofed?: boolean;
+          roomService?: boolean | null;
           roomTitle?: string | null;
-          TV?: boolean;
+          soundProofed?: boolean | null;
+          TV?: boolean | null;
           user_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "room_hotel_id_fkey";
+            columns: ["hotel_id"];
+            isOneToOne: false;
+            referencedRelation: "hotel";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
     Views: {
@@ -332,4 +340,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never;

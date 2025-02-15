@@ -33,7 +33,7 @@ export const getRoomByHotel = async (id: string) => {
   const supabase = createClerkSupabaseClient();
   const { data, error } = await supabase
     .from("room")
-    .select("*")
+    .select("*, booking(*)")
     .eq("hotel_id", id);
   if (error) {
     throw new Error("room not found");
@@ -42,10 +42,7 @@ export const getRoomByHotel = async (id: string) => {
 };
 export const getOneRoom = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
-  const { data, error } = await supabase
-    .from("room")
-    .select("*")
-    .eq("hotel_id", id);
+  const { data, error } = await supabase.from("room").select("*").eq("id", id);
   if (error) {
     throw new Error("room not found");
   }
@@ -78,4 +75,89 @@ export const deleteRoom = async (id: string) => {
     console.log(error);
     throw new Error("hotel not found");
   }
+};
+
+export const getBookedIMade = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+
+    .from("booking")
+    .select(
+      `
+      *,
+      room (
+        *
+      )
+    `,
+    )
+    .eq("user_id", id);
+
+  const rooms =
+    data &&
+    data.map((booking) => {
+      const { room, ...reservationDetails } = booking;
+
+      return {
+        ...room,
+        ...reservationDetails,
+      };
+    });
+
+  return rooms;
+};
+export const getOneRoomInBooking = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+
+    .from("booking")
+    .select(
+      `
+      *,
+      room (
+        *
+      )
+    `,
+    )
+    .eq("paymentIntentId", id);
+
+  const rooms =
+    data &&
+    data.map((booking) => {
+      const { room, ...reservationDetails } = booking;
+
+      return {
+        ...room,
+        ...reservationDetails,
+      };
+    });
+
+  return rooms;
+};
+export const getRoomVisitorHaveMade = async (id: string) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+    .from("booking")
+    .select(
+      `
+      *,
+      room (*) 
+    `,
+    )
+    .eq("room.user_id", id)
+    .neq("user_id", id);
+  if (error) {
+    console.log(error);
+    throw new Error("hotel not found");
+  }
+
+  const rooms = data.map((booking) => {
+    const { room, ...reservationDetails } = booking;
+
+    return {
+      ...room,
+      ...reservationDetails,
+    };
+  });
+
+  return rooms;
 };
