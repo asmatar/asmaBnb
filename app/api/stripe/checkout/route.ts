@@ -8,21 +8,35 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 export async function POST(req: Request) {
+  //const supabase = await createClerkSupabaseClient();
+
   try {
     const body = await req.json();
-    const { room, totalePrice } = body;
+    const { newBookingOne } = body;
+    /*
+      CHANGER WORDING MYBOOKING SI ROOM RESERVER
+      POINT 7
+      POINT 8
+      POINT 9
+      POINT 10
+      POINT 11
+      POINT 13
+      POINT 14
+      POINT 2
+      PAGINATION + verifier filtre meme si pas encore fetch
+      */
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalePrice,
+      amount: newBookingOne.totalPrice * 100,
       currency: "usd",
       automatic_payment_methods: {
         enabled: true,
       },
       metadata: {
-        id: room.id,
+        id: newBookingOne.id,
       },
     });
-    console.log(paymentIntent);
+
     return NextResponse.json({ paymentIntent });
   } catch (err) {
     return NextResponse.json(

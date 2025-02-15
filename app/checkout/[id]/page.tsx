@@ -3,10 +3,6 @@ import RoomCard from "@/components/RoomCard";
 import { getOneRoomInBooking } from "@/services/roomService";
 import StripePayment from "./StripePayment";
 
-/* const stripePromise = loadStripe(
-  "pk_test_51JmxBgFkr8gEJezM0gPQ7Ugs9M4PPDdHk54S4Rs9JQjJfr8GJbXe1r0LFafzlupFGTfZKhMNdTLf6kRBMCJTWsiP00gaYhPXQd",
-); */
-
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
