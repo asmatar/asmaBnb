@@ -303,8 +303,6 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                     <Input
                       type="file"
                       accept=".png, .jpg, .jpeg"
-                      {...field}
-                      value={""}
                       onChange={(event) => {
                         const file = event.target.files?.[0];
                         field.onChange(file || "");

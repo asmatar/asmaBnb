@@ -62,6 +62,7 @@ const AddHotelForm = ({
   const router = useRouter();
   const { user } = useUser();
   const isOwner = user?.id === hotel?.user_id;
+  const [fileName, setFileName] = useState<string>("no file choosen");
 
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
@@ -412,25 +413,27 @@ const AddHotelForm = ({
               control={formHotel.control}
               name="image"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Hotel image</FormLabel>
-                  <FormDescription>
-                    Choose an image that will showcase your hotel nicely
-                  </FormDescription>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept=".png, .jpg, .jpeg"
-                      {...field}
-                      value={""}
-                      onChange={(event) => {
-                        const file = event.target.files?.[0];
-                        field.onChange(file || "");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                console.log(field),
+                (
+                  <FormItem>
+                    <FormLabel>Hotel image</FormLabel>
+                    <FormDescription>
+                      Choose an image that will showcase your hotel nicely
+                    </FormDescription>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept=".png, .jpg, .jpeg"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          field.onChange(file || "");
+                          setFileName(file?.name || "no file choosen");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )
               )}
             />
           </div>
