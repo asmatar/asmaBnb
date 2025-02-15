@@ -1,6 +1,7 @@
 "use server";
 import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
 import { bookings } from "@/store/BookingStore";
+import { revalidatePath } from "next/cache";
 
 export const createBooking = async (booking: bookings) => {
   const supabase = await createClerkSupabaseClient();
@@ -14,9 +15,13 @@ export const createBooking = async (booking: bookings) => {
   return data;
 };
 
-export const deleteBooking = async (id: string) => {
+export const deleteBooking = async (formData: FormData) => {
+  const id = formData.get("id");
+
   const supabase = await createClerkSupabaseClient();
   const { error } = await supabase.from("booking").delete().eq("id", id);
+  console.log("firstfff");
+  revalidatePath("/my-bookings");
   if (error) {
     error.message;
   }
@@ -27,9 +32,11 @@ export const getBookingFromOneRoom = async (id: string) => {
     .from("booking")
     .select("*")
     .eq("room_id", id);
+
   if (error) {
     error.message;
   }
+
   return data;
 };
 export const updateBooking = async (id: string) => {

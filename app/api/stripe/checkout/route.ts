@@ -14,13 +14,9 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { newBookingOne } = body;
     /*
-      CHANGER WORDING MYBOOKING SI ROOM RESERVER
-      POINT 7
       POINT 8
       POINT 9
       POINT 10
-      POINT 11
-      POINT 13
       POINT 14
       POINT 2
       PAGINATION + verifier filtre meme si pas encore fetch

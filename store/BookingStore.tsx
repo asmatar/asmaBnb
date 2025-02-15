@@ -26,8 +26,6 @@ interface BookingStoreProps {
   addBooking: (newBooking: bookings) => void;
   setClientSecret: (clientSecret: string) => void;
   setPaymentStatus: (paymentstatus: string) => void;
-  /*deleteBookings: () => void;
-  updateBookings: () => void; */
 }
 
 const useBookingStore = create<BookingStoreProps>()(

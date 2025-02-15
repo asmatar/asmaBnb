@@ -30,7 +30,7 @@ const MyHotelCard = ({
     >
       <div className="relative h-72 group">
         <Image
-          src={image} // Gère le cas où l'image n'existe pas
+          src={image}
           alt={title}
           layout="fill"
           objectFit="cover"
@@ -48,7 +48,7 @@ const MyHotelCard = ({
             <Button
               variant="outline"
               type="button"
-              className=" text-white py-2 px-4 rounded-lg w-full"
+              className=" text-primary py-2 px-4 rounded-lg w-full"
             >
               View Details
             </Button>
@@ -57,16 +57,17 @@ const MyHotelCard = ({
             <Button
               variant="outline"
               type="button"
-              className=" text-white py-2 px-4 rounded-lg w-full"
+              className=" text-primary py-2 px-4 rounded-lg w-full"
             >
               Update
             </Button>
           </Link>
         </div>
+
         <Button
           variant="outline"
           type="button"
-          className={`mt-4  text-white py-2 px-4 rounded-lg w-full `}
+          className={`mt-4  text-primary py-2 px-4 rounded-lg w-full `}
           onClick={() => handleDeleteHotel(id)}
         >
           <Trash className="w-4 h-4 mr-3" />

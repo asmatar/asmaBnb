@@ -69,12 +69,26 @@ export const createRoom = async (newRoom: InsertRoom) => {
 };
 export const deleteRoom = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
+  const { error: deleteBookingError, data: hasBooked } = await supabase
+    .from("booking")
+    .select("*")
+    .eq("roomBooked", id);
+
+  if (deleteBookingError || hasBooked.length > 0) {
+    (deleteBookingError && deleteBookingError.message) ||
+      console.log(
+        "you can't delete a room if you've got a reservation",
+        hasBooked,
+      );
+    return;
+  }
   const { error } = await supabase.from("room").delete().eq("id", id);
 
   if (error) {
     console.log(error);
     throw new Error("hotel not found");
   }
+  revalidatePath("/hotel/[hotelId]");
 };
 
 export const getBookedIMade = async (id: string) => {

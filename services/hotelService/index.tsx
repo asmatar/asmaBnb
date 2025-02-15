@@ -46,11 +46,32 @@ export const getOneHotel = async (id: string) => {
 };
 export const deleteHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
+  const { error: deleteBookingError, data: hasBooked } = await supabase
+    .from("booking")
+    .select("*")
+    .eq("hotelBooked", id);
+
+  if (deleteBookingError || hasBooked.length > 0) {
+    (deleteBookingError && deleteBookingError.message) ||
+      console.log(
+        "you can't delete an Hotel if you've got a reservation",
+        hasBooked,
+      );
+    return;
+  }
+  const { error: deleteRoomError } = await supabase
+    .from("room")
+    .delete()
+    .eq("hotel_id", id);
+  if (deleteRoomError) {
+    deleteRoomError.message;
+  }
   const { error } = await supabase.from("hotel").delete().eq("id", id);
 
   if (error) {
     error.message;
   }
+  revalidatePath("/my-hotels");
 };
 
 export const updateHotel = async (hotel: UpdateBooking) => {

@@ -25,6 +25,7 @@ import {
   deleteBooking,
   existingBooking,
 } from "@/services/bookingService";
+import { deleteRoom } from "@/services/roomService";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/clerk-react";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
@@ -274,7 +275,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                   <Button
                     variant="outline"
                     type="button"
-                    className=" text-white py-2 px-4 rounded-lg w-full"
+                    className=" text-primary py-2 px-4 rounded-lg w-full"
                   >
                     View Hotel
                   </Button>
@@ -283,17 +284,18 @@ const RoomCard = ({ room }: { room: Room }) => {
                   <>
                     <Link href={`/checkout/${room.paymentIntentId}`}>
                       <Button
-                        variant="default"
+                        variant="outline"
                         type="button"
-                        className=" text-white py-2 px-4 rounded-lg w-full"
+                        className=" text-primary py-2 px-4 rounded-lg w-full"
                       >
                         Pay now
                       </Button>
                     </Link>
 
-                    <form action={() => deleteBooking(room.id)}>
+                    <form action={deleteBooking}>
+                      <input type="hidden" name="id" value={room.id} />
                       <SubmitButton
-                        variant="ghost"
+                        variant="outline"
                         className="bg-secondary"
                         text="Delete reservation"
                         loadingText="deleting reservation..."
@@ -360,7 +362,7 @@ const RoomCard = ({ room }: { room: Room }) => {
           )}
           {pathname.includes("hotel") && !pathname.includes("details") && (
             <div className="flex w-full justify-between">
-              <form action={() => deleteBooking(room.id)}>
+              <form action={() => deleteRoom(room.id)}>
                 <SubmitButton
                   type="button"
                   variant="ghost"
