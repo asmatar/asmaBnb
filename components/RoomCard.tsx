@@ -272,9 +272,9 @@ const RoomCard = ({ room }: { room: Room }) => {
               <div className="flex items-center gap-4 justify-between">
                 <Link href={`/hotel/details/${room.hotel_id}`}>
                   <Button
-                    variant="outline"
+                    variant="default"
                     type="button"
-                    className=" text-white py-2 px-4 rounded-lg w-full"
+                    className=" text-secondary py-2 px-4 rounded-lg w-full"
                   >
                     View Hotel
                   </Button>
@@ -285,7 +285,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                       <Button
                         variant="default"
                         type="button"
-                        className=" text-white py-2 px-4 rounded-lg w-full"
+                        className=" text-secondary py-2 px-4 rounded-lg w-full"
                       >
                         Pay now
                       </Button>

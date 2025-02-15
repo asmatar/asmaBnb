@@ -578,7 +578,7 @@ const AddHotelForm = ({
                       </Button>
                       <Button
                         variant="outline"
-                        type="button"
+                        type="submit"
                         onClick={() => handleDeleteHotel(hotelId as string)}
                       >
                         <Trash className="w-4 h-4 mr-3" />

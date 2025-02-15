@@ -8,13 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 export async function POST(req: Request) {
-  //const supabase = await createClerkSupabaseClient();
-
   try {
     const body = await req.json();
     const { newBookingOne } = body;
     /*
-      CHANGER WORDING MYBOOKING SI ROOM RESERVER
       POINT 7
       POINT 8
       POINT 9
