@@ -68,7 +68,6 @@ export const createRoom = async (newRoom: InsertRoom) => {
   return data;
 };
 export const deleteRoom = async (id: string) => {
-  console.log("delete");
   const supabase = await createClerkSupabaseClient();
   const { error } = await supabase.from("room").delete().eq("id", id);
 

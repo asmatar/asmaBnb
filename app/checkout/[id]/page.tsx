@@ -7,6 +7,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
   const room = await getOneRoomInBooking(id);
+
   return (
     <section className="max-w-[700px] mx-auto mb-10">
       <h3 className="text-2xl font-semibold mb-6">
