@@ -1,6 +1,5 @@
 // pages/api/create-checkout-session.js
 
-import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -9,26 +8,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 export async function POST(req: Request) {
-  const supabase = await createClerkSupabaseClient();
+  //const supabase = await createClerkSupabaseClient();
 
   try {
     const body = await req.json();
-    const { newBookingOne, totalePrice } = body;
-    console.log(newBookingOne);
-    // clause guard check if b ooking already booked
-    const { data: existingBooking, error } = await supabase
-      .from("booking")
-      .select("id")
-      .eq("room_id", newBookingOne.room_id)
-      .or(
-        `(start_date <= '${newBookingOne.endDate}' AND end_date >= '${newBookingOne.startDate}')`,
-      );
-
-      /* 
-      FAIRE LA VERIFICATION SI LA CHAMBRE EST DEJA RESERVEE DANS SUPABASE + VERIF DEUX ECRAN
-      A LA SUPPRESSION DE LA RESERVATION, SUPPRIMER DANS STRIPE
+    const { newBookingOne } = body;
+    /*
       CHANGER WORDING MYBOOKING SI ROOM RESERVER
-      CHERCHER DATE DU DATE PICKER
       POINT 7
       POINT 8
       POINT 9
@@ -39,12 +25,9 @@ export async function POST(req: Request) {
       POINT 2
       PAGINATION + verifier filtre meme si pas encore fetch
       */
-    if (error) {
-      console.error("Error checking existing bookings:", error);
-      return NextResponse.json({ error: "Database error" }, { status: 500 });
-    }
+
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalePrice,
+      amount: newBookingOne.totalPrice * 100,
       currency: "usd",
       automatic_payment_methods: {
         enabled: true,

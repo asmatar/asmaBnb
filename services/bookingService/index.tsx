@@ -42,3 +42,15 @@ export const updateBooking = async (id: string) => {
     error.message;
   }
 };
+export const existingBooking = async (newBookingOne: any) => {
+  const supabase = await createClerkSupabaseClient();
+  console.log("room id----", newBookingOne.roomBooked);
+  const { data, error } = await supabase
+    .from("booking")
+    .select("*")
+    .eq("roomBooked", newBookingOne.roomBooked)
+    .lte("startDate", newBookingOne.endDate)
+    .gte("endDate", newBookingOne.startDate);
+
+  return data;
+};

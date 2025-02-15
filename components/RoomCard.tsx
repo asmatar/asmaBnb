@@ -20,7 +20,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { createBooking, deleteBooking } from "@/services/bookingService";
+import {
+  createBooking,
+  deleteBooking,
+  existingBooking,
+} from "@/services/bookingService";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/clerk-react";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
@@ -65,7 +69,7 @@ const RoomCard = ({ room }: { room: Room }) => {
       ? 0
       : differenceInDays(date?.to ?? new Date(), date?.from ?? new Date());
   console.log(room);
-  const totalePrice = hasBreakfastIncluded
+  const totalPrice = hasBreakfastIncluded
     ? numberOfNights * (room.roomPrice ?? 0) +
       numberOfNights * (room.breakfastPrice ?? 0)
     : numberOfNights * (room.roomPrice ?? 0);
@@ -89,19 +93,24 @@ const RoomCard = ({ room }: { room: Room }) => {
       startDate: format(date?.from ?? "", "LLL dd, y"),
       endDate: format(date?.to ?? "", "LLL dd, y"),
       currency: "usd",
-
+      totalPrice: totalPrice,
       breakfastIncluded: hasBreakfastIncluded,
     };
+    const existedBooking = await existingBooking(newBookingOne);
+    console.log(existedBooking);
+    if (existedBooking?.length > 0) {
+      console.log("change date");
+      return;
+    }
     const response = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ newBookingOne, totalePrice }),
+      body: JSON.stringify({ newBookingOne }),
     });
     const intentPayement = await response.json();
 
     const newBooking = {
       ...newBookingOne,
-      totalPrice: intentPayement.paymentIntent.amount,
       paymentStatus: intentPayement.paymentIntent.status,
       paymentIntentId: intentPayement.paymentIntent.id,
       clientSecret: intentPayement.paymentIntent.client_secret,
@@ -323,7 +332,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                 <p className="mb-4">
                   Total price:{" "}
                   <span className="font-bold">
-                    {totalePrice}
+                    {totalPrice}
                     eur
                   </span>{" "}
                   for <span className="font-bold">{numberOfNights} days</span>
@@ -334,7 +343,6 @@ const RoomCard = ({ room }: { room: Room }) => {
                     className="w-full"
                     text="Book room"
                     loadingText="Booking room..."
-                    onClick={handleCheckout}
                     disabled={numberOfNights < 1}
                   >
                     <TbReservedLine className="h-4 w-4 mr-2" />
