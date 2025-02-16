@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   Tooltip,
   TooltipContent,
@@ -17,7 +16,6 @@ const HotelCard = async ({
   gym,
   pool,
   city,
-/*   price, */
   id,
 }: HotelCardProps) => {
   return (

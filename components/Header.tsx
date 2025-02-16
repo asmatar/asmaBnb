@@ -24,7 +24,6 @@ const Header = async () => {
   return (
     <>
       <header className="sticky top-0 border border-b-primary/10 bg-secondary z-40   py-4 ">
-        {/* <Container> */}
         <div className="flex justify-between mx-auto max-w-[1920px] xl:px-20 w-full max-auto">
           <Link href="/" className="flex gap-2 items-center cursor-pointer">
             <Logo />
@@ -85,7 +84,6 @@ const Header = async () => {
             )}
           </div>
         </div>
-        {/*  </Container> */}
       </header>
     </>
   );

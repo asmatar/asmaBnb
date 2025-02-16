@@ -92,10 +92,6 @@ const AddHotelForm = ({
     },
     shouldUnregister: true,
   });
-  /*   const { data: countries, error: countriesError } = useQuery({
-    queryKey: ["countries"],
-    queryFn: getAllCountries,
-  }); */
 
   const handleDeleteHotel = async (hotelId: string) => {
     await deleteHotel(hotelId!);

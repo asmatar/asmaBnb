@@ -64,49 +64,6 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
-  .grid-container {
-    display: grid;
-    grid-template-areas:
-      "ca ca ca ca ca ca ca bonus bonuWon"
-      "chart chart chart prime prime prime stat stat stat"
-      "chart chart chart arene arene arene stat stat stat";
-    grid-template-rows: min-content max-content 1fr;
-  }
-  .item1 {
-    grid-area: ca;
-    height: 100px; /* Hauteur spécifique pour le header */
-    background-color: #a0d2eb;
-  }
-  .item2 {
-    grid-area: bonus;
-    height: 100px; /* Hauteur différente pour la barre latérale */
-    background-color: #e3f6f5;
-  }
-  .item3 {
-    grid-area: bonuWon;
-    height: 100px; /* Hauteur différente pour le contenu */
-    background-color: #ffb5a7;
-  }
-  .item4 {
-    grid-area: chart;
-    height: max-content; /* Hauteur différente pour la zone additionnelle */
-    background-color: #ffc3a0;
-  }
-  .item5 {
-    grid-area: prime;
-    height: max-content; /* Hauteur spécifique pour le pied de page */
-    background-color: #f2ffca;
-  }
-  .item6 {
-    grid-area: arene;
-    height: max-content; /* Hauteur spécifique pour le pied de page */
-    background-color: #cdcaff;
-  }
-  .item7 {
-    grid-area: stat;
-    height: max-content; /* Hauteur spécifique pour le pied de page */
-    background-color: #ffcad4;
-  }
 }
 
 @layer base {
