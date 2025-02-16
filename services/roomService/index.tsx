@@ -6,18 +6,21 @@ import { revalidatePath } from "next/cache";
 export const updateRoom = async (room: UpdateRoom) => {
   const supabase = await createClerkSupabaseClient();
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${room.image}`;
+  try {
+    const { data, error } = await supabase
+      .from("room")
+      .update({ ...room, image: imagePath })
+      .eq("id", room.id!)
+      .select();
 
-  const { data, error } = await supabase
-    .from("room")
-    .update({ ...room, image: imagePath })
-    .eq("id", room.id!)
-    .select();
-
-  if (error) {
-    throw new Error("room not found");
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    revalidatePath("/hotel/[hotelId]");
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
-  revalidatePath("/hotel/[hotelId]");
-  return data;
 };
 export const getAllRooms = async () => {
   const supabase = createClerkSupabaseClient();
@@ -52,43 +55,47 @@ export const createRoom = async (newRoom: InsertRoom) => {
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${newRoom.image}`;
 
   const supabase = await createClerkSupabaseClient();
-
-  const { data, error } = await supabase
-    .from("room")
-    .insert([
-      newRoom.image
-        ? { ...newRoom, image: imagePath }
-        : { ...newRoom, image: "" },
-    ]);
-  if (error) {
-    console.log(error);
-    throw new Error("room could not be created");
+  try {
+    const { data, error } = await supabase
+      .from("room")
+      .insert([
+        newRoom.image
+          ? { ...newRoom, image: imagePath }
+          : { ...newRoom, image: "" },
+      ]);
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    revalidatePath(`/hotel/${newRoom.id}`);
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
-  revalidatePath(`/hotel/${newRoom.id}`);
-  return data;
 };
-export const deleteRoom = async (id: string) => {
+export const deleteRoom = async (formData: FormData) => {
+  const id = formData.get("id");
   const supabase = await createClerkSupabaseClient();
-  const { error: deleteBookingError, data: hasBooked } = await supabase
-    .from("booking")
-    .select("*")
-    .eq("roomBooked", id);
+  try {
+    const { error: deleteBookingError, data: hasBooked } = await supabase
+      .from("booking")
+      .select("*")
+      .eq("roomBooked", id);
 
-  if (deleteBookingError || hasBooked.length > 0) {
-    (deleteBookingError && deleteBookingError.message) ||
-      console.log(
-        "you can't delete a room if you've got a reservation",
-        hasBooked,
-      );
-    return;
+    if (deleteBookingError || hasBooked.length > 0) {
+      return {
+        success: false,
+        error: "you can't delete a room if you've got a reservation",
+      };
+    }
+    const { error } = await supabase.from("room").delete().eq("id", id);
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    revalidatePath("/hotel/[hotelId]");
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
-  const { error } = await supabase.from("room").delete().eq("id", id);
-
-  if (error) {
-    console.log(error);
-    throw new Error("hotel not found");
-  }
-  revalidatePath("/hotel/[hotelId]");
 };
 
 export const getBookedIMade = async (id: string) => {
@@ -160,7 +167,6 @@ export const getRoomVisitorHaveMade = async (id: string) => {
     .eq("room.user_id", id)
     .neq("user_id", id);
   if (error) {
-    console.log(error);
     throw new Error("hotel not found");
   }
 

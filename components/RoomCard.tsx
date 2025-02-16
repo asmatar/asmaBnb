@@ -2,6 +2,7 @@
 import AddRoomForm from "@/components/AddRoomForm";
 import AmenityItem from "@/components/AmenityItem";
 import { DatePickerWithRange } from "@/components/DatePickerWithRange";
+import SubmitButton from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,6 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import {
   createBooking,
@@ -53,18 +55,25 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
+import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import SubmitButton from "./SubmitButton";
-import { Input } from "./ui/input";
 
 const RoomCard = ({ room }: { room: Room }) => {
   const pathname = usePathname();
   const router = useRouter();
-
+  //const { showToast } = useToast();
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
-
+  const handleDeleteBooking = async (formData: FormData) => {
+    const response = await deleteBooking(formData);
+    console.log("first", response);
+    if (response.success === true) {
+      toast.success("Reservation deleted successfully");
+    } else {
+      return toast.error(response.error);
+    }
+  };
   const numberOfNights =
     differenceInDays(date?.to ?? new Date(), date?.from ?? new Date()) < 0
       ? 0
@@ -75,7 +84,14 @@ const RoomCard = ({ room }: { room: Room }) => {
     date?.to ?? room.endDate,
     date?.from ?? room.startDate,
   );
-
+  const handleDeleteRoom = async (formData: FormData) => {
+    const response = await deleteRoom(formData);
+    if (response.success === true) {
+      toast.success("Room deleted successfully");
+    } else {
+      return toast.error(response.error);
+    }
+  };
   const totalPrice = hasBreakfastIncluded
     ? numberOfNights * (room.roomPrice ?? 0) +
       numberOfNights * (room.breakfastPrice ?? 0)
@@ -104,8 +120,8 @@ const RoomCard = ({ room }: { room: Room }) => {
       breakfastIncluded: hasBreakfastIncluded,
     };
     const existedBooking = await existingBooking(newBookingOne);
-    if (existedBooking?.length > 0) {
-      return;
+    if (existedBooking.data.length > 0) {
+      return toast.error("Room already booked for this period");
     }
     const response = await fetch("/api/stripe/checkout", {
       method: "POST",
@@ -120,9 +136,13 @@ const RoomCard = ({ room }: { room: Room }) => {
       paymentIntentId: intentPayement.paymentIntent.id,
       clientSecret: intentPayement.paymentIntent.client_secret,
     };
-    await createBooking(newBooking);
-
-    router.push(`/checkout/${intentPayement.paymentIntent.id}`);
+    const createdBookingResponse = await createBooking(newBooking);
+    if (createdBookingResponse.success === true) {
+      toast.success("Room booked successfully");
+      router.push(`/checkout/${intentPayement.paymentIntent.id}`);
+    } else {
+      return toast.error(createdBookingResponse.error);
+    }
   };
 
   return (
@@ -292,7 +312,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                       </Button>
                     </Link>
 
-                    <form action={deleteBooking}>
+                    <form action={handleDeleteBooking}>
                       <input type="hidden" name="id" value={room.id} />
                       <SubmitButton
                         variant="outline"
@@ -362,7 +382,8 @@ const RoomCard = ({ room }: { room: Room }) => {
           )}
           {pathname.includes("hotel") && !pathname.includes("details") && (
             <div className="flex w-full justify-between">
-              <form action={() => deleteRoom(room.id)}>
+              <form action={handleDeleteRoom}>
+                <input type="hidden" name="id" value={room.id} />
                 <SubmitButton
                   type="button"
                   variant="ghost"

@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 const roboto = Roboto({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -34,6 +36,18 @@ export default function RootLayout({
           >
             <Header />
             <Container>{children}</Container>
+            <ToastContainer
+              position="bottom-right"
+              autoClose={1000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              limit={3}
+            />
           </ThemeProvider>
         </body>
       </html>

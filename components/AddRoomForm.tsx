@@ -20,8 +20,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, XCircle } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
+import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 import { Checkbox } from "./ui/checkbox";
@@ -73,8 +75,12 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
           id: room.id as string,
         };
 
-        await updateRoom(updatingRoomValues);
-        return;
+        const response = await updateRoom(updatingRoomValues);
+        if (response.success) {
+          toast.success("Room updated successfully");
+        } else {
+          return toast.error(response.error);
+        }
       }
       if (file instanceof File) {
         const formData = new FormData();
@@ -89,9 +95,15 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
         hotel_id: hotelId as string,
         id,
       };
-      await createRoom(createRoomvalues);
+      const response = await createRoom(createRoomvalues);
+      if (response.success) {
+        toast.success("Room created successfully");
+        form.reset();
+      } else {
+        return toast.error(response.error);
+      }
     } catch (error) {
-      console.log(error);
+      toast.error("Failed to create room");
     }
   }
   return (

@@ -90,7 +90,6 @@ function StripeProvider({
       });
       const { paymentIntent, error } = result;
       if (error) {
-        console.log("error");
         console.error("Error confirming payment:", error.message);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         await updateBooking(paymentIntent.id);

@@ -20,15 +20,19 @@ export const createHotel = async (newHotel: InsertBooking) => {
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
 
   const supabase = await createClerkSupabaseClient();
-  const { data, error } = await supabase
-    .from("hotel")
-    .insert([
-      newHotel.image ? { ...newHotel, image: imagePath } : { ...newHotel },
-    ]);
-  if (error) {
-    error.message;
+  try {
+    const { data, error } = await supabase
+      .from("hotel")
+      .insert([
+        newHotel.image ? { ...newHotel, image: imagePath } : { ...newHotel },
+      ]);
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
-  return data;
 };
 
 export const getOneHotel = async (id: string) => {
@@ -77,18 +81,21 @@ export const deleteHotel = async (id: string) => {
 export const updateHotel = async (hotel: UpdateBooking) => {
   const supabase = await createClerkSupabaseClient();
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
+  try {
+    const { data, error } = await supabase
+      .from("hotel")
+      .update({ ...hotel, image: imagePath })
+      .eq("id", hotel.id!)
+      .select();
 
-  const { data, error } = await supabase
-    .from("hotel")
-    .update({ ...hotel, image: imagePath })
-    .eq("id", hotel.id!)
-    .select();
-
-  if (error) {
-    error.message;
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    revalidatePath("/hotel/[hotelId]");
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
-  revalidatePath("/hotel/[hotelId]");
-  return data;
 };
 
 export async function getFilteredHotels(filters: {

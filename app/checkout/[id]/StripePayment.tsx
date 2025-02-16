@@ -3,6 +3,7 @@ import StripeProvider from "@/components/checkout/StripeProvider";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 const stripePromise = loadStripe(
   "pk_test_51JmxBgFkr8gEJezM0gPQ7Ugs9M4PPDdHk54S4Rs9JQjJfr8GJbXe1r0LFafzlupFGTfZKhMNdTLf6kRBMCJTWsiP00gaYhPXQd",
 );
@@ -31,14 +32,14 @@ const StripePayment = ({
         );
 
         if (!response.ok) {
-          throw new Error("Failed to retrieve payment intent");
+          return toast.error("Failed to fetch payment intent");
         }
 
         const data = await response.json();
 
         setClientSecret(data.client_secret);
       } catch (err: any) {
-        console.log(err);
+        toast.error(err.message);
       }
     };
 

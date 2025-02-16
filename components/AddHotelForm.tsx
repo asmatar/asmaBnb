@@ -47,6 +47,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
+import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 
@@ -111,8 +112,12 @@ const AddHotelForm = ({
           id: hotelId as string,
         };
 
-        await updateHotel(updatingHotelValues);
-        return;
+        const response = await updateHotel(updatingHotelValues);
+        if (response.success === false) {
+          return toast.error(response.error);
+        } else {
+          toast.success("Hotel updated successfully");
+        }
       }
       if (file instanceof File) {
         const formData = new FormData();
@@ -128,10 +133,13 @@ const AddHotelForm = ({
         id,
       };
 
-      await createHotel(createHotelvalues);
+      const response = await createHotel(createHotelvalues);
+      if (response.success === false) {
+        return toast.error(response.error);
+      }
       router.push(`/hotel/${id}`);
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong");
     }
   }
 
