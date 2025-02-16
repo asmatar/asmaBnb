@@ -17,7 +17,8 @@ import { createRoom, updateRoom } from "@/services/roomService";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil } from "lucide-react";
+import { Pencil, XCircle } from "lucide-react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
@@ -60,7 +61,8 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
   const isOwner = user?.id === room?.user_id;
   const params = useParams();
   const hotelId = params?.hotelId;
-
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const inputImageRef = useRef<HTMLInputElement>(null);
   async function onSubmitRoom(values: z.infer<typeof roomSchema>) {
     try {
       const file = values.image as File;
@@ -295,23 +297,47 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hotel image</FormLabel>
-                  <FormDescription>
-                    Choose an image that will showcase your hotel nicely
-                  </FormDescription>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept=".png, .jpg, .jpeg"
-                      {...field}
-                      value={""}
-                      onChange={(event) => {
-                        const file = event.target.files?.[0];
-                        field.onChange(file || "");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <FormLabel>Hotel image</FormLabel>
+                      <FormDescription>
+                        Choose an image that will showcase your hotel nicely
+                      </FormDescription>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          ref={inputImageRef}
+                          accept=".png, .jpg, .jpeg"
+                          onChange={(event) => {
+                            const file = event.target.files?.[0];
+                            field.onChange(file || "");
+                            setPreviewUrl(URL.createObjectURL(file));
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </div>
+
+                    {previewUrl && (
+                      <div className="relative">
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          width={200}
+                          height={200}
+                          className="rounded-md border object-cover relative"
+                        />
+                        <XCircle
+                          className="w-4 h-4 mr-3 absolute right-0 top-0 bg-white cursor-pointer"
+                          onClick={() => {
+                            setPreviewUrl("");
+
+                            inputImageRef.current!.value = "";
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </FormItem>
               )}
             />

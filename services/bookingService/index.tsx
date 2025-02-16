@@ -20,7 +20,7 @@ export const deleteBooking = async (formData: FormData) => {
 
   const supabase = await createClerkSupabaseClient();
   const { error } = await supabase.from("booking").delete().eq("id", id);
-  console.log("firstfff");
+
   revalidatePath("/my-bookings");
   if (error) {
     error.message;

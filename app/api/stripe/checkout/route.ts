@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { newBookingOne } = body;
     /*
-      POINT 8
+
       POINT 9
       POINT 10
       POINT 14
