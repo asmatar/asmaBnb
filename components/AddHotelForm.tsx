@@ -40,14 +40,16 @@ import { Hotel } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
-import { Pencil, Plus, Terminal, Trash, View } from "lucide-react";
+import { Pencil, Plus, Terminal, Trash, View, XCircle } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
+
 const AddHotelForm = ({
   countries,
   hotel,
@@ -62,8 +64,8 @@ const AddHotelForm = ({
   const router = useRouter();
   const { user } = useUser();
   const isOwner = user?.id === hotel?.user_id;
-  const [fileName, setFileName] = useState<string>("no file choosen");
-
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const inputImageRef = useRef<HTMLInputElement>(null);
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     defaultValues: {
@@ -413,27 +415,51 @@ const AddHotelForm = ({
               control={formHotel.control}
               name="image"
               render={({ field }) => (
-                console.log(field),
-                (
-                  <FormItem>
-                    <FormLabel>Hotel image</FormLabel>
-                    <FormDescription>
-                      Choose an image that will showcase your hotel nicely
-                    </FormDescription>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept=".png, .jpg, .jpeg"
-                        onChange={(event) => {
-                          const file = event.target.files?.[0];
-                          field.onChange(file || "");
-                          setFileName(file?.name || "no file choosen");
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )
+                <FormItem>
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <FormLabel>Hotel image</FormLabel>
+                      <FormDescription>
+                        Choose an image that will showcase your hotel nicely
+                      </FormDescription>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          ref={inputImageRef}
+                          className=""
+                          accept=".png, .jpg, .jpeg"
+                          onChange={(event) => {
+                            const file = event.target.files?.[0];
+
+                            field.onChange(file || "");
+                            setPreviewUrl(URL.createObjectURL(file));
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </div>
+
+                    {previewUrl && (
+                      <div className="relative">
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          width={200}
+                          height={200}
+                          className="rounded-md border object-cover relative"
+                        />
+                        <XCircle
+                          className="w-4 h-4 mr-3 absolute right-0 top-0 bg-white cursor-pointer"
+                          onClick={() => {
+                            setPreviewUrl("");
+
+                            inputImageRef.current!.value = "";
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </FormItem>
               )}
             />
           </div>
