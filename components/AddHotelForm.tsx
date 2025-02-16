@@ -94,8 +94,22 @@ const AddHotelForm = ({
   });
 
   const handleDeleteHotel = async (hotelId: string) => {
-    await deleteHotel(hotelId!);
-    router.push("/hotel/new");
+    const response = await deleteHotel(hotelId!);
+    if (response.success === false && response.errorType === "hasBooking") {
+      return toast.error(response.error);
+    } else if (response.success === false) {
+      return toast.error(response.error);
+    } else if (
+      response.success === true &&
+      response.roomData &&
+      response.roomData.length > 0
+    ) {
+      router.push("/hotel/new");
+      return toast.success("Hotel deleted with his rooms");
+    } else {
+      router.push("/hotel/new");
+      return toast.success("Hotel deleted successfully");
+    }
   };
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
     try {

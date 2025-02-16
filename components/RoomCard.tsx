@@ -67,7 +67,6 @@ const RoomCard = ({ room }: { room: Room }) => {
   const [date, setDate] = useState<DateRange | undefined>();
   const handleDeleteBooking = async (formData: FormData) => {
     const response = await deleteBooking(formData);
-    console.log("first", response);
     if (response.success === true) {
       toast.success("Reservation deleted successfully");
     } else {

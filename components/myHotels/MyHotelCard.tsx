@@ -4,6 +4,8 @@ import { deleteHotel } from "@/services/hotelService";
 import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import SubmitButton from "../SubmitButton";
 
 export type MyHotelProps = {
   id: string;
@@ -19,8 +21,18 @@ const MyHotelCard = ({
   image,
   price,
 }: MyHotelProps) => {
-  const handleDeleteHotel = async (id: string) => {
-    await deleteHotel(id!);
+  const handleDeleteHotel = async (formData: FormData) => {
+    const id = formData.get("id");
+    const response = await deleteHotel(id as string);
+    if (response.success === false && response.errorType === "hasBooking") {
+      return toast.error(response.error);
+    } else if (response.success === false) {
+      return toast.error(response.error);
+    } else if (response.success === true && response.roomData.length > 0) {
+      return toast.success("Hotel deleted with his rooms");
+    } else {
+      return toast.success("Hotel deleted successfully");
+    }
   };
 
   return (
@@ -63,16 +75,18 @@ const MyHotelCard = ({
             </Button>
           </Link>
         </div>
-
-        <Button
-          variant="outline"
-          type="button"
-          className={`mt-4  text-primary py-2 px-4 rounded-lg w-full `}
-          onClick={() => handleDeleteHotel(id)}
-        >
-          <Trash className="w-4 h-4 mr-3" />
-          Delete
-        </Button>
+        <form action={handleDeleteHotel}>
+          <input type="hidden" name="id" value={id} />
+          <SubmitButton
+            variant="outline"
+            type="button"
+            text="Delete"
+            className={`mt-4  text-primary py-2 px-4 rounded-lg w-full `}
+            loadingText="Deleting..."
+          >
+            <Trash className="w-4 h-4 mr-3" />
+          </SubmitButton>
+        </form>
       </div>
     </div>
   );

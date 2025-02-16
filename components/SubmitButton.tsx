@@ -6,6 +6,7 @@ interface SubmitButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   children?: React.ReactNode;
+  type?: string;
   variant?:
     | "default"
     | "destructive"
@@ -22,6 +23,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
   loadingText,
   disabled = false,
   children,
+  type = "submit",
   onClick,
   variant = "default",
   className = "",
@@ -30,7 +32,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
 
   return (
     <Button
-      type="submit"
+      type={type}
       disabled={disabled || pending}
       onClick={onClick}
       variant={variant}
