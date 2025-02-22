@@ -95,18 +95,19 @@ const AddHotelForm = ({
 
   const handleDeleteHotel = async (hotelId: string) => {
     const response = await deleteHotel(hotelId!);
-    if (response.success === false && response.errorType === "hasBooking") {
+    if (response.success === false) {
+      if (response.errorType === "hasBooking") {
+        return toast.error(response.error);
+      }
       return toast.error(response.error);
-    } else if (response.success === false) {
-      return toast.error(response.error);
-    } else if (
-      response.success === true &&
-      response.roomData &&
-      response.roomData.length > 0
-    ) {
-      router.push("/hotel/new");
-      return toast.success("Hotel deleted with his rooms");
-    } else {
+    }
+
+    if (response.success === true) {
+      if (response.roomData && response.roomData.length > 0) {
+        router.push("/hotel/new");
+        return toast.success("Hotel deleted with his rooms");
+      }
+
       router.push("/hotel/new");
       return toast.success("Hotel deleted successfully");
     }
@@ -619,9 +620,15 @@ const AddHotelForm = ({
                   </Link>
                   {isOwner ? (
                     <>
-                      <Button variant="outline" type="submit">
+                      <Button
+                        variant="outline"
+                        type="submit"
+                        disabled={!formHotel.formState.isValid}
+                      >
                         <MdUpdate className="w-4 h-4 mr-3" />
-                        Update
+                        {formHotel.formState.isSubmitting
+                          ? "Updating..."
+                          : "Update"}
                       </Button>
                       <Button
                         variant="outline"
@@ -631,6 +638,14 @@ const AddHotelForm = ({
                         <Trash className="w-4 h-4 mr-3" />
                         Delete
                       </Button>{" "}
+                      {/*     <Button
+                          variant="outline"
+                          type="button"
+                          onClick={() => handleDeleteHotel(hotelId as string)}
+                        >
+                          <Trash className="w-4 h-4 mr-3" />
+                          Delete
+                        </Button>{" "} */}
                       <Dialog>
                         <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
                           <Plus className="w-4 h-4 mr-3" />

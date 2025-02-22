@@ -384,7 +384,7 @@ const RoomCard = ({ room }: { room: Room }) => {
               <form action={handleDeleteRoom}>
                 <input type="hidden" name="id" value={room.id} />
                 <SubmitButton
-                  type="button"
+                  type="submit"
                   variant="ghost"
                   className="bg-secondary"
                   text="Delete room"

@@ -13,9 +13,10 @@ export async function POST(req: Request) {
     const { newBookingOne } = body;
     /*
       POINT 9
-      POINT 10
       POINT 14
+      POINT 12
       POINT 2
+      point 15
       PAGINATION + verifier filtre meme si pas encore fetch
       */
 
