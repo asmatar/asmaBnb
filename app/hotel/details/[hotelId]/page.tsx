@@ -1,6 +1,7 @@
 import { getOneHotel } from "@/services/hotelService";
 import { getRoomByHotel } from "@/services/roomService";
 
+import NoRoom from "@/components/hotel/details/NoRoom";
 import RoomCard from "@/components/RoomCard";
 import {
   Bike,
@@ -123,10 +124,15 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
       </section>
       <section>
         <h2 className="text-xl font-semibold my-4">Rooms availiable</h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          {rooms.map((room) => (
-            <RoomCard key={room.id} room={room} params={params} />
-          ))}
+          {rooms.length > 0 ? (
+            rooms.map((room) => (
+              <RoomCard key={room.id} room={room} params={params} />
+            ))
+          ) : (
+            <NoRoom id={hotel.id} />
+          )}
         </div>
       </section>
     </section>
