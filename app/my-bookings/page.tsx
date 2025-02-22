@@ -1,3 +1,5 @@
+import NoGuestReservation from "@/components/myBookings/NoGuestReservation";
+import NoReservationMade from "@/components/myBookings/NoReservationMade";
 import RoomCard from "@/components/RoomCard";
 import { getBookedIMade, getRoomVisitorHaveMade } from "@/services/roomService";
 import { auth } from "@clerk/nextjs/server";
@@ -14,19 +16,23 @@ const page = async () => {
         Here are bookings you have made
       </h2>
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {roomBooked &&
-          roomBooked.length > 0 &&
-          roomBooked.map((room) => <RoomCard key={room.id} room={room} />)}
+        {roomBooked && roomBooked.length > 0 ? (
+          roomBooked.map((room) => <RoomCard key={room.id} room={room} />)
+        ) : (
+          <NoReservationMade />
+        )}
       </ul>
       <h2 className="text-xl md:text-2xl font-semibold mb-6 mt-2">
         Here are bookings visitros have made on your properties
       </h2>
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {roomVisitorHaveMade &&
-          roomVisitorHaveMade.length > 0 &&
+        {roomVisitorHaveMade && roomVisitorHaveMade.length > 0 ? (
           roomVisitorHaveMade.map((room) => (
             <RoomCard key={room.id} room={room} />
-          ))}
+          ))
+        ) : (
+          <NoGuestReservation />
+        )}
       </ul>
     </section>
   );

@@ -1,12 +1,13 @@
 import { getFilteredHotels } from "@/services/hotelService";
 
 import HotelCard from "./HotelCard";
+import NoHotelsFound from "./NoHotelsFound";
 async function HotelList(searchParams: any) {
   const data = await getFilteredHotels(searchParams.searchParams);
 
   return (
     <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4">
-      {data &&
+      {data && data.length > 0 ? (
         data.map((hotel) => (
           <HotelCard
             key={hotel.id}
@@ -20,7 +21,10 @@ async function HotelList(searchParams: any) {
             /* price={hotel.price!} */
             image={hotel.image}
           />
-        ))}
+        ))
+      ) : (
+        <NoHotelsFound />
+      )}
     </section>
   );
 }
