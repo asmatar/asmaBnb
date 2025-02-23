@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, XCircle } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -59,6 +59,12 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
     },
     shouldUnregister: true,
   });
+  useEffect(() => {
+    const firstError = Object.keys(form.formState.errors)[0];
+    if (firstError) {
+      form.setFocus(firstError);
+    }
+  }, [form.formState.errors, form.setFocus]);
   const { user } = useUser();
   const isOwner = user?.id === room?.user_id;
   const params = useParams();
