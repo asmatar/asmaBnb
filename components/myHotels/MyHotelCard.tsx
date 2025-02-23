@@ -50,10 +50,12 @@ const MyHotelCard = ({
         />
       </div>
       <div className="p-6">
-        <h2 className="text-lg font-bold mb-2">{title}</h2>
+        <h2 className="text-lg font-bold mb-2 text-gray-800 ">{title}</h2>
         <p className="text-gray-600 mb-4">{description.slice(0, 100)}...</p>
         <div className="flex justify-between items-center mb-4">
-          <span className="text-xl font-bold">${price}/night</span>
+          <span className="text-xl font-bold text-gray-800">
+            ${price}/night
+          </span>
         </div>
         <div className="flex justify-between space-x-2">
           <Link href={`/hotel/details/${id}`}>

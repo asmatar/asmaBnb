@@ -12,8 +12,6 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { newBookingOne } = body;
     /*
-  
-      POINT 12
       POINT 2
       point 15
       PAGINATION + verifier filtre meme si pas encore fetch
