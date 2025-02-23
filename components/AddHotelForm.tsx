@@ -44,7 +44,7 @@ import { Pencil, Plus, Terminal, Trash, View, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -69,26 +69,27 @@ const AddHotelForm = ({
   const inputImageRef = useRef<HTMLInputElement>(null);
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
+    mode: "onBlur",
     defaultValues: {
-      title: hotel?.title || "",
-      description: hotel?.description || "",
-      gym: hotel?.gym || false,
-      country: hotel?.country || "",
-      state: hotel?.state || "",
-      city: hotel?.city || "",
-      image: hotel?.image || "",
-      locationDescription: hotel?.locationDescription || "",
-      bar: hotel?.bar || false,
-      bikeRental: hotel?.bikeRental || false,
-      freeParking: hotel?.freeParking || false,
-      freeWifi: hotel?.freeWifi || false,
-      laundry: hotel?.laundry || false,
-      movieNights: hotel?.movieNights || false,
-      restaurant: hotel?.restaurant || false,
-      shopping: hotel?.shopping || false,
-      coffeeShop: hotel?.coffeeShop || false,
-      spa: hotel?.spa || false,
-      swimingPool: hotel?.swimingPool || false,
+      title: hotel?.title ?? "",
+      description: hotel?.description ?? "",
+      gym: hotel?.gym ?? false,
+      country: hotel?.country ?? "",
+      state: hotel?.state ?? "",
+      city: hotel?.city ?? "",
+      image: hotel?.image ?? "",
+      locationDescription: hotel?.locationDescription ?? "",
+      bar: hotel?.bar ?? false,
+      bikeRental: hotel?.bikeRental ?? false,
+      freeParking: hotel?.freeParking ?? false,
+      freeWifi: hotel?.freeWifi ?? false,
+      laundry: hotel?.laundry ?? false,
+      movieNights: hotel?.movieNights ?? false,
+      restaurant: hotel?.restaurant ?? false,
+      shopping: hotel?.shopping ?? false,
+      coffeeShop: hotel?.coffeeShop ?? false,
+      spa: hotel?.spa ?? false,
+      swimingPool: hotel?.swimingPool ?? false,
     },
     shouldUnregister: true,
   });
@@ -194,6 +195,12 @@ const AddHotelForm = ({
     </SelectItem>
   ));
 
+  useEffect(() => {
+    const firstError = Object.keys(formHotel.formState.errors)[0];
+    if (firstError) {
+      formHotel.setFocus(firstError);
+    }
+  }, [formHotel.formState.errors, formHotel.setFocus]);
   return (
     <Form {...formHotel}>
       <form
@@ -638,14 +645,6 @@ const AddHotelForm = ({
                         <Trash className="w-4 h-4 mr-3" />
                         Delete
                       </Button>{" "}
-                      {/*     <Button
-                          variant="outline"
-                          type="button"
-                          onClick={() => handleDeleteHotel(hotelId as string)}
-                        >
-                          <Trash className="w-4 h-4 mr-3" />
-                          Delete
-                        </Button>{" "} */}
                       <Dialog>
                         <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
                           <Plus className="w-4 h-4 mr-3" />
@@ -669,7 +668,7 @@ const AddHotelForm = ({
                   variant="outline"
                   type="submit"
                   className="hover:bg-primary-foreground  dark:border-background"
-                  disabled={!formHotel.formState.isValid}
+                  //disabled={!formHotel.formState.isValid}
                   form="addHotelForm"
                 >
                   <Pencil className="w-4 h-4 mr-2" />
