@@ -131,7 +131,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
               <RoomCard key={room.id} room={room} params={params} />
             ))
           ) : (
-            <NoRoom id={hotel.id} />
+            <NoRoom id={hotel.id} ownerHotelId={hotel.user_id} />
           )}
         </div>
       </section>
