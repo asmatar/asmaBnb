@@ -3,14 +3,18 @@ import SearchBar from "@/components/Home/SearchBar/SearchBar";
 import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
 
 import { Suspense } from "react";
-
+type searchParams = {
+  searchParams: Promise<{
+    title: string;
+    country: string;
+    state: string;
+    city: string;
+  }>;
+};
 /* import FramerDiv from "@/components/framer/div"; */
 export const revalidate = 3600;
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
-}) {
+export default async function Home({ searchParams }: searchParams) {
+  const searchParamsUrl = await searchParams;
   return (
     <>
       {/*  <FramerDiv></FramerDiv> */}
@@ -37,7 +41,7 @@ export default async function Home({
       </section>
       <SearchBar />
       <Suspense fallback={<HomeSkeleton />}>
-        <HotelList searchParams={searchParams} />
+        <HotelList searchParams={searchParamsUrl} />
       </Suspense>
     </>
   );

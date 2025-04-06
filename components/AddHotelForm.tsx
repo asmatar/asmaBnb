@@ -116,7 +116,7 @@ const AddHotelForm = ({
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
     try {
       const file = values.image as File;
-
+      console.log("file", file);
       if (hotelId) {
         const updatingHotelValues = {
           ...values,
@@ -456,7 +456,7 @@ const AddHotelForm = ({
                           accept=".png, .jpg, .jpeg"
                           onChange={(event) => {
                             const file = event.target.files?.[0];
-
+                            // setPreviewUrl(URL.createObjectURL(file));
                             field.onChange(file || "");
                             setPreviewUrl(URL.createObjectURL(file));
                           }}
