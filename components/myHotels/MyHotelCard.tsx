@@ -28,7 +28,7 @@ const MyHotelCard = ({
       return toast.error(response.error);
     } else if (response.success === false) {
       return toast.error(response.error);
-    } else if (response.success === true && response.roomData.length > 0) {
+    } else if (response.success === true && response.roomData?.length > 0) {
       return toast.success("Hotel deleted with his rooms");
     } else {
       return toast.success("Hotel deleted successfully");

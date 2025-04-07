@@ -20,7 +20,7 @@ import { MdDryCleaning, MdLocalLaundryService } from "react-icons/md";
 
 const HotelId = async ({ params }: { params: { hotelId: string } }) => {
   const hotel = await getOneHotel(params.hotelId ?? "");
-
+  if (!hotel) return null;
   const rooms = await getRoomByHotel(params.hotelId ?? "");
 
   return (
@@ -127,9 +127,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {rooms.length > 0 ? (
-            rooms.map((room) => (
-              <RoomCard key={room.id} room={room} params={params} />
-            ))
+            rooms.map((room) => <RoomCard key={room.id} room={room} />)
           ) : (
             <NoRoom id={hotel.id} />
           )}

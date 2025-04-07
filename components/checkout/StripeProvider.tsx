@@ -32,7 +32,7 @@ function Form({
   breakfastPrice,
   breakfastIncluded,
 }: {
-  action: any;
+  action: (formData: FormData) => Promise<void>;
   startDate: string;
   endDate: string;
   totalPrice: number;

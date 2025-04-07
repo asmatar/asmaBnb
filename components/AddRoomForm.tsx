@@ -50,8 +50,8 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
       soundProofed: room?.soundProofed || false,
       image: room?.image || "",
       roomPrice: room?.roomPrice || undefined,
-      breakfastPrice: room?.breakfastPrice || undefined,
-      bedCount: room?.bedCount || undefined,
+      breakfastPrice: room?.breakfastPrice,
+      bedCount: room?.bedCount || null,
       kingBed: room?.kingBed || undefined,
       guestCount: room?.guestCount || undefined,
       queenBed: room?.queenBed || undefined,
@@ -64,7 +64,7 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
     if (firstError) {
       form.setFocus(firstError);
     }
-  }, [form.formState.errors, form.setFocus]);
+  }, [form.formState.errors, form.setFocus, form]);
   const { user } = useUser();
   const isOwner = user?.id === room?.user_id;
   const params = useParams();

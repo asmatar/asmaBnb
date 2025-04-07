@@ -36,7 +36,6 @@ import {
   getCitiesByState,
   getStatesByCountry,
 } from "@/services/locationService";
-import { Hotel } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
@@ -53,10 +52,10 @@ import * as z from "zod";
 
 const AddHotelForm = ({
   countries,
-  hotel,
+  //hotel,
 }: {
   countries: ICountry[];
-  hotel: Hotel;
+  //hotel: Hotel;
 }) => {
   const params = useParams();
   const { hotelId } = params;
@@ -200,7 +199,7 @@ const AddHotelForm = ({
     if (firstError) {
       formHotel.setFocus(firstError);
     }
-  }, [formHotel.formState.errors, formHotel.setFocus]);
+  }, [formHotel.formState.errors, formHotel.setFocus, formHotel]);
   return (
     <Form {...formHotel}>
       <form

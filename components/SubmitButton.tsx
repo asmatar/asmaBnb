@@ -32,7 +32,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
 
   return (
     <Button
-      type={type}
+      type={type as "button" | "reset" | "submit"}
       disabled={disabled || pending}
       onClick={onClick}
       variant={variant}

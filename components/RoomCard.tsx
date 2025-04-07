@@ -57,8 +57,35 @@ import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-
-const RoomCard = ({ room }: { room: Room }) => {
+type RoomBooked = Room & {
+  endDate: string;
+  startDate: string;
+  booking: {
+    id: string;
+    user_id: string;
+    roomBooked: string;
+    hotelBooked: string;
+    startDate: string;
+    endDate: string;
+    totalPrice: number;
+    breakfastIncluded: boolean;
+    isPaid: boolean;
+    paymentIntentId: string;
+    created_at: string;
+  }[];
+  id: string;
+  user_id: string;
+  roomBooked: string;
+  hotelBooked: string;
+  paymentIntentId: string;
+  totalPrice: number;
+  breakfastIncluded: boolean;
+  isPaid: boolean;
+  created_at: string;
+  paymentStatus: string;
+  username: string;
+};
+const RoomCard = ({ room }: { room: RoomBooked }) => {
   const pathname = usePathname();
   const router = useRouter();
   //const { showToast } = useToast();
@@ -84,6 +111,7 @@ const RoomCard = ({ room }: { room: Room }) => {
     date?.from ?? room.startDate,
   );
   const handleDeleteRoom = async (formData: FormData) => {
+    console.log(formData);
     const response = await deleteRoom(formData);
     if (response.success === true) {
       toast.success("Room deleted successfully");
@@ -118,8 +146,8 @@ const RoomCard = ({ room }: { room: Room }) => {
       totalPrice: totalPrice,
       breakfastIncluded: hasBreakfastIncluded,
     };
-    const existedBooking = await existingBooking(newBookingOne);
-    if (existedBooking.data.length > 0) {
+    const { data } = await existingBooking(newBookingOne);
+    if (data && data.length > 0) {
       return toast.error("Room already booked for this period");
     }
     const response = await fetch("/api/stripe/checkout", {

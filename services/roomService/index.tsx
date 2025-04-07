@@ -75,11 +75,12 @@ export const createRoom = async (newRoom: InsertRoom) => {
 export const deleteRoom = async (formData: FormData) => {
   const id = formData.get("id");
   const supabase = await createClerkSupabaseClient();
+
   try {
     const { error: deleteBookingError, data: hasBooked } = await supabase
       .from("booking")
       .select("*")
-      .eq("roomBooked", id);
+      .eq("roomBooked", id as string);
 
     if (deleteBookingError || hasBooked.length > 0) {
       return {
@@ -100,7 +101,7 @@ export const deleteRoom = async (formData: FormData) => {
 
 export const getBookedIMade = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
-  const { data, error } = await supabase
+  const { data } = await supabase
 
     .from("booking")
     .select(
@@ -128,7 +129,7 @@ export const getBookedIMade = async (id: string) => {
 };
 export const getOneRoomInBooking = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
-  const { data, error } = await supabase
+  const { data } = await supabase
 
     .from("booking")
     .select(
