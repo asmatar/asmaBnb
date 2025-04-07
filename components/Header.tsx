@@ -1,4 +1,4 @@
-import { Logo } from "@/components/Logo";
+import { Logo } from "@/components/logo";
 
 import { ModeToggle } from "@/components/theme";
 import { Button } from "@/components/ui/button";

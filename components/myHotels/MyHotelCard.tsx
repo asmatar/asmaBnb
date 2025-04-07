@@ -12,7 +12,10 @@ export type MyHotelProps = {
   title: string;
   description: string;
   image: string;
-  price: number;
+  // minPrice: number | string;
+  // maxPrice: number | string;
+  //getRoomPrice: () => number[];
+  price: number[] | [];
 };
 const MyHotelCard = ({
   id,
@@ -20,6 +23,8 @@ const MyHotelCard = ({
   description,
   image,
   price,
+  //minPrice,
+  //maxPrice,
 }: MyHotelProps) => {
   const handleDeleteHotel = async (formData: FormData) => {
     const id = formData.get("id");
@@ -28,7 +33,11 @@ const MyHotelCard = ({
       return toast.error(response.error);
     } else if (response.success === false) {
       return toast.error(response.error);
-    } else if (response.success === true && response.roomData?.length > 0) {
+    } else if (
+      response.success === true &&
+      response.roomData &&
+      response.roomData.length > 0
+    ) {
       return toast.success("Hotel deleted with his rooms");
     } else {
       return toast.success("Hotel deleted successfully");
@@ -54,7 +63,10 @@ const MyHotelCard = ({
         <p className="text-gray-600 mb-4">{description.slice(0, 100)}...</p>
         <div className="flex justify-between items-center mb-4">
           <span className="text-xl font-bold text-gray-800">
-            ${price}/night
+            {price.length > 0
+              ? `$ ${Math.min(...price)} - $ ${Math.max(...price)}`
+              : `NA`}{" "}
+            /night
           </span>
         </div>
         <div className="flex justify-between space-x-2">

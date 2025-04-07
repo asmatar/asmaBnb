@@ -535,14 +535,11 @@ const AddHotelForm = ({
                         field.onChange(city);
                         fetchCities(city);
                       }}
-                      defaultValue={field.value}
-                      value={field.value}
+                      defaultValue={field.value || undefined}
+                      value={field.value || undefined}
                     >
                       <SelectTrigger className="bg-background">
-                        <SelectValue
-                          placeholder="select a state"
-                          defaultValue={field.value}
-                        />
+                        <SelectValue placeholder="select a state" />
                       </SelectTrigger>
                       <SelectContent>{statesOptions}</SelectContent>
                     </Select>
@@ -565,14 +562,10 @@ const AddHotelForm = ({
                       formHotel.getValues("state") === "" ? true : false
                     }
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    value={field.value}
+                    value={field.value || undefined}
                   >
                     <SelectTrigger className="bg-background">
-                      <SelectValue
-                        placeholder="Beach hotel is located at the very end of the beach road"
-                        defaultValue={field.value}
-                      />
+                      <SelectValue placeholder="Beach hotel is located at the very end of the beach road" />
                     </SelectTrigger>
                     <SelectContent>{citiesOptions}</SelectContent>
                   </Select>
