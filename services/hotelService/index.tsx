@@ -1,7 +1,7 @@
 "use server";
 
 import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
-import { InsertBooking, UpdateBooking } from "@/types/tableType";
+import { InsertHotel, UpdateHotel } from "@/types/tableType";
 import { revalidatePath } from "next/cache";
 
 // HOTELS API
@@ -16,7 +16,7 @@ export const getHotels = async () => {
   return data;
 };
 
-export const createHotel = async (newHotel: InsertBooking) => {
+export const createHotel = async (newHotel: InsertHotel) => {
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
 
   const supabase = await createClerkSupabaseClient();
@@ -83,7 +83,7 @@ export const deleteHotel = async (id: string) => {
   }
 };
 
-export const updateHotel = async (hotel: UpdateBooking) => {
+export const updateHotel = async (hotel: UpdateHotel) => {
   const supabase = await createClerkSupabaseClient();
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
   try {

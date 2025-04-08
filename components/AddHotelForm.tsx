@@ -36,6 +36,7 @@ import {
   getCitiesByState,
   getStatesByCountry,
 } from "@/services/locationService";
+import { Hotel } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
@@ -52,10 +53,10 @@ import * as z from "zod";
 
 const AddHotelForm = ({
   countries,
-  //hotel,
+  hotel,
 }: {
   countries: ICountry[];
-  //hotel: Hotel;
+  hotel?: Hotel;
 }) => {
   const params = useParams();
   const { hotelId } = params;
@@ -131,6 +132,7 @@ const AddHotelForm = ({
         }
       }
       if (file instanceof File) {
+        console.log("file", file);
         const formData = new FormData();
         formData.append("image", file);
 
@@ -146,6 +148,7 @@ const AddHotelForm = ({
 
       const response = await createHotel(createHotelvalues);
       if (response.success === false) {
+        console.log("zrong");
         return toast.error(response.error);
       }
       router.push(`/hotel/${id}`);

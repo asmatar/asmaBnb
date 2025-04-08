@@ -14,7 +14,6 @@ export const uploadImageRoom = async (formData: FormData) => {
 };
 export const uploadImage = async (formData: FormData) => {
   const supabase = await createClerkSupabaseClient();
-
   const file = formData.get("image") as File;
   const { data, error } = await supabase.storage
     .from("hotels")
@@ -22,5 +21,6 @@ export const uploadImage = async (formData: FormData) => {
   if (error) {
     error.message;
   }
+  console.log("first", data);
   return data;
 };
