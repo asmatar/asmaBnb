@@ -12,9 +12,6 @@ export type MyHotelProps = {
   title: string;
   description: string;
   image: string;
-  // minPrice: number | string;
-  // maxPrice: number | string;
-  //getRoomPrice: () => number[];
   price: number[] | [];
 };
 const MyHotelCard = ({

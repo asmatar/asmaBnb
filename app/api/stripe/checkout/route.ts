@@ -11,11 +11,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { newBookingOne } = body;
-    /*
-      POINT 2
-      point 15
-      PAGINATION + verifier filtre meme si pas encore fetch
-      */
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: newBookingOne.totalPrice * 100,

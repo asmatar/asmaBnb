@@ -11,7 +11,7 @@ async function MyHotelList() {
   if (hotels.length < 1) {
     return <div className="w-full h-[200px]">no hotel</div>;
   }
-  console.log("Hotels--------", hotels);
+
   const getPriceRange = (hotel: hotelPrice) => {
     return hotel.room.map((room: { roomPrice: number }) => {
       return room.roomPrice;

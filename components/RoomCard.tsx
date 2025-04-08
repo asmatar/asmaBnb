@@ -88,7 +88,7 @@ type RoomBooked = Room & {
 const RoomCard = ({ room }: { room: RoomBooked }) => {
   const pathname = usePathname();
   const router = useRouter();
-  //const { showToast } = useToast();
+
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();

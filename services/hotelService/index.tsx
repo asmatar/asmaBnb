@@ -145,16 +145,6 @@ export const getHotelLocation = async () => {
   return data;
 };
 
-/* .from("booking")
-.select(
-  `
-  *,
-  room (
-    *
-  )
-`,
-)
-.eq("user_id", id); */
 export async function getMyHotel(id: string) {
   const supabase = await createClerkSupabaseClient();
 
