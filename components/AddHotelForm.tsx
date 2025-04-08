@@ -226,6 +226,7 @@ const AddHotelForm = ({
         onSubmit={formHotel.handleSubmit(onSubmit)}
         className="space-y-6"
         id="addHotelForm"
+        data-form-type="hotel-form"
       >
         <h3 className="font-semibold text-lg">Describe your hotel</h3>
         <div className="flex flex-col md:flex-row gap-6">
@@ -643,7 +644,7 @@ const AddHotelForm = ({
                     <>
                       <Button
                         variant="outline"
-                        type="submit"
+                        type="button"
                         disabled={!formHotel.formState.isValid}
                       >
                         <MdUpdate className="w-4 h-4 mr-3" />

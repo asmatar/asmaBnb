@@ -133,7 +133,7 @@ export async function getFilteredHotels(filters: {
   return data;
 }
 export const getHotelLocation = async () => {
-  const supabase = createClerkSupabaseClient();
+  const supabase = await createClerkSupabaseClient();
 
   const { data, error } = await supabase
     .from("hotel")
