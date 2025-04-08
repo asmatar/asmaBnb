@@ -23,7 +23,7 @@ export const updateRoom = async (room: UpdateRoom) => {
   }
 };
 export const getAllRooms = async () => {
-  const supabase = createClerkSupabaseClient();
+  const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase.from("room").select("*");
 
   if (error) {
@@ -33,7 +33,7 @@ export const getAllRooms = async () => {
   return data;
 };
 export const getRoomByHotel = async (id: string) => {
-  const supabase = createClerkSupabaseClient();
+  const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase
     .from("room")
     .select("*, booking(*)")

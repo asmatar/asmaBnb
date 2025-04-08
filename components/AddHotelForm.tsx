@@ -67,6 +67,12 @@ const AddHotelForm = ({
   const isOwner = user?.id === hotel?.user_id;
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputImageRef = useRef<HTMLInputElement>(null);
+  const [isDialogOpen, setIsDialogOpened] = useState(false);
+
+  const setIsDialogOpen = (value: boolean) => {
+    setIsDialogOpened(value);
+  };
+
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     mode: "onBlur",
@@ -115,6 +121,7 @@ const AddHotelForm = ({
   };
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
     try {
+      console.log("values", values);
       const file = values.image as File;
       console.log("file", file);
       if (hotelId) {
@@ -131,16 +138,16 @@ const AddHotelForm = ({
           toast.success("Hotel updated successfully");
         }
       }
-
-      if (file && file instanceof File) {
+      console.log(typeof file);
+      if (file && file instanceof Object) {
         console.log("file is a valid File object");
         const formData = new FormData();
         formData.append("image", file);
-        console.log("formData created", formData);
 
+        console.log("formData created", formData.getAll);
         try {
-          await uploadImage(formData);
           console.log("image uploaded successfully");
+          await uploadImage(formData);
         } catch (uploadError) {
           console.error("Upload error:", uploadError);
         }
@@ -152,7 +159,7 @@ const AddHotelForm = ({
 
       const createHotelvalues = {
         ...values,
-        image: (file as File).name || undefined,
+        image: (file as File).name,
         id,
       };
 
@@ -464,6 +471,7 @@ const AddHotelForm = ({
                         <Input
                           type="file"
                           ref={inputImageRef}
+                          name="image"
                           className=""
                           accept=".png, .jpg, .jpeg"
                           onChange={(event) => {
@@ -650,8 +658,11 @@ const AddHotelForm = ({
                       >
                         <Trash className="w-4 h-4 mr-3" />
                         Delete
-                      </Button>{" "}
-                      <Dialog>
+                      </Button>
+                      <Dialog
+                        open={isDialogOpen}
+                        onOpenChange={setIsDialogOpen}
+                      >
                         <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
                           <Plus className="w-4 h-4 mr-3" />
                           Add room
@@ -663,7 +674,8 @@ const AddHotelForm = ({
                               All details about a room in your hotel.
                             </DialogDescription>
                           </DialogHeader>
-                          <AddRoomForm />
+                          {/* roooooo */}
+                          <AddRoomForm setFormOpen={setIsDialogOpen} />
                         </DialogContent>
                       </Dialog>
                     </>

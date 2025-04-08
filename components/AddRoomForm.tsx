@@ -31,8 +31,9 @@ import { Textarea } from "./ui/textarea";
 
 type AddRoomFormProps = {
   room?: Room;
+  setFormOpen: (value: boolean) => void;
 };
-const AddRoomForm = ({ room }: AddRoomFormProps) => {
+const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
   const form = useForm<z.infer<typeof roomSchema>>({
     resolver: zodResolver(roomSchema),
     defaultValues: {
@@ -97,7 +98,7 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
       const id = uuidv4();
       const createRoomvalues = {
         ...values,
-        image: (file as File).name || undefined,
+        image: (file as File).name,
         hotel_id: hotelId as string,
         id,
       };
@@ -105,6 +106,7 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
       if (response.success) {
         toast.success("Room created successfully");
         form.reset();
+        setFormOpen(false);
       } else {
         return toast.error(response.error);
       }
@@ -329,7 +331,9 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                           onChange={(event) => {
                             const file = event.target.files?.[0];
                             field.onChange(file || "");
-                            setPreviewUrl(URL.createObjectURL(file));
+                            if (file) {
+                              setPreviewUrl(URL.createObjectURL(file));
+                            }
                           }}
                         />
                       </FormControl>
@@ -386,7 +390,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       If you offer breakfast, what is the price
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -402,7 +410,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       how many beds are avaliable in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -418,7 +430,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       how many king size beds are in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -434,7 +450,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       How many guest are allowed in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -450,7 +470,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       How many Queen Bed are in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -466,7 +490,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       How many bathroom are in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
