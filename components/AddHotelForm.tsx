@@ -131,13 +131,23 @@ const AddHotelForm = ({
           toast.success("Hotel updated successfully");
         }
       }
-      if (file instanceof File) {
-        console.log("file", file);
+
+      if (file && file instanceof File) {
+        console.log("file is a valid File object");
         const formData = new FormData();
         formData.append("image", file);
+        console.log("formData created", formData);
 
-        await uploadImage(formData);
+        try {
+          await uploadImage(formData);
+          console.log("image uploaded successfully");
+        } catch (uploadError) {
+          console.error("Upload error:", uploadError);
+        }
+      } else {
+        console.log("file is not a valid File object", file);
       }
+
       const id = uuidv4();
 
       const createHotelvalues = {
@@ -458,9 +468,10 @@ const AddHotelForm = ({
                           accept=".png, .jpg, .jpeg"
                           onChange={(event) => {
                             const file = event.target.files?.[0];
-                            // setPreviewUrl(URL.createObjectURL(file));
                             field.onChange(file || "");
-                            setPreviewUrl(URL.createObjectURL(file));
+                            if (file) {
+                              setPreviewUrl(URL.createObjectURL(file));
+                            }
                           }}
                         />
                       </FormControl>
