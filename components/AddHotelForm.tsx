@@ -45,7 +45,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -217,7 +217,7 @@ const AddHotelForm = ({
   useEffect(() => {
     const firstError = Object.keys(formHotel.formState.errors)[0];
     if (firstError) {
-      formHotel.setFocus(firstError);
+      formHotel.setFocus(firstError as Path<z.infer<typeof hotelSchema>>);
     }
   }, [formHotel.formState.errors, formHotel.setFocus, formHotel]);
   return (
