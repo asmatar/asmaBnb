@@ -1,5 +1,12 @@
 "use client";
-import { Form, FormField, FormItem } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -25,10 +32,18 @@ type FormProps = {
   }[];
 };
 export const searchHotelSchema = z.object({
-  title: z.string(),
-  country: z.string(),
-  state: z.string(),
-  city: z.string(),
+  title: z.string().optional(),
+  country: z.string().optional(),
+  state: z.string().optional(),
+  city: z.string().optional(),
+  spa: z.boolean().optional(),
+  gym: z.boolean().optional(),
+  bar: z.boolean().optional(),
+  restaurant: z.boolean().optional(),
+  freeWifi: z.boolean().optional(),
+  shopping: z.boolean().optional(),
+  freeParking: z.boolean().optional(),
+  swimingPool: z.boolean().optional(),
 });
 export default function Formulaire({ location, countryOptions }: FormProps) {
   const [filteredStates, setFilteredStates] = useState<string[]>([]);
@@ -41,6 +56,14 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
       country: "",
       state: "",
       city: "",
+      spa: false,
+      gym: false,
+      bar: false,
+      restaurant: false,
+      freeWifi: false,
+      shopping: false,
+      freeParking: false,
+      swimingPool: false,
     },
   });
   const router = useRouter();
@@ -52,11 +75,39 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     router.push(pathname);
   };
   async function onSubmit(values: z.infer<typeof searchHotelSchema>) {
+    console.log("valuessss", values);
+
     await getFilteredHotels({
       ...values,
-      title: values.title,
+      spa: values.spa?.toString(),
+      gym: values.gym?.toString(),
+      bar: values.bar?.toString(),
+      restaurant: values.restaurant?.toString(),
+      freeWifi: values.freeWifi?.toString(),
+      shopping: values.shopping?.toString(),
+      freeParking: values.freeParking?.toString(),
+      swimingPool: values.swimingPool?.toString(),
     });
-    const query = new URLSearchParams(values).toString();
+
+    const formatedValues = Object.entries(values).reduce(
+      (acc, [key, value]) => {
+        if (key === "gym" && value !== true) return acc;
+        if (key === "bar" && value !== true) return acc;
+        if (key === "restaurant" && value !== true) return acc;
+        if (key === "freeWifi" && value !== true) return acc;
+        if (key === "shopping" && value !== true) return acc;
+        if (key === "freeParking" && value !== true) return acc;
+        if (key === "swimingPool" && value !== true) return acc;
+        if (key === "spa" && value !== true) return acc;
+        if (value !== undefined && value !== "") {
+          acc[key] = typeof value === "boolean" ? String(value) : value;
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    const query = new URLSearchParams(formatedValues).toString();
     router.push(`?${query}`);
   }
 
@@ -196,6 +247,151 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                   </SelectTrigger>
                   <SelectContent>{citiesOptions}</SelectContent>
                 </Select>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="spa"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(spa) => {
+                      field.onChange(spa);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>Spa</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gym"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(gym) => {
+                      field.onChange(gym);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>Gym</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="bar"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(bar) => {
+                      field.onChange(bar);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>Bar</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="restaurant"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(restaurant) => {
+                      field.onChange(restaurant);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>Restaurant</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="freeWifi"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(freeWifi) => {
+                      field.onChange(freeWifi);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>freeWifi</FormLabel>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="shopping"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(shopping) => {
+                      field.onChange(shopping);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>Shopping</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="freeParking"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(freeParking) => {
+                      field.onChange(freeParking);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>Free parking</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="swimingPool"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(swimingPool) => {
+                      field.onChange(swimingPool);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </FormControl>
+                <FormLabel>Swiming pool</FormLabel>
               </FormItem>
             )}
           />

@@ -24,7 +24,6 @@ const MyHotelCard = ({
   //maxPrice,
 }: MyHotelProps) => {
   const handleDeleteHotel = async (formData: FormData) => {
-    console.log("delete hotel -----", formData);
     const id = formData.get("id");
     const response = await deleteHotel(id as string);
     if (response.success === false && response.errorType === "hasBooking") {

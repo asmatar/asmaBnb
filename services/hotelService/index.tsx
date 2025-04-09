@@ -109,10 +109,31 @@ export async function getFilteredHotels(filters: {
   country?: string;
   state?: string;
   city?: string;
+  spa?: string;
+  gym?: string;
+  bar?: string;
+  restaurant?: string;
+  freeWifi?: string;
+  shopping?: string;
+  freeParking?: string;
+  swimingPool?: string;
 }) {
   const supabase = await createClerkSupabaseClient();
-  const { country, state, city, title } = filters;
-
+  const {
+    country,
+    state,
+    city,
+    title,
+    spa,
+    gym,
+    bar,
+    restaurant,
+    freeWifi,
+    shopping,
+    freeParking,
+    swimingPool,
+  } = filters;
+  console.log("here", filters);
   let query = supabase.from("hotel").select("*");
 
   if (title) {
@@ -127,6 +148,32 @@ export async function getFilteredHotels(filters: {
   if (city) {
     query = query.eq("city", city);
   }
+
+  if (spa === "true") {
+    query = query.eq("spa", true);
+  }
+  if (gym === "true") {
+    query = query.eq("gym", true);
+  }
+  if (bar === "true") {
+    query = query.eq("bar", true);
+  }
+  if (restaurant === "true") {
+    query = query.eq("restaurant", true);
+  }
+  if (freeWifi === "true") {
+    query = query.eq("freeWifi", true);
+  }
+  if (shopping === "true") {
+    query = query.eq("shopping", true);
+  }
+  if (freeParking === "true") {
+    query = query.eq("freeParking", true);
+  }
+  if (swimingPool === "true") {
+    query = query.eq("swimingPool", true);
+  }
+
   const { data, error } = await query;
   if (error) {
     error.message;
