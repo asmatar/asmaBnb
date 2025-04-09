@@ -20,7 +20,7 @@ import { Pencil, XCircle } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -30,7 +30,7 @@ import { Textarea } from "./ui/textarea";
 
 type AddRoomFormProps = {
   room?: Room;
-  setFormOpen: (value: boolean) => void;
+  setFormOpen?: (value: boolean) => void;
 };
 const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
   const form = useForm<z.infer<typeof roomSchema>>({
@@ -62,7 +62,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
   useEffect(() => {
     const firstError = Object.keys(form.formState.errors)[0];
     if (firstError) {
-      form.setFocus(firstError);
+      form.setFocus(firstError as Path<z.infer<typeof roomSchema>>);
     }
   }, [form.formState.errors, form.setFocus, form]);
   const { user } = useUser();

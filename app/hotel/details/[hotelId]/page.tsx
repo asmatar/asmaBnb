@@ -127,9 +127,14 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {rooms.length > 0 ? (
-            rooms.map((room) => <RoomCard key={room.id} room={room} />)
+            rooms.map((room) => (
+              <RoomCard key={room.id} room={room} userId={room.user_id} />
+            ))
           ) : (
-            <NoRoom id={hotel.id} />
+            <NoRoom
+              id={hotel.id}
+              userId={hotel.user_id} /* userId={room.userId} */
+            />
           )}
         </div>
       </section>

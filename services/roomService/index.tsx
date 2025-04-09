@@ -41,6 +41,7 @@ export const getRoomByHotel = async (id: string) => {
   if (error) {
     throw new Error("room not found");
   }
+  console.log(data);
   return data;
 };
 export const getOneRoom = async (id: string) => {

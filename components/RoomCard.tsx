@@ -28,7 +28,7 @@ import {
   existingBooking,
 } from "@/services/bookingService";
 import { deleteRoom } from "@/services/roomService";
-import { Room } from "@/types/tableType";
+import { RoomBooked } from "@/types/types";
 import { useUser } from "@clerk/clerk-react";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import {
@@ -57,35 +57,14 @@ import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-type RoomBooked = Room & {
-  endDate: string;
-  startDate: string;
-  booking: {
-    id: string;
-    user_id: string;
-    roomBooked: string;
-    hotelBooked: string;
-    startDate: string;
-    endDate: string;
-    totalPrice: number;
-    breakfastIncluded: boolean;
-    isPaid: boolean;
-    paymentIntentId: string;
-    created_at: string;
-  }[];
-  id: string;
-  user_id: string;
-  roomBooked: string;
-  hotelBooked: string;
-  paymentIntentId: string;
-  totalPrice: number;
-  breakfastIncluded: boolean;
-  isPaid: boolean;
-  created_at: string;
-  paymentStatus: string;
-  username: string;
-};
-const RoomCard = ({ room }: { room: RoomBooked }) => {
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
+
+const RoomCard = ({ room, userId }: { room: RoomBooked; userId: string }) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -393,16 +372,38 @@ const RoomCard = ({ room }: { room: RoomBooked }) => {
                   </span>{" "}
                   for <span className="font-bold">{numberOfNights} days</span>
                 </p>
+
                 <form action={handleCheckout}>
-                  <SubmitButton
-                    variant="default"
-                    className="w-full"
-                    text="Book room"
-                    loadingText="Booking room..."
-                    disabled={numberOfNights < 1}
-                  >
-                    <TbReservedLine className="h-4 w-4 mr-2" />
-                  </SubmitButton>
+                  {!user ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <SubmitButton
+                            variant="default"
+                            className="w-full"
+                            text="Book room"
+                            loadingText="Booking room..."
+                            disabled={numberOfNights < 1}
+                          >
+                            <TbReservedLine className="h-4 w-4 mr-2" />
+                          </SubmitButton>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          You have to be connected to book this room
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
+                    <SubmitButton
+                      variant="default"
+                      className="w-full"
+                      text="Book room"
+                      loadingText="Booking room..."
+                      disabled={numberOfNights < 1}
+                    >
+                      <TbReservedLine className="h-4 w-4 mr-2" />
+                    </SubmitButton>
+                  )}
                 </form>
               </div>
             </>
