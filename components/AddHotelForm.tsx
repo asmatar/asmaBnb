@@ -1,16 +1,7 @@
 "use client";
-import AddRoomForm from "@/components/AddRoomForm";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -40,7 +31,7 @@ import { Hotel } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
-import { Pencil, Plus, Terminal, Trash, View, XCircle } from "lucide-react";
+import { Pencil, Terminal, Trash, View, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -660,7 +651,7 @@ const AddHotelForm = ({
                         <Trash className="w-4 h-4 mr-3" />
                         Delete
                       </Button>
-                      <Dialog
+                      {/* <Dialog
                         open={isDialogOpen}
                         onOpenChange={setIsDialogOpen}
                       >
@@ -675,10 +666,10 @@ const AddHotelForm = ({
                               All details about a room in your hotel.
                             </DialogDescription>
                           </DialogHeader>
-                          {/* roooooo */}
-                          <AddRoomForm setFormOpen={setIsDialogOpen} />
+                          {/* roooooo 
+                           <AddRoomForm setFormOpen={setIsDialogOpen} /> 
                         </DialogContent>
-                      </Dialog>
+                      </Dialog>*/}
                     </>
                   ) : null}
                 </>
