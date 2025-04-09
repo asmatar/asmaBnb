@@ -64,9 +64,10 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 
-const RoomCard = ({ room, userId }: { room: RoomBooked; userId: string }) => {
+const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
   const pathname = usePathname();
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
@@ -155,7 +156,9 @@ const RoomCard = ({ room, userId }: { room: RoomBooked; userId: string }) => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>{room.roomTitle}</CardTitle>
+          <CardTitle className="break-words whitespace-normal">
+            {room.roomTitle}
+          </CardTitle>
           <CardDescription className="min-h-[120px]">
             {room.roomDescription}
           </CardDescription>
@@ -422,7 +425,7 @@ const RoomCard = ({ room, userId }: { room: RoomBooked; userId: string }) => {
                   <Trash className="h-4 w-4 mr-2" />
                 </SubmitButton>
               </form>
-              <Dialog>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
                   <Plus className="w-4 h-4 mr-3" />
                   Edit
@@ -434,7 +437,7 @@ const RoomCard = ({ room, userId }: { room: RoomBooked; userId: string }) => {
                       Make changes to this room
                     </DialogDescription>
                   </DialogHeader>
-                  <AddRoomForm room={room} />
+                  <AddRoomForm room={room} setFormOpen={setIsDialogOpen} />
                 </DialogContent>
               </Dialog>
             </div>

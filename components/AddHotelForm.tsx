@@ -3,6 +3,14 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -31,7 +39,7 @@ import { Hotel } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
-import { Pencil, Terminal, Trash, View, XCircle } from "lucide-react";
+import { Pencil, Plus, Terminal, Trash, View, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -41,6 +49,7 @@ import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
+import AddRoomForm from "./AddRoomForm";
 
 const AddHotelForm = ({
   countries,
@@ -58,7 +67,7 @@ const AddHotelForm = ({
   const isOwner = user?.id === hotel?.user_id;
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputImageRef = useRef<HTMLInputElement>(null);
-  const [isDialogOpen, setIsDialogOpened] = useState(false);
+  const [isDialogOpened, setIsDialogOpened] = useState(false);
 
   const setIsDialogOpen = (value: boolean) => {
     setIsDialogOpened(value);
@@ -635,7 +644,7 @@ const AddHotelForm = ({
                     <>
                       <Button
                         variant="outline"
-                        type="button"
+                        type="submit"
                         disabled={!formHotel.formState.isValid}
                       >
                         <MdUpdate className="w-4 h-4 mr-3" />
@@ -651,8 +660,8 @@ const AddHotelForm = ({
                         <Trash className="w-4 h-4 mr-3" />
                         Delete
                       </Button>
-                      {/* <Dialog
-                        open={isDialogOpen}
+                      <Dialog
+                        open={isDialogOpened}
                         onOpenChange={setIsDialogOpen}
                       >
                         <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
@@ -666,10 +675,10 @@ const AddHotelForm = ({
                               All details about a room in your hotel.
                             </DialogDescription>
                           </DialogHeader>
-                          {/* roooooo 
-                           <AddRoomForm setFormOpen={setIsDialogOpen} /> 
+                          {/* roooooo */}
+                          <AddRoomForm setFormOpen={setIsDialogOpen} />
                         </DialogContent>
-                      </Dialog>*/}
+                      </Dialog>
                     </>
                   ) : null}
                 </>

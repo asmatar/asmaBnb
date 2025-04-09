@@ -29,7 +29,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
   className = "",
 }: SubmitButtonProps) => {
   const { pending } = useFormStatus();
-
+  console.log("here i am");
   return (
     <Button
       type={type as "button" | "reset" | "submit"}

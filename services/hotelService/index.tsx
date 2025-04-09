@@ -50,6 +50,7 @@ export const getOneHotel = async (id: string) => {
 };
 export const deleteHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
+  console.log("delete hotel -----", id);
   try {
     const { error: deleteBookingError, data: hasBooked } = await supabase
       .from("booking")

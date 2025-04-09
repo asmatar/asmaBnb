@@ -94,7 +94,7 @@ export const createRoom = async (newRoom: InsertRoom) => {
 export const deleteRoom = async (formData: FormData) => {
   const id = formData.get("id");
   const supabase = await createClerkSupabaseClient();
-
+  console.log("deleteeeeeeeeee", id);
   try {
     const { error: deleteBookingError, data: hasBooked } = await supabase
       .from("booking")

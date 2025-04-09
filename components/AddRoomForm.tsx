@@ -30,7 +30,7 @@ import { Textarea } from "./ui/textarea";
 
 type AddRoomFormProps = {
   room?: Room;
-  setFormOpen?: (value: boolean) => void;
+  setFormOpen: (value: boolean) => void;
 };
 const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
   const form = useForm<z.infer<typeof roomSchema>>({
@@ -582,7 +582,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
               }}
             >
               <MdUpdate className="w-4 h-4 mr-2" />
-              Update
+              {form.formState.isSubmitting ? "Updating..." : "Update"}
             </Button>
           ) : (
             <Button

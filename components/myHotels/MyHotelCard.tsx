@@ -24,6 +24,7 @@ const MyHotelCard = ({
   //maxPrice,
 }: MyHotelProps) => {
   const handleDeleteHotel = async (formData: FormData) => {
+    console.log("delete hotel -----", formData);
     const id = formData.get("id");
     const response = await deleteHotel(id as string);
     if (response.success === false && response.errorType === "hasBooking") {
@@ -90,7 +91,7 @@ const MyHotelCard = ({
           <input type="hidden" name="id" value={id} />
           <SubmitButton
             variant="outline"
-            type="button"
+            type="submit"
             text="Delete"
             className={`mt-4  text-primary py-2 px-4 rounded-lg w-full `}
             loadingText="Deleting..."
