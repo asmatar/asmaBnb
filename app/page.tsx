@@ -9,11 +9,13 @@ type searchParams = {
     country: string;
     state: string;
     city: string;
+    spa: string;
   }>;
 };
 /* import FramerDiv from "@/components/framer/div"; */
 export const revalidate = 3600;
 export default async function Home({ searchParams }: searchParams) {
+  console.log("seaarcch params---, searchParams", searchParams);
   const searchParamsUrl = await searchParams;
   return (
     <>

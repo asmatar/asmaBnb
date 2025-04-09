@@ -109,10 +109,11 @@ export async function getFilteredHotels(filters: {
   country?: string;
   state?: string;
   city?: string;
+  spa?: string;
 }) {
   const supabase = await createClerkSupabaseClient();
-  const { country, state, city, title } = filters;
-
+  const { country, state, city, title, spa } = filters;
+  console.log("here", filters);
   let query = supabase.from("hotel").select("*");
 
   if (title) {
@@ -126,6 +127,10 @@ export async function getFilteredHotels(filters: {
   }
   if (city) {
     query = query.eq("city", city);
+  }
+
+  if (spa === "true") {
+    query = query.eq("spa", true);
   }
   const { data, error } = await query;
   if (error) {

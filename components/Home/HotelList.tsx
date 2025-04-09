@@ -7,6 +7,7 @@ type searchParams = {
   country: string;
   state: string;
   city: string;
+  spa: string;
 };
 async function HotelList({ searchParams }: { searchParams: searchParams }) {
   const data = await getFilteredHotels(searchParams);

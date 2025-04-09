@@ -1,4 +1,5 @@
 "use client";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,10 +26,11 @@ type FormProps = {
   }[];
 };
 export const searchHotelSchema = z.object({
-  title: z.string(),
-  country: z.string(),
-  state: z.string(),
-  city: z.string(),
+  title: z.string().optional(),
+  country: z.string().optional(),
+  state: z.string().optional(),
+  city: z.string().optional(),
+  spa: z.boolean().optional(),
 });
 export default function Formulaire({ location, countryOptions }: FormProps) {
   const [filteredStates, setFilteredStates] = useState<string[]>([]);
@@ -41,6 +43,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
       country: "",
       state: "",
       city: "",
+      spa: false,
     },
   });
   const router = useRouter();
@@ -52,11 +55,25 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     router.push(pathname);
   };
   async function onSubmit(values: z.infer<typeof searchHotelSchema>) {
+    console.log("valuessss", values);
+
     await getFilteredHotels({
       ...values,
-      title: values.title,
+      spa: values.spa?.toString(),
     });
-    const query = new URLSearchParams(values).toString();
+
+    const formatedValues = Object.entries(values).reduce(
+      (acc, [key, value]) => {
+        if (key === "spa" && value !== true) return acc; // skip spa if false
+        if (value !== undefined && value !== "") {
+          acc[key] = typeof value === "boolean" ? String(value) : value;
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    const query = new URLSearchParams(formatedValues).toString();
     router.push(`?${query}`);
   }
 
@@ -197,6 +214,19 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                   <SelectContent>{citiesOptions}</SelectContent>
                 </Select>
               </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="spa"
+            render={({ field }) => (
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={(spa) => {
+                  field.onChange(spa);
+                  form.handleSubmit(onSubmit)();
+                }}
+              />
             )}
           />
           <Button type="button" onClick={() => cleanForm()}>

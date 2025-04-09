@@ -21,21 +21,16 @@ async function MyHotelList() {
   return (
     <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4">
       {hotels &&
-        hotels.map(
-          (hotel) => (
-            console.log("hotelllll", hotel.room),
-            (
-              <MyHotelCard
-                key={hotel.id}
-                id={hotel.id}
-                title={hotel.title}
-                description={hotel.description!}
-                image={hotel.image}
-                price={getPriceRange(hotel)}
-              />
-            )
-          ),
-        )}
+        hotels.map((hotel) => (
+          <MyHotelCard
+            key={hotel.id}
+            id={hotel.id}
+            title={hotel.title}
+            description={hotel.description!}
+            image={hotel.image}
+            price={getPriceRange(hotel)}
+          />
+        ))}
     </section>
   );
 }
