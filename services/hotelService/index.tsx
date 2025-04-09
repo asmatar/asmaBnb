@@ -1,7 +1,7 @@
 "use server";
 
 import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
-import { InsertBooking, UpdateBooking } from "@/types/tableType";
+import { InsertHotel, UpdateHotel } from "@/types/tableType";
 import { revalidatePath } from "next/cache";
 
 // HOTELS API
@@ -16,9 +16,9 @@ export const getHotels = async () => {
   return data;
 };
 
-export const createHotel = async (newHotel: InsertBooking) => {
+export const createHotel = async (newHotel: InsertHotel) => {
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
-
+  console.log("inside create hotel");
   const supabase = await createClerkSupabaseClient();
   try {
     const { data, error } = await supabase
@@ -50,6 +50,7 @@ export const getOneHotel = async (id: string) => {
 };
 export const deleteHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
+  console.log("delete hotel -----", id);
   try {
     const { error: deleteBookingError, data: hasBooked } = await supabase
       .from("booking")
@@ -67,6 +68,7 @@ export const deleteHotel = async (id: string) => {
       .from("room")
       .delete()
       .eq("hotel_id", id);
+
     if (deleteRoomError) {
       deleteRoomError.message;
     }
@@ -76,13 +78,13 @@ export const deleteHotel = async (id: string) => {
       return { success: false, error: error.message };
     }
     revalidatePath("/my-hotels");
-    return { success: true, roomData };
+    return { success: true, roomData: roomData || [] };
   } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-export const updateHotel = async (hotel: UpdateBooking) => {
+export const updateHotel = async (hotel: UpdateHotel) => {
   const supabase = await createClerkSupabaseClient();
   const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
   try {
@@ -132,7 +134,7 @@ export async function getFilteredHotels(filters: {
   return data;
 }
 export const getHotelLocation = async () => {
-  const supabase = createClerkSupabaseClient();
+  const supabase = await createClerkSupabaseClient();
 
   const { data, error } = await supabase
     .from("hotel")
@@ -143,15 +145,19 @@ export const getHotelLocation = async () => {
   }
   return data;
 };
+
 export async function getMyHotel(id: string) {
   const supabase = await createClerkSupabaseClient();
 
   const { data, error } = await supabase
     .from("hotel")
-    .select("*")
+    .select(`*, room(id, roomPrice)`)
     .eq("user_id", id);
+
   if (error) {
-    error.message;
+    console.error(error.message);
+    return [];
   }
-  return data;
+
+  return data || [];
 }

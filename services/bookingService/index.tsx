@@ -33,7 +33,6 @@ export const deleteBooking = async (formData: FormData) => {
   } catch (error) {
     return { success: false, error: error.message };
   }
-
 };
 export const getBookingFromOneRoom = async (id: string) => {
   const supabase = await createClerkSupabaseClient();

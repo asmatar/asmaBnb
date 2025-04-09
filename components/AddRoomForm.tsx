@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { roomSchema } from "@/schema/formSchema";
-import { uploadImageRoom } from "@/services/imageService";
 import { createRoom, updateRoom } from "@/services/roomService";
 import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
@@ -21,7 +20,7 @@ import { Pencil, XCircle } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -31,8 +30,9 @@ import { Textarea } from "./ui/textarea";
 
 type AddRoomFormProps = {
   room?: Room;
+  setFormOpen: (value: boolean) => void;
 };
-const AddRoomForm = ({ room }: AddRoomFormProps) => {
+const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
   const form = useForm<z.infer<typeof roomSchema>>({
     resolver: zodResolver(roomSchema),
     defaultValues: {
@@ -50,8 +50,8 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
       soundProofed: room?.soundProofed || false,
       image: room?.image || "",
       roomPrice: room?.roomPrice || undefined,
-      breakfastPrice: room?.breakfastPrice || undefined,
-      bedCount: room?.bedCount || undefined,
+      breakfastPrice: room?.breakfastPrice,
+      bedCount: room?.bedCount || null,
       kingBed: room?.kingBed || undefined,
       guestCount: room?.guestCount || undefined,
       queenBed: room?.queenBed || undefined,
@@ -62,53 +62,119 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
   useEffect(() => {
     const firstError = Object.keys(form.formState.errors)[0];
     if (firstError) {
-      form.setFocus(firstError);
+      form.setFocus(firstError as Path<z.infer<typeof roomSchema>>);
     }
-  }, [form.formState.errors, form.setFocus]);
+  }, [form.formState.errors, form.setFocus, form]);
   const { user } = useUser();
   const isOwner = user?.id === room?.user_id;
   const params = useParams();
-  const hotelId = params?.hotelId;
+  const hotelId = params?.hotelId as string;
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputImageRef = useRef<HTMLInputElement>(null);
   async function onSubmitRoom(values: z.infer<typeof roomSchema>) {
     try {
+      console.log("Starting room submission process with values:", values);
       const file = values.image as File;
-      if (room) {
-        const updatingRoomValues = {
-          ...values,
-          image: (file as File).name || undefined,
-          id: room.id as string,
-        };
 
-        const response = await updateRoom(updatingRoomValues);
-        if (response.success) {
-          toast.success("Room updated successfully");
+      // Vérification du hotelId
+      if (!hotelId) {
+        console.error("No hotelId found in params");
+        toast.error("Hotel ID is missing, cannot create room");
+        return;
+      }
+
+      console.log("Hotel ID:", hotelId);
+
+      // Vérifions si c'est bien un objet File valide
+      if (file && typeof file === "object" && "name" in file) {
+        console.log("Valid file object found:", file.name);
+
+        if (room) {
+          console.log("Updating existing room");
+          const updatingRoomValues = {
+            ...values,
+            image: file.name || undefined,
+            id: room.id as string,
+          };
+
+          const response = await updateRoom(updatingRoomValues);
+          if (response.success) {
+            toast.success("Room updated successfully");
+            setFormOpen(false);
+          } else {
+            console.error("Room update failed:", response.error);
+            return toast.error(response.error);
+          }
         } else {
-          return toast.error(response.error);
-        }
-      }
-      if (file instanceof File) {
-        const formData = new FormData();
-        formData.append("image", file);
+          console.log("Creating new room");
+          // Upload d'image
+          try {
+            const formData = new FormData();
+            formData.append("image", file);
+            console.log("FormData created with image:", file.name);
 
-        await uploadImageRoom(formData);
-      }
-      const id = uuidv4();
-      const createRoomvalues = {
-        ...values,
-        image: (file as File).name || undefined,
-        hotel_id: hotelId as string,
-        id,
-      };
-      const response = await createRoom(createRoomvalues);
-      if (response.success) {
-        toast.success("Room created successfully");
-        form.reset();
+            // Skip image upload for now, just create the room
+            console.log("Skipping image upload, proceeding with room creation");
+
+            // Création de chambre
+            const id = uuidv4();
+            console.log("Generated new room ID:", id);
+
+            // Assurons-nous que tous les champs requis sont présents
+            const createRoomvalues = {
+              ...values,
+              image: file.name,
+              hotel_id: hotelId,
+              id,
+              /*  user_id: user?.id || "",
+              // S'assurer que les champs requis sont présents avec des valeurs par défaut si nécessaire
+              roomTitle: values.roomTitle || "Room",
+              roomDescription: values.roomDescription || "Room description",
+              roomPrice: values.roomPrice || 0,
+              breakfastPrice: values.breakfastPrice || 0, */
+            };
+            console.log(
+              "Creating room with values:",
+              JSON.stringify(createRoomvalues),
+            );
+
+            try {
+              const response = await createRoom(createRoomvalues);
+              console.log("Room creation response:", response);
+
+              if (response.success) {
+                toast.success("Room created successfully");
+                form.reset();
+                setFormOpen(false);
+              } else {
+                console.error("Room creation failed:", response.error);
+                toast.error(response.error || "Failed to create room");
+              }
+            } catch (roomError) {
+              console.error("Error creating room:", roomError);
+
+              // Afficher plus de détails sur l'erreur
+              if (roomError instanceof Error) {
+                console.error("Error message:", roomError.message);
+                console.error("Error stack:", roomError.stack);
+              }
+
+              toast.error("Error creating room - see console for details");
+            }
+          } catch (uploadError) {
+            console.error(
+              "Error during image upload or room creation:",
+              uploadError,
+            );
+            toast.error("Error during room creation process");
+          }
+        }
       } else {
-        return toast.error(response.error);
+        console.error("Invalid file object:", file);
+        toast.error("Please select a valid image file for the room");
       }
     } catch (error) {
+      console.error("Overall error in onSubmitRoom:", error);
       toast.error("Failed to create room");
     }
   }
@@ -117,7 +183,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
       <Form {...form}>
         <form
           id="addRoomForm"
-          onSubmit={form.handleSubmit(onSubmitRoom)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit(onSubmitRoom)(e);
+          }}
           className="space-y-8"
         >
           <FormField
@@ -329,7 +399,9 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                           onChange={(event) => {
                             const file = event.target.files?.[0];
                             field.onChange(file || "");
-                            setPreviewUrl(URL.createObjectURL(file));
+                            if (file) {
+                              setPreviewUrl(URL.createObjectURL(file));
+                            }
                           }}
                         />
                       </FormControl>
@@ -386,7 +458,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       If you offer breakfast, what is the price
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -402,7 +478,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       how many beds are avaliable in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -418,7 +498,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       how many king size beds are in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -434,7 +518,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       How many guest are allowed in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -450,7 +538,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       How many Queen Bed are in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -466,7 +558,11 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                       How many bathroom are in this room?
                     </FormDescription>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -476,16 +572,27 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
           </div>
 
           {room && isOwner ? (
-            <Button variant="outline" type="submit" form="addRoomForm">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                form.handleSubmit(onSubmitRoom)(e);
+              }}
+            >
               <MdUpdate className="w-4 h-4 mr-2" />
-              Update
+              {form.formState.isSubmitting ? "Updating..." : "Update"}
             </Button>
           ) : (
             <Button
               variant="outline"
-              type="submit"
-              form="addRoomForm"
-              //disabled={!form.formState.isValid}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                form.handleSubmit(onSubmitRoom)(e);
+              }}
             >
               <Pencil className="w-4 h-4 mr-2" />
               {form.formState.isSubmitting ? "Saving..." : "create Room"}

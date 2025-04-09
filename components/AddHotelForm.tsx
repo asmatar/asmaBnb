@@ -1,5 +1,4 @@
 "use client";
-import AddRoomForm from "@/components/AddRoomForm";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -45,18 +44,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
+import AddRoomForm from "./AddRoomForm";
 
 const AddHotelForm = ({
   countries,
   hotel,
 }: {
   countries: ICountry[];
-  hotel: Hotel;
+  hotel?: Hotel;
 }) => {
   const params = useParams();
   const { hotelId } = params;
@@ -67,6 +67,12 @@ const AddHotelForm = ({
   const isOwner = user?.id === hotel?.user_id;
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputImageRef = useRef<HTMLInputElement>(null);
+  const [isDialogOpened, setIsDialogOpened] = useState(false);
+
+  const setIsDialogOpen = (value: boolean) => {
+    setIsDialogOpened(value);
+  };
+
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     mode: "onBlur",
@@ -115,8 +121,9 @@ const AddHotelForm = ({
   };
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
     try {
+      console.log("values", values);
       const file = values.image as File;
-
+      console.log("file", file);
       if (hotelId) {
         const updatingHotelValues = {
           ...values,
@@ -131,22 +138,34 @@ const AddHotelForm = ({
           toast.success("Hotel updated successfully");
         }
       }
-      if (file instanceof File) {
+      console.log(typeof file);
+      if (file && file instanceof Object) {
+        console.log("file is a valid File object");
         const formData = new FormData();
         formData.append("image", file);
 
-        await uploadImage(formData);
+        console.log("formData created", formData.getAll);
+        try {
+          console.log("image uploaded successfully");
+          await uploadImage(formData);
+        } catch (uploadError) {
+          console.error("Upload error:", uploadError);
+        }
+      } else {
+        console.log("file is not a valid File object", file);
       }
+
       const id = uuidv4();
 
       const createHotelvalues = {
         ...values,
-        image: (file as File).name || undefined,
+        image: (file as File).name,
         id,
       };
 
       const response = await createHotel(createHotelvalues);
       if (response.success === false) {
+        console.log("zrong");
         return toast.error(response.error);
       }
       router.push(`/hotel/${id}`);
@@ -198,15 +217,16 @@ const AddHotelForm = ({
   useEffect(() => {
     const firstError = Object.keys(formHotel.formState.errors)[0];
     if (firstError) {
-      formHotel.setFocus(firstError);
+      formHotel.setFocus(firstError as Path<z.infer<typeof hotelSchema>>);
     }
-  }, [formHotel.formState.errors, formHotel.setFocus]);
+  }, [formHotel.formState.errors, formHotel.setFocus, formHotel]);
   return (
     <Form {...formHotel}>
       <form
         onSubmit={formHotel.handleSubmit(onSubmit)}
         className="space-y-6"
         id="addHotelForm"
+        data-form-type="hotel-form"
       >
         <h3 className="font-semibold text-lg">Describe your hotel</h3>
         <div className="flex flex-col md:flex-row gap-6">
@@ -452,13 +472,15 @@ const AddHotelForm = ({
                         <Input
                           type="file"
                           ref={inputImageRef}
+                          name="image"
                           className=""
                           accept=".png, .jpg, .jpeg"
                           onChange={(event) => {
                             const file = event.target.files?.[0];
-
                             field.onChange(file || "");
-                            setPreviewUrl(URL.createObjectURL(file));
+                            if (file) {
+                              setPreviewUrl(URL.createObjectURL(file));
+                            }
                           }}
                         />
                       </FormControl>
@@ -536,14 +558,11 @@ const AddHotelForm = ({
                         field.onChange(city);
                         fetchCities(city);
                       }}
-                      defaultValue={field.value}
-                      value={field.value}
+                      defaultValue={field.value || undefined}
+                      value={field.value || undefined}
                     >
                       <SelectTrigger className="bg-background">
-                        <SelectValue
-                          placeholder="select a state"
-                          defaultValue={field.value}
-                        />
+                        <SelectValue placeholder="select a state" />
                       </SelectTrigger>
                       <SelectContent>{statesOptions}</SelectContent>
                     </Select>
@@ -566,14 +585,10 @@ const AddHotelForm = ({
                       formHotel.getValues("state") === "" ? true : false
                     }
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    value={field.value}
+                    value={field.value || undefined}
                   >
                     <SelectTrigger className="bg-background">
-                      <SelectValue
-                        placeholder="Beach hotel is located at the very end of the beach road"
-                        defaultValue={field.value}
-                      />
+                      <SelectValue placeholder="Beach hotel is located at the very end of the beach road" />
                     </SelectTrigger>
                     <SelectContent>{citiesOptions}</SelectContent>
                   </Select>
@@ -644,8 +659,11 @@ const AddHotelForm = ({
                       >
                         <Trash className="w-4 h-4 mr-3" />
                         Delete
-                      </Button>{" "}
-                      <Dialog>
+                      </Button>
+                      <Dialog
+                        open={isDialogOpened}
+                        onOpenChange={setIsDialogOpen}
+                      >
                         <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
                           <Plus className="w-4 h-4 mr-3" />
                           Add room
@@ -657,7 +675,8 @@ const AddHotelForm = ({
                               All details about a room in your hotel.
                             </DialogDescription>
                           </DialogHeader>
-                          <AddRoomForm />
+                          {/* roooooo */}
+                          <AddRoomForm setFormOpen={setIsDialogOpen} />
                         </DialogContent>
                       </Dialog>
                     </>

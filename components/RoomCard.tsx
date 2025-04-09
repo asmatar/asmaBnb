@@ -28,7 +28,7 @@ import {
   existingBooking,
 } from "@/services/bookingService";
 import { deleteRoom } from "@/services/roomService";
-import { Room } from "@/types/tableType";
+import { RoomBooked } from "@/types/types";
 import { useUser } from "@clerk/clerk-react";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import {
@@ -57,11 +57,18 @@ import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
-const RoomCard = ({ room }: { room: Room }) => {
+const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
   const pathname = usePathname();
   const router = useRouter();
-  //const { showToast } = useToast();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
@@ -84,6 +91,7 @@ const RoomCard = ({ room }: { room: Room }) => {
     date?.from ?? room.startDate,
   );
   const handleDeleteRoom = async (formData: FormData) => {
+    console.log(formData);
     const response = await deleteRoom(formData);
     if (response.success === true) {
       toast.success("Room deleted successfully");
@@ -118,8 +126,8 @@ const RoomCard = ({ room }: { room: Room }) => {
       totalPrice: totalPrice,
       breakfastIncluded: hasBreakfastIncluded,
     };
-    const existedBooking = await existingBooking(newBookingOne);
-    if (existedBooking.data.length > 0) {
+    const { data } = await existingBooking(newBookingOne);
+    if (data && data.length > 0) {
       return toast.error("Room already booked for this period");
     }
     const response = await fetch("/api/stripe/checkout", {
@@ -148,7 +156,9 @@ const RoomCard = ({ room }: { room: Room }) => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>{room.roomTitle}</CardTitle>
+          <CardTitle className="break-words whitespace-normal">
+            {room.roomTitle}
+          </CardTitle>
           <CardDescription className="min-h-[120px]">
             {room.roomDescription}
           </CardDescription>
@@ -365,16 +375,38 @@ const RoomCard = ({ room }: { room: Room }) => {
                   </span>{" "}
                   for <span className="font-bold">{numberOfNights} days</span>
                 </p>
+
                 <form action={handleCheckout}>
-                  <SubmitButton
-                    variant="default"
-                    className="w-full"
-                    text="Book room"
-                    loadingText="Booking room..."
-                    disabled={numberOfNights < 1}
-                  >
-                    <TbReservedLine className="h-4 w-4 mr-2" />
-                  </SubmitButton>
+                  {!user ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <SubmitButton
+                            variant="default"
+                            className="w-full"
+                            text="Book room"
+                            loadingText="Booking room..."
+                            disabled={numberOfNights < 1}
+                          >
+                            <TbReservedLine className="h-4 w-4 mr-2" />
+                          </SubmitButton>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          You have to be connected to book this room
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
+                    <SubmitButton
+                      variant="default"
+                      className="w-full"
+                      text="Book room"
+                      loadingText="Booking room..."
+                      disabled={numberOfNights < 1}
+                    >
+                      <TbReservedLine className="h-4 w-4 mr-2" />
+                    </SubmitButton>
+                  )}
                 </form>
               </div>
             </>
@@ -393,7 +425,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                   <Trash className="h-4 w-4 mr-2" />
                 </SubmitButton>
               </form>
-              <Dialog>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
                   <Plus className="w-4 h-4 mr-3" />
                   Edit
@@ -405,7 +437,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                       Make changes to this room
                     </DialogDescription>
                   </DialogHeader>
-                  <AddRoomForm room={room} />
+                  <AddRoomForm room={room} setFormOpen={setIsDialogOpen} />
                 </DialogContent>
               </Dialog>
             </div>

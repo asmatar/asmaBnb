@@ -15,34 +15,34 @@ export const roomSchema = z.object({
   roomPrice: z.coerce.number().refine((val) => val > 0, {
     message: "Room price must be greater than 0",
   }),
-  breakfastPrice: z.coerce.number().optional(),
-  bedCount: z.coerce.number().optional(),
-  kingBed: z.coerce.number().optional(),
-  guestCount: z.coerce.number().optional(),
-  queenBed: z.coerce.number().optional(),
-  bathroomCount: z.coerce.number(),
-  image: z.union([z.instanceof(File), z.string().url()]).refine(
+  breakfastPrice: z.coerce.number(),
+  bedCount: z.coerce.number().nullable().optional(),
+  kingBed: z.coerce.number().nullable().optional(),
+  guestCount: z.coerce.number().nullable().optional(),
+  queenBed: z.coerce.number().nullable().optional(),
+  bathroomCount: z.coerce.number().nullable().optional(),
+  image: z.union([z.instanceof(File), z.string()]).refine(
     (val) => {
       if (val instanceof File) {
-        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"]; // Types d'images autorisés
+        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
         return allowedTypes.includes(val.type);
       }
       return true;
     },
     {
-      message: "File must be a valid image (jpeg, png, gif).",
+      message: "File must be a valid image (jpeg, png, jpg).",
     },
   ),
-  roomService: z.boolean(),
-  TV: z.boolean(),
-  balcony: z.boolean(),
-  freeWifi: z.boolean(),
-  cityView: z.boolean(),
-  oceanView: z.boolean(),
-  forestView: z.boolean(),
-  mountainView: z.boolean(),
-  airCondition: z.boolean(),
-  soundProofed: z.boolean(),
+  roomService: z.boolean().default(false),
+  TV: z.boolean().default(false),
+  balcony: z.boolean().default(false),
+  freeWifi: z.boolean().default(false),
+  cityView: z.boolean().default(false),
+  oceanView: z.boolean().default(false),
+  forestView: z.boolean().default(false),
+  mountainView: z.boolean().default(false),
+  airCondition: z.boolean().default(false),
+  soundProofed: z.boolean().default(false),
 });
 
 export const hotelSchema = z.object({
@@ -55,43 +55,43 @@ export const hotelSchema = z.object({
       message: "Hotel description must be at least 10 characters.",
     })
     .max(800, {
-      message: "country must be at most 800 characters.",
+      message: "Description must be at most 800 characters.",
     }),
-  gym: z.boolean(),
-  country: z.string().min(1, {
-    message: "Please select a country.",
-  }),
-  state: z.string(),
-  city: z.string(),
-  locationDescription: z
-    .string()
-    .min(10, {
-      message: "location description must be at least 10 characters.",
-    })
-    .max(800, {
-      message: "location description must be at most 800 characters.",
-    }),
-  image: z.union([z.instanceof(File), z.string().url()]).refine(
+  image: z.union([z.instanceof(File), z.string()]).refine(
     (val) => {
       if (val instanceof File) {
-        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"]; // Types d'images autorisés
+        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
         return allowedTypes.includes(val.type);
       }
       return true;
     },
     {
-      message: "File must be a valid image (jpeg, png, gif).",
+      message: "File must be a valid image (jpeg, png, jpg).",
     },
   ),
-  bar: z.boolean().optional(),
-  bikeRental: z.boolean().optional(),
-  freeParking: z.boolean().optional(),
-  freeWifi: z.boolean().optional(),
-  laundry: z.boolean().optional(),
-  movieNights: z.boolean().optional(),
-  restaurant: z.boolean().optional(),
-  shopping: z.boolean().optional(),
-  spa: z.boolean().optional(),
-  coffeeShop: z.boolean().optional(),
-  swimingPool: z.boolean().optional(),
+  gym: z.boolean().default(false),
+  country: z.string().min(1, {
+    message: "Please select a country.",
+  }),
+  state: z.string().nullable().optional(),
+  city: z.string().nullable().optional(),
+  locationDescription: z
+    .string()
+    .min(10, {
+      message: "Location description must be at least 10 characters.",
+    })
+    .max(800, {
+      message: "Location description must be at most 800 characters.",
+    }),
+  bar: z.boolean().default(false).optional(),
+  bikeRental: z.boolean().default(false).optional(),
+  freeParking: z.boolean().default(false).optional(),
+  freeWifi: z.boolean().default(false).optional(),
+  laundry: z.boolean().default(false).optional(),
+  movieNights: z.boolean().default(false).optional(),
+  restaurant: z.boolean().default(false).optional(),
+  shopping: z.boolean().default(false).optional(),
+  spa: z.boolean().default(false).optional(),
+  coffeeShop: z.boolean().default(false).optional(),
+  swimingPool: z.boolean().default(false).optional(),
 });

@@ -8,7 +8,7 @@ const NoGuestReservation = () => {
         <Hotel className="w-6 h-6 text-gray-600" />
         <AlertTitle>Aucune réservation reçue pour vos hôtels</AlertTitle>
         <AlertDescription>
-          Vos hôtels n'ont pas encore reçu de réservation.
+          Vos hôtels n&apos;ont pas encore reçu de réservation.
         </AlertDescription>
       </Alert>
     </div>

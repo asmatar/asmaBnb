@@ -12,7 +12,7 @@ export type MyHotelProps = {
   title: string;
   description: string;
   image: string;
-  price: number;
+  price: number[] | [];
 };
 const MyHotelCard = ({
   id,
@@ -20,15 +20,22 @@ const MyHotelCard = ({
   description,
   image,
   price,
+  //minPrice,
+  //maxPrice,
 }: MyHotelProps) => {
   const handleDeleteHotel = async (formData: FormData) => {
+    console.log("delete hotel -----", formData);
     const id = formData.get("id");
     const response = await deleteHotel(id as string);
     if (response.success === false && response.errorType === "hasBooking") {
       return toast.error(response.error);
     } else if (response.success === false) {
       return toast.error(response.error);
-    } else if (response.success === true && response.roomData.length > 0) {
+    } else if (
+      response.success === true &&
+      response.roomData &&
+      response.roomData.length > 0
+    ) {
       return toast.success("Hotel deleted with his rooms");
     } else {
       return toast.success("Hotel deleted successfully");
@@ -54,7 +61,10 @@ const MyHotelCard = ({
         <p className="text-gray-600 mb-4">{description.slice(0, 100)}...</p>
         <div className="flex justify-between items-center mb-4">
           <span className="text-xl font-bold text-gray-800">
-            ${price}/night
+            {price.length > 0
+              ? `$ ${Math.min(...price)} - $ ${Math.max(...price)}`
+              : `NA`}{" "}
+            /night
           </span>
         </div>
         <div className="flex justify-between space-x-2">
@@ -81,7 +91,7 @@ const MyHotelCard = ({
           <input type="hidden" name="id" value={id} />
           <SubmitButton
             variant="outline"
-            type="button"
+            type="submit"
             text="Delete"
             className={`mt-4  text-primary py-2 px-4 rounded-lg w-full `}
             loadingText="Deleting..."

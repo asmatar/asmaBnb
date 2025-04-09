@@ -12,8 +12,8 @@ const NoReservationMade = () => {
         <Hotel className="w-6 h-6 text-gray-600" />
         <AlertTitle>Aucune réservation effectuée</AlertTitle>
         <AlertDescription>
-          Vous n'avez pas encore réservé d'hôtel. Découvrez nos meilleures
-          offres !
+          Vous n&apos;avez pas encore réservé d&apos;hôtel. Découvrez nos
+          meilleures offres !
         </AlertDescription>
       </Alert>
       <Button
