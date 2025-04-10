@@ -2,13 +2,15 @@
 
 import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
 import { InsertHotel, UpdateHotel } from "@/types/tableType";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 // HOTELS API
 export const getHotels = async () => {
+  console.log("hotellll avec FaVirusCovidSlash");
   const supabase = await createClerkSupabaseClient();
-  const { data, error } = await supabase.from("hotel").select("*");
-
+  const { data, error } = await supabase.from("hotel").select("*, favorite(*)");
+  // const { data, error } = await supabase.from("hotel").select("*");
   if (error) {
     error.message;
     return [];
@@ -178,8 +180,23 @@ export async function getFilteredHotels(filters: {
   if (error) {
     error.message;
   }
-  return data;
+  const { userId } = await auth();
+  //return data;
+  const { data: favorites, error: favError } = await supabase
+    .from("favorite")
+    .select("hotel_id") // Récupérer les IDs des hôtels favoris
+    .eq("user_id", userId as string); // Filt
+
+  const hotelsWithFavorites =
+    data &&
+    data.map((hotel) => {
+      const isFavorite =
+        favorites && favorites.some((fav) => fav.hotel_id === hotel.id); // Vérifie si l'hôtel est dans les favoris
+      return { ...hotel, isFavorite }; // Ajoute le champ `isFavorite`
+    });
+  return { data: hotelsWithFavorites };
 }
+
 export const getHotelLocation = async () => {
   const supabase = await createClerkSupabaseClient();
 
@@ -190,6 +207,7 @@ export const getHotelLocation = async () => {
   if (error) {
     error.message;
   }
+
   return data;
 };
 

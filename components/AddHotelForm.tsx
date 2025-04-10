@@ -121,7 +121,6 @@ const AddHotelForm = ({
   };
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
     try {
-      console.log("values", values);
       const file = values.image as File;
       console.log("file", file);
       if (hotelId) {

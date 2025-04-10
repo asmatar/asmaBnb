@@ -75,8 +75,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     router.push(pathname);
   };
   async function onSubmit(values: z.infer<typeof searchHotelSchema>) {
-    console.log("valuessss", values);
-
     await getFilteredHotels({
       ...values,
       spa: values.spa?.toString(),
