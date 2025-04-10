@@ -11,6 +11,13 @@ export type HotelCardProps = {
   pool: boolean;
   id: string;
   isFavorite: boolean;
+  spa?: boolean;
+  bar?: boolean;
+  restaurant?: boolean;
+  freeWifi?: boolean;
+  freeParking?: boolean;
+  shopping?: boolean;
+  swimingPool?: boolean; // Alternative name for pool in some contexts
 };
 export type RoomBooked = Room & {
   endDate: string;

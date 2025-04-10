@@ -33,6 +33,12 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
             gym={hotel.gym!}
             pool={hotel.swimingPool!}
             city={hotel.city!}
+            spa={hotel.spa!}
+            bar={hotel.bar!}
+            restaurant={hotel.restaurant!}
+            freeWifi={hotel.freeWifi!}
+            shopping={hotel.shopping!}
+            freeParking={hotel.freeParking!}
             country={hotel.country!}
             /* price={hotel.price!} */
             image={hotel.image}

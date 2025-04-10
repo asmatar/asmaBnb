@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/tooltip";
 import useGlobalStore from "@/store/Global";
 
-import { LuGrid, LuList } from "react-icons/lu";
+import { Grid, List } from "lucide-react";
 const ToggleViewLayout = () => {
   const { setIsViewGrid } = useGlobalStore();
   return (
@@ -15,7 +15,7 @@ const ToggleViewLayout = () => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <LuGrid className="w-6 h-6" onClick={() => setIsViewGrid(true)} />
+            <Grid className="w-6 h-6" onClick={() => setIsViewGrid(true)} />
           </TooltipTrigger>
           <TooltipContent>
             <p>Voir en grille</p>
@@ -25,7 +25,7 @@ const ToggleViewLayout = () => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <LuList className="w-6 h-6" onClick={() => setIsViewGrid(false)} />
+            <List className="w-6 h-6" onClick={() => setIsViewGrid(false)} />
           </TooltipTrigger>
           <TooltipContent>
             <p>Voir en collone</p>
