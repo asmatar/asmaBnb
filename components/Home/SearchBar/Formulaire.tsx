@@ -1,4 +1,5 @@
 "use client";
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -15,11 +16,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { getFilteredHotels } from "@/services/hotelService";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Bath,
+  Building2,
+  Car,
+  Dumbbell,
+  Globe,
+  MapPin,
+  RotateCcw,
+  Search,
+  Store,
+  UtensilsCrossed,
+  Waves,
+  Wifi,
+  Wine,
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../../ui/button";
 
@@ -45,11 +67,15 @@ export const searchHotelSchema = z.object({
   freeParking: z.boolean().optional(),
   swimingPool: z.boolean().optional(),
 });
+
+type SearchHotelFormValues = z.infer<typeof searchHotelSchema>;
+
 export default function Formulaire({ location, countryOptions }: FormProps) {
   const [filteredStates, setFilteredStates] = useState<string[]>([]);
   const [filteredCities, setFilteredCities] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
 
-  const form = useForm<z.infer<typeof searchHotelSchema>>({
+  const form = useForm<SearchHotelFormValues>({
     resolver: zodResolver(searchHotelSchema),
     defaultValues: {
       title: "",
@@ -74,7 +100,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     setFilteredCities([]);
     router.push(pathname);
   };
-  async function onSubmit(values: z.infer<typeof searchHotelSchema>) {
+  async function onSubmit(values: SearchHotelFormValues) {
     await getFilteredHotels({
       ...values,
       spa: values.spa?.toString(),
@@ -147,257 +173,302 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     </SelectItem>
   ));
 
+  // Calculer le nombre de filtres actifs
+  const activeFilters = [
+    form.getValues("spa"),
+    form.getValues("gym"),
+    form.getValues("bar"),
+    form.getValues("restaurant"),
+    form.getValues("freeWifi"),
+    form.getValues("shopping"),
+    form.getValues("freeParking"),
+    form.getValues("swimingPool"),
+  ].filter(Boolean).length;
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className=" flex items-center gap-6"
+        className="flex flex-col space-y-6"
       >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <Input
-              title="country"
-              type="search"
-              {...field}
-              placeholder="Search..."
-              className="w-[270px] border-0 "
-              value={field.value}
-              onChange={(event) => {
-                field.onChange(event.target.value);
-                form.handleSubmit(onSubmit)();
-              }}
+        {/* Première rangée: recherche et sélecteurs de localisation */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="md:col-span-1 relative">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                    title="Search hotel"
+                    type="search"
+                    {...field}
+                    placeholder="Search hotels..."
+                    className="pl-10 border-none bg-background/80 shadow-sm backdrop-blur-sm h-11"
+                    value={field.value}
+                    onChange={(event) => {
+                      field.onChange(event.target.value);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  />
+                </div>
+              )}
             />
-          )}
-        />
-        <div className=" grid grid-cols-4 gap-4 max-w-[690px]">
-          <FormField
-            control={form.control}
-            name="country"
-            render={({ field }) => (
-              <FormItem>
-                <Select
-                  onValueChange={(country) => {
-                    field.onChange(country);
-                    fetchStates(country);
-                    form.handleSubmit(onSubmit)();
-                  }}
-                  defaultValue={field.value}
-                  value={field.value}
-                >
-                  <SelectTrigger className="bg-background ">
-                    <SelectValue
-                      placeholder="select a country"
-                      defaultValue={field.value}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>{countryOptions}</SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="state"
-            render={({ field }) => (
-              <FormItem>
-                <Select
-                  disabled={form.getValues("country") === "" ? true : false}
-                  onValueChange={async (state) => {
-                    field.onChange(state);
-                    await fetchCities(state);
-                    form.handleSubmit(onSubmit)();
-                  }}
-                  defaultValue={field.value}
-                  value={field.value}
-                >
-                  <SelectTrigger className="bg-background">
-                    <SelectValue
-                      placeholder="select a state"
-                      defaultValue={field.value}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>{statesOptions}</SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem>
-                <Select
-                  disabled={form.getValues("state") === "" ? true : false}
-                  onValueChange={(city) => {
-                    field.onChange(city);
-                    form.handleSubmit(onSubmit)();
-                  }}
-                  defaultValue={field.value}
-                  value={field.value}
-                >
-                  <SelectTrigger className="bg-background ">
-                    <SelectValue
-                      placeholder="Beach hotel is located at the very end of the beach road"
-                      defaultValue={field.value}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>{citiesOptions}</SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="spa"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(spa) => {
-                      field.onChange(spa);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                  />
-                </FormControl>
-                <FormLabel>Spa</FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="gym"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(gym) => {
-                      field.onChange(gym);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                  />
-                </FormControl>
-                <FormLabel>Gym</FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="bar"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(bar) => {
-                      field.onChange(bar);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                  />
-                </FormControl>
-                <FormLabel>Bar</FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="restaurant"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(restaurant) => {
-                      field.onChange(restaurant);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                  />
-                </FormControl>
-                <FormLabel>Restaurant</FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="freeWifi"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(freeWifi) => {
-                      field.onChange(freeWifi);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                  />
-                </FormControl>
-                <FormLabel>freeWifi</FormLabel>
-              </FormItem>
-            )}
-          />
+          </div>
 
-          <FormField
-            control={form.control}
-            name="shopping"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(shopping) => {
-                      field.onChange(shopping);
+          <div className="md:col-span-3 flex space-x-3">
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <Select
+                    onValueChange={(country) => {
+                      field.onChange(country);
+                      fetchStates(country);
                       form.handleSubmit(onSubmit)();
                     }}
-                  />
-                </FormControl>
-                <FormLabel>Shopping</FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="freeParking"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(freeParking) => {
-                      field.onChange(freeParking);
+                    defaultValue={field.value}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
+                      <div className="flex items-center">
+                        <Globe className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <SelectValue
+                          placeholder="Select country"
+                          defaultValue={field.value}
+                        />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>{countryOptions}</SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <Select
+                    disabled={form.getValues("country") === "" ? true : false}
+                    onValueChange={async (state) => {
+                      field.onChange(state);
+                      await fetchCities(state);
                       form.handleSubmit(onSubmit)();
                     }}
-                  />
-                </FormControl>
-                <FormLabel>Free parking</FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="swimingPool"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-end space-x-3 rounded-md  p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(swimingPool) => {
-                      field.onChange(swimingPool);
+                    defaultValue={field.value}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
+                      <div className="flex items-center">
+                        <Building2 className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <SelectValue
+                          placeholder="Select state"
+                          defaultValue={field.value}
+                        />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>{statesOptions}</SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <Select
+                    disabled={form.getValues("state") === "" ? true : false}
+                    onValueChange={(city) => {
+                      field.onChange(city);
                       form.handleSubmit(onSubmit)();
                     }}
-                  />
-                </FormControl>
-                <FormLabel>Swiming pool</FormLabel>
-              </FormItem>
+                    defaultValue={field.value}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
+                      <div className="flex items-center">
+                        <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <SelectValue
+                          placeholder="Select city"
+                          defaultValue={field.value}
+                        />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>{citiesOptions}</SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Titre des filtres avec bouton d'affichage et bouton Reset */}
+        <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-medium">Amenities & Features</h3>
+            {activeFilters > 0 && (
+              <Badge className="bg-primary text-primary-foreground">
+                {activeFilters}
+              </Badge>
             )}
-          />
-          <Button type="button" onClick={() => cleanForm()}>
-            Reset fields
-          </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              onClick={() => cleanForm()}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1 h-8 px-3 bg-background/80"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              <span>Reset</span>
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+              className="text-xs h-8"
+            >
+              {showFilters ? "Hide filters" : "Show filters"}
+            </Button>
+          </div>
+        </div>
+
+        {/* Conteneur pour l'animation */}
+        <div
+          className="overflow-hidden transition-all duration-500 ease-in-out"
+          style={{
+            maxHeight: showFilters ? "500px" : "0",
+            opacity: showFilters ? 1 : 0,
+            marginTop: showFilters ? "0.5rem" : "0",
+          }}
+        >
+          {/* Filtres supplémentaires */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 p-4 bg-background/50 rounded-xl shadow-sm backdrop-blur-sm">
+            <FilterCheckbox
+              form={form}
+              name="spa"
+              label="Spa"
+              icon={<Bath className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+
+            <FilterCheckbox
+              form={form}
+              name="gym"
+              label="Gym"
+              icon={<Dumbbell className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+
+            <FilterCheckbox
+              form={form}
+              name="bar"
+              label="Bar"
+              icon={<Wine className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+
+            <FilterCheckbox
+              form={form}
+              name="restaurant"
+              label="Restaurant"
+              icon={<UtensilsCrossed className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+
+            <FilterCheckbox
+              form={form}
+              name="freeWifi"
+              label="Free WiFi"
+              icon={<Wifi className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+
+            <FilterCheckbox
+              form={form}
+              name="shopping"
+              label="Shopping"
+              icon={<Store className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+
+            <FilterCheckbox
+              form={form}
+              name="freeParking"
+              label="Free Parking"
+              icon={<Car className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+
+            <FilterCheckbox
+              form={form}
+              name="swimingPool"
+              label="Swimming Pool"
+              icon={<Waves className="h-4 w-4" />}
+              onSubmit={onSubmit}
+            />
+          </div>
         </div>
       </form>
     </Form>
   );
 }
+
+// Composant réutilisable pour les checkboxes de filtres
+const FilterCheckbox = ({
+  form,
+  name,
+  label,
+  icon,
+  onSubmit,
+}: {
+  form: UseFormReturn<SearchHotelFormValues>;
+  name: keyof SearchHotelFormValues;
+  label: string;
+  icon: React.ReactNode;
+  onSubmit: (values: SearchHotelFormValues) => Promise<void>;
+}) => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <FormField
+          control={form.control}
+          name={name}
+          render={({ field }) => (
+            <FormItem className="flex items-center space-x-2 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value as boolean | undefined}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    form.handleSubmit(onSubmit)();
+                  }}
+                  className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                />
+              </FormControl>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <div className="text-muted-foreground">{icon}</div>
+                  <FormLabel className="cursor-pointer text-sm">
+                    {label}
+                  </FormLabel>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Filter by {label}</p>
+              </TooltipContent>
+            </FormItem>
+          )}
+        />
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
