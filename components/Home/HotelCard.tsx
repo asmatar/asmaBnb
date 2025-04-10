@@ -27,12 +27,13 @@ const HotelCard = async ({
           <div className="flex-1 aspect-square overflow-hidden relative w-full h-[210px] rounded-s-lg ">
             <div className="absolute top-2 right-2 z-50">
               {isFavorite ? (
-                <IconCTA isFavorite={false} hotelId={id}>
-                  <Heart className="w-6 h-6 z-50 fill-gold" fill="gold" />
+                <IconCTA isFavorite={isFavorite} hotelId={id}>
+                  <Heart className="w-6 h-6 z-50 fill-gold" fill="gold" />? 11
+                  <span className="text-xs z-auto">{isFavorite}</span>
                 </IconCTA>
               ) : (
-                <IconCTA isFavorite={true} hotelId={id}>
-                  <Heart className="w-6 h-6 z-50" stroke="gold" />
+                <IconCTA isFavorite={isFavorite} hotelId={id}>
+                  <Heart className="w-6 h-6 z-50" stroke="gold" />: {isFavorite}
                 </IconCTA>
               )}
             </div>

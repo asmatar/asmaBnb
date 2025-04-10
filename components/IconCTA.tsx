@@ -13,13 +13,16 @@ const IconCTA = ({
   hotelId: string;
 }) => {
   const { user } = useUser();
+  console.log("isFavorite----------------------", isFavorite);
   const handleFavorite = (isFavorite: boolean) => {
     const favoriteHotel = {
       id: uuidv4(),
       hotelId,
       userId: user!.id,
     };
-    isFavorite ? addFavorite(favoriteHotel) : removeFavorite(hotelId, user!.id);
+    !isFavorite
+      ? addFavorite(favoriteHotel)
+      : removeFavorite(hotelId, user!.id);
   };
   return (
     <div
@@ -35,6 +38,7 @@ const IconCTA = ({
         }
       }}
     >
+      {isFavorite}
       {children}
     </div>
   );

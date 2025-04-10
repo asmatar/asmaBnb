@@ -16,7 +16,7 @@ const favorites = async () => {
         favorites.map((favorite) => (
           <HotelCard
             key={favorite.id}
-            id={favorite.id}
+            id={favorite.hotel_id ?? favorite.id}
             title={favorite.hotel.title!}
             description={favorite.hotel.description!}
             gym={favorite.hotel.gym!}
@@ -25,6 +25,7 @@ const favorites = async () => {
             country={favorite.hotel.country!}
             /* price={favorite.price!} */
             image={favorite.hotel.image}
+            isFavorite={true}
           />
         ))
       ) : (
