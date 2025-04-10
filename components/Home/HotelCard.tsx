@@ -208,9 +208,9 @@ const HotelCard = async ({
     return (
       <Link href={`/hotel/details/${id}`} className="w-full">
         <div className="group h-full overflow-hidden bg-card rounded-xl border border-border/40 transition-all duration-300 hover:shadow-lg">
-          <div className="flex flex-row h-64">
+          <div className="flex flex-row h-64 relative">
             {/* Image section with overlay */}
-            <div className="relative w-1/3 overflow-hidden">
+            <div className="relative w-1/3 overflow-hidden transition-all duration-500 group-hover:w-full group-hover:absolute group-hover:inset-0 group-hover:z-10">
               {image ? (
                 <Image
                   fill
@@ -241,10 +241,27 @@ const HotelCard = async ({
                   )}
                 </div>
               </div>
+
+              {/* Title overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end">
+                <h3 className="font-semibold text-xl text-white mb-1 line-clamp-1">
+                  {title}
+                </h3>
+                {country || city ? (
+                  <div className="flex items-center gap-1 text-white/90 text-sm">
+                    <MapPin className="w-3 h-3" />
+                    <span>
+                      {city && country
+                        ? `${city}, ${country}`
+                        : city || country}
+                    </span>
+                  </div>
+                ) : null}
+              </div>
             </div>
 
             {/* Content section */}
-            <div className="p-4 w-2/3">
+            <div className="p-4 w-2/3 transition-all duration-500 group-hover:opacity-0">
               {/* Title and location */}
               <div className="mb-2">
                 <h3 className="font-semibold text-xl line-clamp-1">{title}</h3>
