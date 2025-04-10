@@ -14,14 +14,6 @@ import {
 } from "../ui/tooltip";
 import NoGuestReservation from "./NoGuestReservation";
 import NoReservationMade from "./NoReservationMade";
-// Using the Record type to define the room structure without specific types
-// This bypasses the need to import the specific RoomBooked type
-/* interface BookingTabsProps {
-  roomBooked: Record<string, unknown>[];
-  roomVisitorHaveMade: Record<string, unknown>[];
-  userId: string;
-  isHost: boolean;
-} */
 
 export default async function BookingTabs() {
   const { userId } = auth();

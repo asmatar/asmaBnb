@@ -1,3 +1,4 @@
+import Counter from "@/components/Home/head/Counter";
 import HotelList from "@/components/Home/HotelList";
 import SearchBar from "@/components/Home/SearchBar/SearchBar";
 import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
@@ -59,18 +60,18 @@ export default async function Home({ searchParams }: searchParams) {
 
               {/* Statistiques */}
               <div className="grid grid-cols-3 gap-4 pt-4">
-                <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm">
-                  <p className="text-3xl font-bold text-primary">92+</p>
-                  <p className="text-sm text-muted-foreground">Hôtels</p>
-                </div>
-                <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm">
+                <Counter maximum={92} label="Hôtels" />
+                <Counter maximum={4} label="Users" />
+                {/*  <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm">
                   <p className="text-3xl font-bold text-primary">4+</p>
                   <p className="text-sm text-muted-foreground">Users</p>
-                </div>
-                <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm">
+                </div> */}
+                <Counter maximum={52} label="Rooms" />
+
+                {/* <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm">
                   <p className="text-3xl font-bold text-primary">52+</p>
                   <p className="text-sm text-muted-foreground">Rooms</p>
-                </div>
+                </div> */}
               </div>
             </div>
 
