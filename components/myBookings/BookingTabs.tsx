@@ -130,7 +130,7 @@ export default async function BookingTabs() {
             <div className="bg-card p-8 rounded-lg border shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl md:text-3xl font-semibold">
-                  Your Bookings
+                  <span className="text-accent-gradient">Your Bookings</span>
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   Total: {totalMyBookings} bookings
@@ -163,7 +163,9 @@ export default async function BookingTabs() {
               <div className="bg-card p-8 rounded-lg border shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl md:text-3xl font-semibold">
-                    Guest Bookings on Your Properties
+                    <span className="text-accent-gradient">
+                      Guest Bookings on Your Properties
+                    </span>
                   </h2>
                   <p className="text-sm text-muted-foreground">
                     Total: {totalGuestBookings} bookings

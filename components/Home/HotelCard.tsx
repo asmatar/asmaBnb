@@ -119,78 +119,86 @@ const HotelCard = async ({
             </div>
 
             {/* Features with all amenities */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3">
-              <Badge
-                variant={hasPool ? "default" : "outline"}
-                className={`flex items-center gap-1 ${hasPool ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <Waves className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">{hasPool ? "Pool" : "No Pool"}</span>
-              </Badge>
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              {hasPool && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <Waves className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">Pool</span>
+                </Badge>
+              )}
 
-              <Badge
-                variant={gym ? "default" : "outline"}
-                className={`flex items-center gap-1 ${gym ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <Dumbbell className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">{gym ? "Gym" : "No Gym"}</span>
-              </Badge>
+              {gym && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <Dumbbell className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">Gym</span>
+                </Badge>
+              )}
 
-              <Badge
-                variant={spa ? "default" : "outline"}
-                className={`flex items-center gap-1 ${spa ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <Bath className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">{spa ? "Spa" : "No Spa"}</span>
-              </Badge>
+              {spa && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <Bath className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">Spa</span>
+                </Badge>
+              )}
 
-              <Badge
-                variant={bar ? "default" : "outline"}
-                className={`flex items-center gap-1 ${bar ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <Wine className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">{bar ? "Bar" : "No Bar"}</span>
-              </Badge>
+              {bar && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <Wine className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">Bar</span>
+                </Badge>
+              )}
 
-              <Badge
-                variant={restaurant ? "default" : "outline"}
-                className={`flex items-center gap-1 ${restaurant ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <UtensilsCrossed className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">
-                  {restaurant ? "Restaurant" : "No Restaurant"}
-                </span>
-              </Badge>
+              {restaurant && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <UtensilsCrossed className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">Restaurant</span>
+                </Badge>
+              )}
 
-              <Badge
-                variant={freeWifi ? "default" : "outline"}
-                className={`flex items-center gap-1 ${freeWifi ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <Wifi className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">
-                  {freeWifi ? "WiFi" : "No WiFi"}
-                </span>
-              </Badge>
+              {freeWifi && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <Wifi className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">WiFi</span>
+                </Badge>
+              )}
 
-              <Badge
-                variant={freeParking ? "default" : "outline"}
-                className={`flex items-center gap-1 ${freeParking ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <Car className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">
-                  {freeParking ? "Parking" : "No Parking"}
-                </span>
-              </Badge>
+              {freeParking && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <Car className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">Parking</span>
+                </Badge>
+              )}
 
-              <Badge
-                variant={shopping ? "default" : "outline"}
-                className={`flex items-center gap-1 ${shopping ? "bg-primary/10 text-primary" : "text-muted-foreground"} hover:bg-primary/5 justify-start`}
-              >
-                <ShoppingBag className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">
-                  {shopping ? "Shopping" : "No Shopping"}
-                </span>
-              </Badge>
+              {shopping && (
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
+                >
+                  <ShoppingBag className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate text-xs">Shopping</span>
+                </Badge>
+              )}
             </div>
 
             {/* View details button */}
@@ -294,84 +302,84 @@ const HotelCard = async ({
               </div>
 
               {/* Features with available amenities only */}
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="flex flex-wrap gap-1.5 mt-3">
                 {hasPool && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <Waves className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">Pool</span>
+                    <Waves className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">Pool</span>
                   </Badge>
                 )}
 
                 {gym && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <Dumbbell className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">Gym</span>
+                    <Dumbbell className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">Gym</span>
                   </Badge>
                 )}
 
                 {spa && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <Bath className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">Spa</span>
+                    <Bath className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">Spa</span>
                   </Badge>
                 )}
 
                 {bar && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <Wine className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">Bar</span>
+                    <Wine className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">Bar</span>
                   </Badge>
                 )}
 
                 {restaurant && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <UtensilsCrossed className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">Restaurant</span>
+                    <UtensilsCrossed className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">Restaurant</span>
                   </Badge>
                 )}
 
                 {freeWifi && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <Wifi className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">WiFi</span>
+                    <Wifi className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">WiFi</span>
                   </Badge>
                 )}
 
                 {freeParking && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <Car className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">Parking</span>
+                    <Car className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">Parking</span>
                   </Badge>
                 )}
 
                 {shopping && (
                   <Badge
                     variant="outline"
-                    className="flex items-center gap-1 bg-primary/10 text-primary hover:bg-primary/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">Shopping</span>
+                    <ShoppingBag className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate text-xs">Shopping</span>
                   </Badge>
                 )}
               </div>

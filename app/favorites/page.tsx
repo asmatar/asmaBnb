@@ -29,8 +29,8 @@ const favorites = async () => {
               <div className="flex items-center justify-center md:justify-between gap-2">
                 <div className="flex items-center gap-4">
                   <FaHeart className="w-5 h-5 text-rose-500" />
-                  <h1 className="text-3xl font-bold text-primary">
-                    Vos favoris
+                  <h1 className="text-3xl font-bold">
+                    <span className="text-accent-gradient">Vos favoris</span>
                   </h1>{" "}
                 </div>
                 {favorites && favorites.length > 0 && (

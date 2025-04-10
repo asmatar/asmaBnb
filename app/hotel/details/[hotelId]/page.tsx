@@ -36,8 +36,8 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 container mx-auto px-4 pb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-            {hotel.title}
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            <span className="gradient-text">{hotel.title}</span>
           </h1>
           {hotel.country || hotel.state || hotel.city ? (
             <div className="flex items-center gap-2 text-white/90">
@@ -58,7 +58,9 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
             {/* Description */}
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold">
-                À propos de l&apos;hôtel
+                <span className="text-accent-gradient">
+                  À propos de l&apos;hôtel
+                </span>
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 {hotel.description}
@@ -67,7 +69,9 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
 
             {/* Location */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-semibold">Localisation</h2>
+              <h2 className="text-2xl font-semibold">
+                <span className="text-accent-gradient">Localisation</span>
+              </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 {hotel.locationDescription}
               </p>
@@ -75,7 +79,9 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
 
             {/* Amenities - Visible on mobile/tablet */}
             <div className="lg:hidden space-y-6">
-              <h2 className="text-2xl font-semibold">Équipements</h2>
+              <h2 className="text-2xl font-semibold">
+                <span className="text-accent-gradient">Équipements</span>
+              </h2>
               <div className="bg-card p-6 rounded-xl border border-primary/10">
                 <div className="grid grid-cols-2 gap-4">
                   {hotel.swimingPool && (
@@ -156,7 +162,11 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
 
             {/* Rooms */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-semibold">Chambres disponibles</h2>
+              <h2 className="text-2xl font-semibold">
+                <span className="text-accent-gradient">
+                  Chambres disponibles
+                </span>
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {rooms.length > 0 ? (
                   rooms.map((room) => (
@@ -173,7 +183,9 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
           <div className="hidden lg:block lg:col-span-1">
             <div className="sticky top-24 space-y-8">
               <div className="bg-card p-6 rounded-xl border border-primary/10">
-                <h2 className="text-2xl font-semibold mb-6">Équipements</h2>
+                <h2 className="text-2xl font-semibold mb-6">
+                  <span className="text-accent-gradient">Équipements</span>
+                </h2>
                 <div className="grid grid-cols-1 gap-4">
                   {hotel.swimingPool && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">

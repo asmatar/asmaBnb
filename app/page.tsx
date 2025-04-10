@@ -40,8 +40,10 @@ export default async function Home({ searchParams }: searchParams) {
                 <Badge className="mb-4 px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full">
                   Service Premium
                 </Badge>
-                <h1 className="text-4xl lg:text-5xl font-bold text-primary mb-4 leading-tight">
-                  Asma Hotel - Offres exclusives
+                <h1 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                  <span className="text-accent-gradient">
+                    Asma Hotel - Offres exclusives
+                  </span>
                 </h1>
               </div>
 
@@ -79,7 +81,7 @@ export default async function Home({ searchParams }: searchParams) {
                   <p className="text-lg font-semibold mb-1">
                     Découvrez nos offres spéciales
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground/90">
                     Jusqu&apos;à 25% de réduction pour les réservations
                     anticipées
                   </p>

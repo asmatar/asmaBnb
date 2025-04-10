@@ -31,7 +31,7 @@ const Header = async () => {
       <div className="bg-secondary/80 border-b py-1 text-center text-xs font-medium">
         <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6">
           <span className="gradient-text">
-            ✨ Design moderne avec gradients subtils ✨
+            ✨ developpé par Deruelle Arthur ✨
           </span>
         </div>
       </div>

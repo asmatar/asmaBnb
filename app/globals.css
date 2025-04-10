@@ -163,6 +163,18 @@
   display: inline-block;
 }
 
+.text-accent-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--accent)),
+    hsl(var(--accent) / 0.8)
+  );
+  display: inline-block;
+}
+
 @keyframes gradient-shift {
   0% {
     background-position: 0% 50%;
