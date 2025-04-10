@@ -6,7 +6,7 @@ const isProtectedRoute = createRouteMatcher([
   "/my-hotels(.*)",
   "/checkout(.*)",
   "/thankyou(.*)",
-  "/hotel/:id(.*)",
+  /*   "/hotel/:id(.*)", */
 ]);
 export default clerkMiddleware(async (auth, req) => {
   if (
