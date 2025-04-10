@@ -1,4 +1,4 @@
-import Counter from "@/components/Home/head/Counter";
+import CounterFetchWrapper from "@/components/Home/head/CounterFetchWrapper";
 import HotelList from "@/components/Home/HotelList";
 import SearchBar from "@/components/Home/SearchBar/SearchBar";
 import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
@@ -27,6 +27,7 @@ type searchParams = {
 export const revalidate = 3600;
 export default async function Home({ searchParams }: searchParams) {
   const searchParamsUrl = await searchParams;
+
   return (
     <>
       {/*  <FramerDiv></FramerDiv> */}
@@ -59,20 +60,8 @@ export default async function Home({ searchParams }: searchParams) {
               </p>
 
               {/* Statistiques */}
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                <Counter maximum={92} label="Hôtels" />
-                <Counter maximum={4} label="Users" />
-                {/*  <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm">
-                  <p className="text-3xl font-bold text-primary">4+</p>
-                  <p className="text-sm text-muted-foreground">Users</p>
-                </div> */}
-                <Counter maximum={52} label="Rooms" />
-
-                {/* <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm">
-                  <p className="text-3xl font-bold text-primary">52+</p>
-                  <p className="text-sm text-muted-foreground">Rooms</p>
-                </div> */}
-              </div>
+              {/*  <div className="grid grid-cols-3 gap-4 pt-4"> */}
+              <CounterFetchWrapper />
             </div>
 
             {/* Image d'hôtel */}
