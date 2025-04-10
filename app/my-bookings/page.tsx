@@ -1,6 +1,4 @@
-import NoGuestReservation from "@/components/myBookings/NoGuestReservation";
-import NoReservationMade from "@/components/myBookings/NoReservationMade";
-import RoomCard from "@/components/RoomCard";
+import BookingTabs from "@/components/myBookings/BookingTabs";
 import { checkRole } from "@/lib/clerk";
 import { getBookedIMade, getRoomVisitorHaveMade } from "@/services/roomService";
 import { auth } from "@clerk/nextjs/server";
@@ -10,36 +8,21 @@ const page = async () => {
 
   const roomBooked = await getBookedIMade(userId as string);
   const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId as string);
+  const isHost = checkRole("host");
 
   return (
-    <section className="flex flex-col gap-10">
-      <h2 className="text-xl md:text-2xl font-semibold mb-6 mt-2">
-        Here are bookings you have made
-      </h2>
-      <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {roomBooked && roomBooked.length > 0 ? (
-          roomBooked.map((room) => <RoomCard key={room.id} room={room} />)
-        ) : (
-          <NoReservationMade />
-        )}
-      </ul>
-      {checkRole("host") && (
-        <>
-          <h2 className="text-xl md:text-2xl font-semibold mb-6 mt-2">
-            Here are bookings visitros have made on your properties
-          </h2>
-
-          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {roomVisitorHaveMade && roomVisitorHaveMade.length > 0 ? (
-              roomVisitorHaveMade.map((room) => (
-                <RoomCard key={room.id} room={room} />
-              ))
-            ) : (
-              <NoGuestReservation />
-            )}
-          </ul>
-        </>
-      )}
+    <section className="container max-w-screen-2xl mx-auto py-12 px-4 sm:px-6">
+      <div className="space-y-6">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+          My Bookings
+        </h1>
+        <BookingTabs
+          roomBooked={roomBooked || []}
+          roomVisitorHaveMade={roomVisitorHaveMade || []}
+          userId={userId as string}
+          isHost={isHost}
+        />
+      </div>
     </section>
   );
 };
