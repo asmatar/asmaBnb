@@ -1,6 +1,6 @@
 "use server";
 import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
-import { bookings } from "@/store/BookingStore";
+import { bookings } from "@/store/Global";
 import { revalidatePath } from "next/cache";
 
 export const createBooking = async (booking: bookings) => {

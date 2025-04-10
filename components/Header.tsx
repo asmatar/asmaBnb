@@ -12,7 +12,7 @@ import { checkRole } from "@/lib/clerk";
 import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { FaHotel } from "react-icons/fa6";
+import { FaHeart, FaHotel } from "react-icons/fa6";
 import { HiMiniPlus } from "react-icons/hi2";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { TbBrandBooking } from "react-icons/tb";
@@ -41,7 +41,8 @@ const Header = async () => {
                         <LuChevronsUpDown />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+
+                    <DropdownMenuContent align="end" className="z-[60]">
                       {checkRole("host") && (
                         <>
                           <DropdownMenuItem className="flex items-center gap-2">
@@ -61,6 +62,12 @@ const Header = async () => {
                         </>
                       )}
                       <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+                        <Link href="/favorites">
+                          <FaHeart />
+                          My Favorites
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
                         <Link href="/my-bookings">
                           <TbBrandBooking />
                           My Bookings
@@ -69,7 +76,6 @@ const Header = async () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-
                 <UserButton afterSignOutUrl="/" showName />
               </>
             ) : (
