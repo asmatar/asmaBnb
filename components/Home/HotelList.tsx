@@ -1,5 +1,6 @@
 import { getFilteredHotels } from "@/services/hotelService";
 
+import StyleContainer from "../StyleContainer";
 import HotelCard from "./HotelCard";
 import NoHotelsFound from "./NoHotelsFound";
 type searchParams = {
@@ -20,7 +21,8 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
   const { data } = await getFilteredHotels(searchParams);
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4">
+    /*  <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4"> */
+    <StyleContainer>
       {data && data.length > 0 ? (
         data.map((hotel) => (
           <HotelCard
@@ -34,13 +36,14 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
             country={hotel.country!}
             /* price={hotel.price!} */
             image={hotel.image}
-            isFavorite={hotel.isFavorite}
+            isFavorite={hotel.isFavorite ?? false}
           />
         ))
       ) : (
         <NoHotelsFound />
       )}
-    </section>
+    </StyleContainer>
+    /*    </section> */
   );
 }
 

@@ -1,6 +1,7 @@
 import HotelList from "@/components/Home/HotelList";
 import SearchBar from "@/components/Home/SearchBar/SearchBar";
 import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
+import ToggleViewLayout from "@/components/ToggleViewLayout";
 
 import { Suspense } from "react";
 type searchParams = {
@@ -48,6 +49,7 @@ export default async function Home({ searchParams }: searchParams) {
         </div>
       </section>
       <SearchBar />
+      <ToggleViewLayout />
       <Suspense fallback={<HomeSkeleton />}>
         <HotelList searchParams={searchParamsUrl} />
       </Suspense>
