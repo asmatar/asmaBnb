@@ -27,14 +27,16 @@ const Header = async () => {
 
   return (
     <>
-      {/* Top notification bar - Uncomment and customize as needed */}
-      {/* <div className="bg-primary text-primary-foreground py-1.5 text-center text-xs font-medium">
+      {/* Top notification bar with subtle gradient */}
+      <div className="bg-secondary/80 border-b py-1 text-center text-xs font-medium">
         <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6">
-          🎉 Special offer: Use code WELCOME10 for 10% off your first booking!
+          <span className="gradient-text">
+            ✨ Design moderne avec gradients subtils ✨
+          </span>
         </div>
-      </div> */}
+      </div>
 
-      <header className="sticky top-0 bg-background/85 backdrop-blur-xl border-b z-[60] py-4">
+      <header className="sticky top-0 bg-background/80 backdrop-blur-md border-b z-[60] py-3">
         <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6">
           <div className="flex items-center h-16">
             {/* Logo */}
@@ -51,7 +53,7 @@ const Header = async () => {
                 <div className="flex items-center">
                   {/* User greeting on larger screens */}
                   <span className="hidden lg:inline-block text-sm font-normal mr-3 text-muted-foreground">
-                    Welcome,{" "}
+                    Bienvenue,{" "}
                     <span className="font-medium text-foreground">
                       {firstName || username}
                     </span>
@@ -61,11 +63,11 @@ const Header = async () => {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
-                        className="flex items-center gap-1.5 h-9 hover:bg-primary/5 px-2.5 rounded-full"
+                        className="flex items-center gap-1.5 h-9 rounded-full border-primary/20 hover:border-primary/40"
                       >
-                        <LuLayoutDashboard className="h-4 w-4" />
+                        <LuLayoutDashboard className="h-4 w-4 text-primary" />
                         <span className="hidden sm:inline text-sm font-medium">
                           Dashboard
                         </span>
@@ -168,7 +170,7 @@ const Header = async () => {
                     </Button>
                   </Link>
                   <Link href="/sign-up">
-                    <Button size="sm" className="shadow-sm">
+                    <Button variant="gradient" size="sm" className="shadow-sm">
                       Join now
                     </Button>
                   </Link>
