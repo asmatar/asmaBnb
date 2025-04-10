@@ -158,20 +158,20 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
           <CardTitle className="break-words whitespace-normal">
             {room.roomTitle}
           </CardTitle>
-          <CardDescription className="min-h-[120px]">
+          <CardDescription className="min-h-[120px] max-h-[120px] overflow-y-auto">
             {room.roomDescription}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-4 relative h-[55vw] sm:h-[30vw] xl:h-[20vw] max-h-[380px] mb-4">
+          <div className="flex flex-col gap-4 relative h-[200px] mb-4">
             <Image
               fill
               src={room.image as string}
               alt={room.roomTitle as string}
-              className="object-cover"
+              className="object-cover rounded-lg"
             />
           </div>
-          <div className="grid grid-cols-2 gap-4 content-start text-sm">
+          <div className="grid grid-cols-2 gap-4 content-start text-sm max-h-[200px] overflow-y-auto">
             <AmenityItem>
               <Bed className="h-4 w-4" />
               {room.bedCount}
