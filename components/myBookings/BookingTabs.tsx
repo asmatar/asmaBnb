@@ -1,35 +1,43 @@
-"use client";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { checkRole } from "@/lib/clerk";
 import { cn } from "@/lib/utils";
+import { getBookedIMade, getRoomVisitorHaveMade } from "@/services/roomService";
+import { auth } from "@clerk/nextjs/server";
 import { CalendarCheck, CalendarRange, CalendarX } from "lucide-react";
 import RoomCard from "../RoomCard";
 import { Separator } from "../ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 import NoGuestReservation from "./NoGuestReservation";
 import NoReservationMade from "./NoReservationMade";
-
 // Using the Record type to define the room structure without specific types
 // This bypasses the need to import the specific RoomBooked type
-interface BookingTabsProps {
+/* interface BookingTabsProps {
   roomBooked: Record<string, unknown>[];
   roomVisitorHaveMade: Record<string, unknown>[];
   userId: string;
   isHost: boolean;
-}
+} */
 
-export default function BookingTabs({
-  roomBooked = [],
-  roomVisitorHaveMade = [],
-  userId,
-  isHost,
-}: BookingTabsProps) {
+export default async function BookingTabs() {
+  const { userId } = auth();
+
+  const roomBooked = await getBookedIMade(userId as string);
+  const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId as string);
+  const isHost = checkRole("host");
   // Get some stats for the summary cards
-  const totalMyBookings = roomBooked.length;
-  const totalGuestBookings = roomVisitorHaveMade.length;
-  const totalUpcomingBooking = roomBooked.filter(
-    (booking) => booking.paymentStatus !== "succeeded",
-  ).length;
+  const totalMyBookings = roomBooked && roomBooked.length;
+  const totalGuestBookings = roomVisitorHaveMade && roomVisitorHaveMade.length;
+  const totalUpcomingBooking =
+    roomBooked &&
+    roomBooked.filter((booking) => booking.paymentStatus !== "succeeded")
+      .length;
   console.log(roomBooked);
+
   return (
     <div className="space-y-8 w-full mx-auto">
       {/* Stats Summary Cards */}
@@ -77,22 +85,50 @@ export default function BookingTabs({
                 <span className="text-base">My Bookings</span>
               </span>
             </TabsTrigger>
-            <TabsTrigger
-              value="guest-bookings"
-              disabled={!isHost}
-              className={cn(
-                "py-4 transition-all duration-200",
-                "data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:font-medium",
-                "data-[state=active]:border-b-2 data-[state=active]:border-primary",
-                "data-[state=inactive]:bg-background data-[state=inactive]:hover:bg-muted/20",
-                !isHost && "opacity-50",
-              )}
-            >
-              <span className="flex items-center gap-3">
-                <CalendarCheck className="h-5 w-5" />
-                <span className="text-base">Guest Bookings</span>
-              </span>
-            </TabsTrigger>
+            {isHost ? (
+              <TabsTrigger
+                value="guest-bookings"
+                disabled={!isHost}
+                className={cn(
+                  "py-4 transition-all duration-200",
+                  "data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:font-medium",
+                  "data-[state=active]:border-b-2 data-[state=active]:border-primary",
+                  "data-[state=inactive]:bg-background data-[state=inactive]:hover:bg-muted/20",
+                  !isHost && "opacity-50",
+                )}
+              >
+                <span className="flex items-center gap-3">
+                  <CalendarCheck className="h-5 w-5" />
+                  <span className="text-base">Guest Bookings</span>
+                </span>
+              </TabsTrigger>
+            ) : (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <TabsTrigger
+                      value="guest-bookings"
+                      disabled={!isHost}
+                      className={cn(
+                        "py-4 transition-all duration-200",
+                        "data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:font-medium",
+                        "data-[state=active]:border-b-2 data-[state=active]:border-primary",
+                        "data-[state=inactive]:bg-background data-[state=inactive]:hover:bg-muted/20",
+                        !isHost && "opacity-50",
+                      )}
+                    >
+                      <span className="flex items-center gap-3">
+                        <CalendarCheck className="h-5 w-5" />
+                        <span className="text-base">Guest Bookings</span>
+                      </span>
+                    </TabsTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent className="w-[300px]">
+                    vous devez etre host pour avoir acces a ces informations
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </TabsList>
 
           <TabsContent
@@ -111,13 +147,13 @@ export default function BookingTabs({
 
               <Separator className="mb-8" />
 
-              {roomBooked.length > 0 ? (
+              {roomBooked && roomBooked.length > 0 ? (
                 <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                   {roomBooked.map((room) => (
                     <RoomCard
                       key={room.id as string}
                       room={room as any}
-                      userId={userId}
+                      userId={userId as string}
                     />
                   ))}
                 </ul>
@@ -150,7 +186,7 @@ export default function BookingTabs({
                       <RoomCard
                         key={room.id as string}
                         room={room as any}
-                        userId={userId}
+                        userId={userId as string}
                       />
                     ))}
                   </ul>
