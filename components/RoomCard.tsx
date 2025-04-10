@@ -91,7 +91,6 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
     date?.from ?? room.startDate,
   );
   const handleDeleteRoom = async (formData: FormData) => {
-    console.log(formData);
     const response = await deleteRoom(formData);
     if (response.success === true) {
       toast.success("Room deleted successfully");

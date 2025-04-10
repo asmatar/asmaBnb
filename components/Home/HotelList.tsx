@@ -17,7 +17,8 @@ type searchParams = {
   swimingPool: string;
 };
 async function HotelList({ searchParams }: { searchParams: searchParams }) {
-  const data = await getFilteredHotels(searchParams);
+  const { data } = await getFilteredHotels(searchParams);
+
   return (
     <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4">
       {data && data.length > 0 ? (
@@ -33,6 +34,7 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
             country={hotel.country!}
             /* price={hotel.price!} */
             image={hotel.image}
+            isFavorite={hotel.isFavorite}
           />
         ))
       ) : (

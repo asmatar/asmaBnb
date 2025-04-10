@@ -5,9 +5,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { HotelCardProps } from "@/types/types";
-import { Dumbbell, MapPin, Waves } from "lucide-react";
+import { Dumbbell, Heart, MapPin, Waves } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import IconCTA from "../IconCTA";
 const HotelCard = async ({
   title,
   description,
@@ -17,12 +18,26 @@ const HotelCard = async ({
   pool,
   city,
   id,
+  isFavorite,
 }: HotelCardProps) => {
   return (
     <Link href={`/hotel/details/${id}`}>
       <div className="col-span-1 cursor-pointer transition hover:scale-105">
         <div className=" flex gap-2 bg-background/50 border border-primary/10 rounded-lg">
-          <div className="flex-1 aspect-square overflow-hidden relative w-full h-[210px] rounded-s-lg">
+          <div className="flex-1 aspect-square overflow-hidden relative w-full h-[210px] rounded-s-lg ">
+            <div className="absolute top-2 right-2 z-50">
+              {isFavorite ? (
+                <IconCTA isFavorite={isFavorite} hotelId={id}>
+                  <Heart className="w-6 h-6 z-50 fill-gold" fill="gold" />? 11
+                  <span className="text-xs z-auto">{isFavorite}</span>
+                </IconCTA>
+              ) : (
+                <IconCTA isFavorite={isFavorite} hotelId={id}>
+                  <Heart className="w-6 h-6 z-50" stroke="gold" />: {isFavorite}
+                </IconCTA>
+              )}
+            </div>
+
             {image && (
               <Image
                 fill

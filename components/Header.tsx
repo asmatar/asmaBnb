@@ -23,7 +23,7 @@ const Header = async () => {
 
   return (
     <>
-      <header className="sticky top-0 border border-b-primary/10 bg-secondary z-40   py-4 ">
+      <header className="sticky top-0 border border-b-primary/10 bg-secondary z-[60]   py-4 ">
         <div className="flex justify-between mx-auto max-w-[1920px] xl:px-20 w-full max-auto">
           <Link href="/" className="flex gap-2 items-center cursor-pointer">
             <Logo />

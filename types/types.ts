@@ -10,6 +10,7 @@ export type HotelCardProps = {
   gym: boolean;
   pool: boolean;
   id: string;
+  isFavorite: boolean;
 };
 export type RoomBooked = Room & {
   endDate: string;
