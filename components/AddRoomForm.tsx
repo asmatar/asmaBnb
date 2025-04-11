@@ -179,7 +179,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
     }
   }
   return (
-    <div className="max-h-[75vh] overflow-y-auto px-2">
+    <div className="max-h-[75vh] overflow-y-auto px-2 z-[80]">
       <Form {...form}>
         <form
           id="addRoomForm"

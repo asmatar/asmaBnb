@@ -663,11 +663,11 @@ const AddHotelForm = ({
                         open={isDialogOpened}
                         onOpenChange={setIsDialogOpen}
                       >
-                        <DialogTrigger className="px-2 bg-background rounded-md flex items-center">
+                        <DialogTrigger className="px-2 bg-background rounded-md flex items-center ">
                           <Plus className="w-4 h-4 mr-3" />
                           Add room
                         </DialogTrigger>
-                        <DialogContent className="max-w-[900px] w-[90%]">
+                        <DialogContent className="max-w-[900px] w-[90%] z-[80]">
                           <DialogHeader className="px-2">
                             <DialogTitle>Add a room</DialogTitle>
                             <DialogDescription>
