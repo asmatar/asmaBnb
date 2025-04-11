@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     default: "Asma Hotel",
     template: "%s | Asma Hotel",
   },
-  description: "Display all hotels in the application",
+  description:
+    "Découvrez Asma Hotel, votre destination de luxe pour des séjours inoubliables. Profitez de nos chambres élégantes, installations modernes et service exceptionnel pour une expérience hôtelière parfaite.",
 };
 
 export default function RootLayout({

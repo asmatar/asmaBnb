@@ -8,7 +8,7 @@ import { FaHeart } from "react-icons/fa6";
 import NoFavoritesFound from "./NoFavoritesFound";
 
 export const metadata: Metadata = {
-  title: "Vos favoris | Asma Hotel",
+  title: "Vos favoris",
   description: "Retrouvez tous vos hôtels préférés à un seul endroit",
 };
 

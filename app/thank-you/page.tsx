@@ -1,8 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import Lottie from "react-lottie-player";
 import congrat from "../assets/lotties/congrat.json";
+
+export const metadata: Metadata = {
+  title: "Thank You ",
+  description: "Thank You",
+};
+
 function BookedPage() {
   const router = useRouter();
 
