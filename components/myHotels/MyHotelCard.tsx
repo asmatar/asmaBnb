@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { deleteHotel } from "@/services/hotelService";
-import { Trash } from "lucide-react";
+import { Eye, Pencil, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -14,14 +14,13 @@ export type MyHotelProps = {
   image: string;
   price: number[] | [];
 };
+
 const MyHotelCard = ({
   id,
   title,
   description,
   image,
   price,
-  //minPrice,
-  //maxPrice,
 }: MyHotelProps) => {
   const handleDeleteHotel = async (formData: FormData) => {
     const id = formData.get("id");
@@ -42,62 +41,53 @@ const MyHotelCard = ({
   };
 
   return (
-    <div
-      key={id}
-      className="bg-white rounded-lg shadow-md overflow-hidden transition relative hover:scale-105"
-    >
-      <div className="relative h-72 group">
-        <Image
-          src={image}
-          alt={title}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-t-lg transition group-hover:scale-10"
-        />
-      </div>
-      <div className="p-6">
-        <h2 className="text-lg font-bold mb-2 text-gray-800 ">{title}</h2>
-        <p className="text-gray-600 mb-4">{description.slice(0, 100)}...</p>
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-xl font-bold text-gray-800">
+    <div className="bg-card rounded-xl border border-primary/10 overflow-hidden transition-all hover:shadow-lg">
+      <div className="relative h-[300px] w-full">
+        <Image src={image} alt={title} fill className="object-cover" />
+        <div className="absolute top-4 right-4">
+          <div className="bg-background/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
             {price.length > 0
               ? `$ ${Math.min(...price)} - $ ${Math.max(...price)}`
               : `NA`}{" "}
             /night
-          </span>
+          </div>
         </div>
-        <div className="flex justify-between space-x-2">
+      </div>
+
+      <div className="p-6 space-y-4">
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold">{title}</h2>
+          <p className="text-muted-foreground line-clamp-2">{description}</p>
+        </div>
+
+        <div className="flex flex-col gap-2">
           <Link href={`/hotel/details/${id}`}>
-            <Button
-              variant="outline"
-              type="button"
-              className=" text-primary py-2 px-4 rounded-lg w-full"
-            >
+            <Button variant="outline" className="w-full">
+              <Eye className="w-4 h-4 mr-2" />
               View Details
             </Button>
           </Link>
+
           <Link href={`/hotel/${id}`}>
-            <Button
-              variant="outline"
-              type="button"
-              className=" text-primary py-2 px-4 rounded-lg w-full"
-            >
+            <Button variant="outline" className="w-full">
+              <Pencil className="w-4 h-4 mr-2" />
               Update
             </Button>
           </Link>
+
+          <form action={handleDeleteHotel}>
+            <input type="hidden" name="id" value={id} />
+            <SubmitButton
+              variant="outline"
+              type="submit"
+              text="Delete"
+              loadingText="Deleting..."
+              className="w-full text-destructive hover:text-destructive hover:bg-destructive/10"
+            >
+              <Trash className="w-4 h-4 mr-2" />
+            </SubmitButton>
+          </form>
         </div>
-        <form action={handleDeleteHotel}>
-          <input type="hidden" name="id" value={id} />
-          <SubmitButton
-            variant="outline"
-            type="submit"
-            text="Delete"
-            className={`mt-4  text-primary py-2 px-4 rounded-lg w-full `}
-            loadingText="Deleting..."
-          >
-            <Trash className="w-4 h-4 mr-3" />
-          </SubmitButton>
-        </form>
       </div>
     </div>
   );

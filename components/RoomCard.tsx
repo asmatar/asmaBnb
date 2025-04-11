@@ -1,6 +1,5 @@
 "use client";
 import AddRoomForm from "@/components/AddRoomForm";
-import AmenityItem from "@/components/AmenityItem";
 import { DatePickerWithRange } from "@/components/DatePickerWithRange";
 import SubmitButton from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
@@ -34,9 +33,7 @@ import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import {
   AirVent,
   Bath,
-  Bed,
   BedDouble,
-  BedDoubleIcon,
   Castle,
   Home,
   MountainSnow,
@@ -44,7 +41,6 @@ import {
   Ship,
   Trash,
   Trees,
-  Users,
   UtensilsCrossed,
   VolumeX,
   Wifi,
@@ -154,110 +150,103 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
   return (
     <>
       <Card>
-        <CardHeader>
+        <CardHeader className="mb-4 flex flex-col gap-4">
           <CardTitle className="break-words whitespace-normal">
             {room.roomTitle}
-          </CardTitle>
-          <CardDescription className="min-h-[120px]">
-            {room.roomDescription}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-4 relative h-[55vw] sm:h-[30vw] xl:h-[20vw] max-h-[380px] mb-4">
+          </CardTitle>{" "}
+          <div className="flex flex-col gap-4 relative h-[200px]">
             <Image
               fill
               src={room.image as string}
               alt={room.roomTitle as string}
-              className="object-cover"
+              className="object-cover rounded-lg"
             />
           </div>
-          <div className="grid grid-cols-2 gap-4 content-start text-sm">
-            <AmenityItem>
-              <Bed className="h-4 w-4" />
-              {room.bedCount}
-              Bed
-            </AmenityItem>
-            <AmenityItem>
-              <Users className="h-4 w-4" />
-              {room.guestCount}
-              Guest
-            </AmenityItem>
-            <AmenityItem>
+          <CardDescription className="min-h-[120px] max-h-[120px] overflow-y-auto">
+            {room.roomDescription}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
+              <BedDouble className="h-4 w-4" />
+              {room.bedCount} Beds
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
               <Bath className="h-4 w-4" />
               {room.bathroomCount} Bathroom
-            </AmenityItem>
-
+            </div>
             {room.kingBed && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <BedDouble className="h-4 w-4" />
-                {room.kingBed} King Bed
-              </AmenityItem>
+                King Bed
+              </div>
             )}
             {room.queenBed && (
-              <AmenityItem>
-                <BedDoubleIcon className="h-4 w-4" />
-                {room.queenBed} Queen Bed
-              </AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
+                <BedDouble className="h-4 w-4" />
+                Queen Bed
+              </div>
             )}
             {room.roomService && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <UtensilsCrossed className="h-4 w-4" />
-                {room.roomService} Room service
-              </AmenityItem>
+                Room service
+              </div>
             )}
             {room.TV && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Bath className="h-4 w-4" />
-                {room.TV} TV
-              </AmenityItem>
+                TV
+              </div>
             )}
             {room.balcony && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Home className="h-4 w-4" />
-                {room.balcony} Balcony
-              </AmenityItem>
+                Balcony
+              </div>
             )}
             {room.freeWifi && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Wifi className="h-4 w-4" />
-                {room.freeWifi} Free Wifi
-              </AmenityItem>
+                Free Wifi
+              </div>
             )}
             {room.cityView && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Castle className="h-4 w-4" />
-                {room.cityView} City View
-              </AmenityItem>
+                City View
+              </div>
             )}
             {room.oceanView && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Ship className="h-4 w-4" />
-                {room.oceanView} Ocean View
-              </AmenityItem>
+                Ocean View
+              </div>
             )}
             {room.forestView && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Trees className="h-4 w-4" />
-                {room.forestView} Forest View
-              </AmenityItem>
+                Forest View
+              </div>
             )}
             {room.mountainView && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <MountainSnow className="h-4 w-4" />
-                {room.mountainView} Mountain View
-              </AmenityItem>
+                Mountain View
+              </div>
             )}
             {room.airCondition && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <AirVent className="h-4 w-4" />
-                {room.airCondition} Air Condition
-              </AmenityItem>
+                Air Condition
+              </div>
             )}
             {room.soundProofed && (
-              <AmenityItem>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <VolumeX className="h-4 w-4" />
-                {room.soundProofed} Sound Proofed
-              </AmenityItem>
+                Sound Proofed
+              </div>
             )}
           </div>
           <Separator className="my-4" />

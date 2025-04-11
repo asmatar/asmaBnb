@@ -1,0 +1,45 @@
+export interface RoomBooked {
+  id: string;
+  roomTitle: string;
+  roomDescription: string;
+  image: string;
+  bedCount: number;
+  bathroomCount: number;
+  guestCount: number;
+  roomPrice: number;
+  breakfastPrice: number;
+  totalPrice: number;
+  breakfastIncluded: boolean;
+  startDate: string;
+  endDate: string;
+  kingBed?: boolean;
+  queenBed?: boolean;
+  roomService?: boolean;
+  TV?: boolean;
+  balcony?: boolean;
+  freeWifi?: boolean;
+  cityView?: boolean;
+  oceanView?: boolean;
+  forestView?: boolean;
+  mountainView?: boolean;
+  airCondition?: boolean;
+  soundProofed?: boolean;
+  hotel_id: string;
+  paymentStatus?: string;
+  paymentIntentId?: string;
+  username?: string;
+  booking?: {
+    id: string;
+    user_id: string;
+    roomBooked: string;
+    hotelBooked: string;
+    startDate: string;
+    endDate: string;
+    totalPrice: number;
+    breakfastIncluded: boolean;
+    isPaid: boolean;
+    paymentIntentId: string;
+    created_at: string;
+  }[];
+  isPaid?: boolean;
+}

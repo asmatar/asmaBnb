@@ -13,7 +13,7 @@ const IconCTA = ({
   hotelId: string;
 }) => {
   const { user } = useUser();
-  console.log("isFavorite----------------------", isFavorite);
+
   const handleFavorite = (isFavorite: boolean) => {
     const favoriteHotel = {
       id: uuidv4(),

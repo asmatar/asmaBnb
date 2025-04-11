@@ -9,16 +9,16 @@ interface GlobalStoreProps {
 }
 
 const useGlobalStore = create<GlobalStoreProps>()(
-  persist(
-    immer(
-      devtools((set) => ({
+  devtools(
+    persist(
+      immer((set) => ({
         isViewGrid: true,
         setIsViewGrid: (isViewGrid) => set({ isViewGrid }),
       })),
+      {
+        name: "global-storage", // This is the key in localStorage
+      },
     ),
-    {
-      name: "global-storage", // This is the key in localStorage
-    },
   ),
 );
 

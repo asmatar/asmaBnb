@@ -10,7 +10,7 @@ export function Logo() {
     <div className="relative w-28 h-16">
       <Image
         fill
-        src={`${theme === "light" ? "/logo-light.png" : "/logo-light.png"}`}
+        src={`${theme === "light" ? "/logo-light.png" : "/logo-dark.png"}`}
         alt="Logo"
       ></Image>
     </div>

@@ -4,6 +4,21 @@ import { getOneHotel } from "@/services/hotelService";
 import { getAllCountries } from "@/services/locationService";
 import { getRoomByHotel } from "@/services/roomService";
 import { Hotel, Room } from "@/types/tableType";
+import { Metadata } from "next";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { hotelId: string };
+}): Promise<Metadata> => {
+  const hotelId = params.hotelId ?? "";
+  const hotel = await getOneHotel(hotelId);
+  return {
+    title: `Modifier ${hotel?.title ?? "Hôtel"}`,
+    description:
+      "Gérez les détails de votre hôtel, ajoutez, modifiez ou supprimez des chambres, et mettez à jour les informations de votre établissement.",
+  };
+};
 
 async function page({ params }: { params: { hotelId: string } }) {
   const hotelId = params.hotelId ?? "";

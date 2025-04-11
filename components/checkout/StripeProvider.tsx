@@ -4,10 +4,13 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { Calendar, Utensils } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
+import { Card } from "../ui/card";
 import { Separator } from "../ui/separator";
+
 function Submit() {
   const { pending } = useFormStatus();
   const stripe = useStripe();
@@ -17,13 +20,16 @@ function Submit() {
       disabled={!stripe || !elements || pending}
       id="submit"
       type="submit"
-      className="mt-4"
+      className="w-full mt-6 py-6 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300"
       variant="default"
     >
-      <span id="button-text">{pending ? "Processing..." : "Pay Now"}</span>
+      <span id="button-text" className="text-lg">
+        {pending ? "Traitement en cours..." : "Payer maintenant"}
+      </span>
     </Button>
   );
 }
+
 function Form({
   action,
   startDate,
@@ -40,25 +46,52 @@ function Form({
   breakfastIncluded: boolean;
 }) {
   return (
-    <form action={action}>
-      <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
-      <div className="flex flex-col gap-1 mt-4">
-        <h2 className="text-lg mb-1 font-semibold">Your booking summary</h2>
-        <div className="">you will check in on {startDate} at 5PM</div>
-        <div className="">you will check out on {endDate} at 11PM</div>
-        {breakfastIncluded && (
-          <div className="">you will be served breakfast each day at 8PM</div>
-        )}
-        <Separator />
-        <div className="font-bold text-lg ">
-          <div className="mb-2">Breakfast Price: ${breakfastPrice}</div>
-          total price: ${totalPrice}
-        </div>
+    <form action={action} className="space-y-6">
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Informations de paiement</h3>
+        <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
       </div>
+
+      <Card className="p-6 border-primary/10">
+        <h3 className="text-lg font-medium mb-4">Résumé de la réservation</h3>
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <Calendar className="w-5 h-5" />
+            <div>
+              <p>Arrivée: {startDate} à 17h</p>
+              <p>Départ: {endDate} à 11h</p>
+            </div>
+          </div>
+
+          {breakfastIncluded && (
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <Utensils className="w-5 h-5" />
+              <p>Petit-déjeuner inclus chaque jour à 8h</p>
+            </div>
+          )}
+
+          <Separator className="my-4" />
+
+          <div className="space-y-2">
+            {breakfastIncluded && (
+              <div className="flex justify-between">
+                <span>Petit-déjeuner:</span>
+                <span className="font-medium">${breakfastPrice}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-lg">
+              <span className="font-medium">Total:</span>
+              <span className="font-bold">${totalPrice}</span>
+            </div>
+          </div>
+        </div>
+      </Card>
+
       <Submit />
     </form>
   );
 }
+
 function StripeProvider({
   startDate,
   endDate,
@@ -102,16 +135,14 @@ function StripeProvider({
   };
 
   return (
-    <>
-      <Form
-        action={handleSubmit}
-        startDate={startDate}
-        endDate={endDate}
-        totalPrice={totalPrice}
-        breakfastPrice={breakfastPrice}
-        breakfastIncluded={breakfastIncluded}
-      />
-    </>
+    <Form
+      action={handleSubmit}
+      startDate={startDate}
+      endDate={endDate}
+      totalPrice={totalPrice}
+      breakfastPrice={breakfastPrice}
+      breakfastIncluded={breakfastIncluded}
+    />
   );
 }
 
