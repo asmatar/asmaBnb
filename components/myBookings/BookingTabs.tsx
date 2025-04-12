@@ -27,7 +27,6 @@ export default async function BookingTabs() {
     roomBooked &&
     roomBooked.filter((booking) => booking.paymentStatus !== "succeeded")
       .length;
-  console.log(roomBooked);
 
   return (
     <div className="space-y-8 w-full mx-auto">

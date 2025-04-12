@@ -28,7 +28,6 @@ type searchParams = {
 export const revalidate = 3600;
 export default async function Home({ searchParams }: searchParams) {
   const searchParamsUrl = await searchParams;
-  console.log("SPURL", searchParamsUrl);
   return (
     <>
       <section className="relative overflow-hidden mb-16">

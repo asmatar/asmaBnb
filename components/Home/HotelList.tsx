@@ -38,7 +38,7 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
       value === "freeParking" ||
       value === "swimingPool",
   );
-  console.log("containsFilters", containsFilters);
+
   const hotelCount = await getHotelCount();
   const totalPages = containsFilters
     ? data && data.length / 12 + 1
