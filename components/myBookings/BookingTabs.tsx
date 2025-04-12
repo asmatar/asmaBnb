@@ -21,14 +21,12 @@ export default async function BookingTabs() {
   const roomBooked = await getBookedIMade(userId as string);
   const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId as string);
   const isHost = checkRole("host");
-  // Get some stats for the summary cards
   const totalMyBookings = roomBooked && roomBooked.length;
   const totalGuestBookings = roomVisitorHaveMade && roomVisitorHaveMade.length;
   const totalUpcomingBooking =
     roomBooked &&
     roomBooked.filter((booking) => booking.paymentStatus !== "succeeded")
       .length;
-  console.log(roomBooked);
 
   return (
     <div className="space-y-8 w-full mx-auto">

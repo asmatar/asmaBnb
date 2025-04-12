@@ -27,15 +27,12 @@ export default function HomeSkeleton() {
   );
 }
 
-// Skeleton pour l'affichage en grille (vertical)
 const GridSkeletonCard = () => {
   return (
     <div className="group relative h-full overflow-hidden bg-card rounded-xl border border-border/40 transition-all duration-300 hover:shadow-lg">
-      {/* Image section */}
       <div className="relative h-64 w-full overflow-hidden">
         <Skeleton className="w-full h-full object-cover" />
 
-        {/* Favorite button placeholder */}
         <div className="absolute top-3 right-3 z-10">
           <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm">
             <Heart className="w-5 h-5 text-muted-foreground/40" />
@@ -43,25 +40,21 @@ const GridSkeletonCard = () => {
         </div>
       </div>
 
-      {/* Content section */}
       <div className="p-4 space-y-3">
         <Skeleton className="h-6 w-3/4" />
         <Skeleton className="h-4 w-full" />
 
-        {/* Location */}
         <div className="flex items-center gap-1 mt-1">
           <MapPin className="w-3.5 h-3.5 text-muted-foreground/40" />
           <Skeleton className="h-3.5 w-24" />
         </div>
 
-        {/* Amenities badges */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3">
           <Skeleton className="h-6 w-full rounded-full" />
           <Skeleton className="h-6 w-full rounded-full" />
           <Skeleton className="h-6 w-full rounded-full" />
         </div>
 
-        {/* View details button */}
         <div className="mt-4 flex justify-end">
           <Skeleton className="h-8 w-28 rounded-lg" />
         </div>
@@ -70,16 +63,13 @@ const GridSkeletonCard = () => {
   );
 };
 
-// Skeleton pour l'affichage en liste (horizontal)
 const ListSkeletonCard = () => {
   return (
     <div className="group h-full overflow-hidden bg-card rounded-xl border border-border/40 transition-all duration-300 hover:shadow-lg">
       <div className="flex flex-row h-64 relative">
-        {/* Image section */}
         <div className="relative w-1/3 overflow-hidden">
           <Skeleton className="w-full h-full" />
 
-          {/* Favorite button placeholder */}
           <div className="absolute top-3 right-3 z-10">
             <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm">
               <Heart className="w-5 h-5 text-muted-foreground/40" />
@@ -87,7 +77,6 @@ const ListSkeletonCard = () => {
           </div>
         </div>
 
-        {/* Content section */}
         <div className="flex-1 p-4 flex flex-col">
           <div className="space-y-2 mb-2">
             <Skeleton className="h-6 w-3/4" />
@@ -95,13 +84,11 @@ const ListSkeletonCard = () => {
             <Skeleton className="h-4 w-5/6" />
           </div>
 
-          {/* Location */}
           <div className="flex items-center gap-1 mt-1">
             <MapPin className="w-3.5 h-3.5 text-muted-foreground/40" />
             <Skeleton className="h-3.5 w-32" />
           </div>
 
-          {/* Amenities badges */}
           <div className="mt-4 flex flex-wrap gap-2">
             <Skeleton className="h-6 w-16 rounded-full" />
             <Skeleton className="h-6 w-16 rounded-full" />
@@ -110,7 +97,6 @@ const ListSkeletonCard = () => {
             <Skeleton className="h-6 w-16 rounded-full" />
           </div>
 
-          {/* View details button */}
           <div className="mt-auto flex justify-end">
             <Skeleton className="h-8 w-28 rounded-lg" />
           </div>

@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 async function MyHotels() {
   return (
     <div className="container mx-auto px-4 py-12">
-      {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">Mes hôtels</h1>
@@ -31,7 +30,6 @@ async function MyHotels() {
         </Link>
       </div>
       <Suspense fallback={<Loading />}>
-        {/* Hotel List */}
         <MyHotelList />
       </Suspense>
     </div>

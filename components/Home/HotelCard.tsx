@@ -42,16 +42,13 @@ const HotelCard = async ({
   shopping,
   swimingPool,
 }: HotelCardProps) => {
-  // Combine pool and swimingPool properties
   const hasPool = pool || swimingPool;
   const { isViewGrid } = useGlobalStore();
 
   if (isViewGrid) {
-    // Grid View (vertical cards)
     return (
       <Link href={`/hotel/details/${id}`}>
         <div className="group relative h-full overflow-hidden bg-card rounded-xl border border-border/40 transition-all duration-300 hover:shadow-lg">
-          {/* Image section with overlay - taller image */}
           <div className="relative h-64 w-full overflow-hidden">
             {image ? (
               <Image
@@ -69,7 +66,6 @@ const HotelCard = async ({
               </div>
             )}
 
-            {/* Favorite button */}
             <div className="absolute top-3 right-3 z-10">
               <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-110">
                 {isFavorite ? (
@@ -84,7 +80,6 @@ const HotelCard = async ({
               </div>
             </div>
 
-            {/* Hotel title banner */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
               <h3 className="font-semibold text-xl text-white mb-1 line-clamp-1">
                 {title}
@@ -100,9 +95,7 @@ const HotelCard = async ({
             </div>
           </div>
 
-          {/* Content section */}
           <div className="p-4">
-            {/* Description */}
             <div className="mb-4">
               <TooltipProvider>
                 <Tooltip>
@@ -118,7 +111,6 @@ const HotelCard = async ({
               </TooltipProvider>
             </div>
 
-            {/* Features with all amenities */}
             <div className="flex flex-wrap gap-1.5 mt-3">
               {hasPool && (
                 <Badge
@@ -201,7 +193,6 @@ const HotelCard = async ({
               )}
             </div>
 
-            {/* View details button */}
             <div className="mt-4 flex justify-end">
               <div className="text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors duration-200">
                 View Details →
@@ -212,12 +203,10 @@ const HotelCard = async ({
       </Link>
     );
   } else {
-    // List View (horizontal cards)
     return (
       <Link href={`/hotel/details/${id}`} className="w-full">
         <div className="group h-full overflow-hidden bg-card rounded-xl border border-border/40 transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-row h-64 relative">
-            {/* Image section with overlay */}
             <div className="relative w-1/3 overflow-hidden transition-all duration-500 group-hover:w-full group-hover:absolute group-hover:inset-0 group-hover:z-10">
               {image ? (
                 <Image
@@ -235,7 +224,6 @@ const HotelCard = async ({
                 </div>
               )}
 
-              {/* Favorite button */}
               <div className="absolute top-3 right-3 z-10">
                 <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-110">
                   {isFavorite ? (
@@ -250,7 +238,6 @@ const HotelCard = async ({
                 </div>
               </div>
 
-              {/* Title overlay on hover */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end">
                 <h3 className="font-semibold text-xl text-white mb-1 line-clamp-1">
                   {title}
@@ -268,9 +255,7 @@ const HotelCard = async ({
               </div>
             </div>
 
-            {/* Content section */}
             <div className="p-4 w-2/3 transition-all duration-500 group-hover:opacity-0">
-              {/* Title and location */}
               <div className="mb-2">
                 <h3 className="font-semibold text-xl line-clamp-1">{title}</h3>
                 {country || city ? (
@@ -285,7 +270,6 @@ const HotelCard = async ({
                 ) : null}
               </div>
 
-              {/* Description */}
               <div className="mb-4">
                 <TooltipProvider>
                   <Tooltip>
@@ -301,7 +285,6 @@ const HotelCard = async ({
                 </TooltipProvider>
               </div>
 
-              {/* Features with available amenities only */}
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {hasPool && (
                   <Badge
@@ -384,7 +367,6 @@ const HotelCard = async ({
                 )}
               </div>
 
-              {/* View details button */}
               <div className="mt-4 flex justify-end">
                 <div className="text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors duration-200">
                   View Details →

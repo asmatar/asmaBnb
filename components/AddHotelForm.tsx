@@ -674,7 +674,6 @@ const AddHotelForm = ({
                               All details about a room in your hotel.
                             </DialogDescription>
                           </DialogHeader>
-                          {/* roooooo */}
                           <AddRoomForm setFormOpen={setIsDialogOpen} />
                         </DialogContent>
                       </Dialog>
@@ -686,7 +685,6 @@ const AddHotelForm = ({
                   variant="outline"
                   type="submit"
                   className="hover:bg-primary-foreground  dark:border-background"
-                  //disabled={!formHotel.formState.isValid}
                   form="addHotelForm"
                 >
                   <Pencil className="w-4 h-4 mr-2" />

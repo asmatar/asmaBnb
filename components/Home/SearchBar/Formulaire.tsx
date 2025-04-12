@@ -173,7 +173,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     </SelectItem>
   ));
 
-  // Calculer le nombre de filtres actifs
   const activeFilters = [
     form.getValues("spa"),
     form.getValues("gym"),
@@ -191,7 +190,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col space-y-6"
       >
-        {/* Première rangée: recherche et sélecteurs de localisation */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="md:col-span-1 relative">
             <FormField
@@ -308,7 +306,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
           </div>
         </div>
 
-        {/* Titre des filtres avec bouton d'affichage et bouton Reset */}
         <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-medium">Amenities & Features</h3>
@@ -341,7 +338,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
           </div>
         </div>
 
-        {/* Conteneur pour l'animation */}
         <div
           className="overflow-hidden transition-all duration-500 ease-in-out"
           style={{
@@ -350,7 +346,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             marginTop: showFilters ? "0.5rem" : "0",
           }}
         >
-          {/* Filtres supplémentaires */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 p-4 bg-background/50 rounded-xl shadow-sm backdrop-blur-sm">
             <FilterCheckbox
               form={form}
@@ -422,7 +417,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
   );
 }
 
-// Composant réutilisable pour les checkboxes de filtres
 const FilterCheckbox = ({
   form,
   name,

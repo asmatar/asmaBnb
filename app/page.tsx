@@ -21,20 +21,18 @@ type searchParams = {
     shopping: string;
     freeParking: string;
     swimingPool: string;
+    from: number;
+    to: number;
   }>;
 };
-/* import FramerDiv from "@/components/framer/div"; */
 export const revalidate = 3600;
 export default async function Home({ searchParams }: searchParams) {
   const searchParamsUrl = await searchParams;
-
   return (
     <>
-      {/*  <FramerDiv></FramerDiv> */}
       <section className="relative overflow-hidden mb-16">
         <div className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Contenu textuel */}
             <div className="space-y-6">
               <div>
                 <Badge className="mb-4 px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full">
@@ -61,12 +59,9 @@ export default async function Home({ searchParams }: searchParams) {
                 client disponible 24/7, et d&apos;offres exclusives.
               </p>
 
-              {/* Statistiques */}
-              {/*  <div className="grid grid-cols-3 gap-4 pt-4"> */}
               <CounterFetchWrapper />
             </div>
 
-            {/* Image d'hôtel */}
             <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
               <Image
