@@ -1,14 +1,12 @@
+/* eslint-disable no-constant-condition */
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 const Pagination = ({ totalPages }: { totalPages: number }) => {
-  console.log(totalPages);
   const router = useRouter();
-  //const [page, setPage] = useState(0);
   const searchParams = useSearchParams();
 
   const handlePageChange = (index: number) => {
-    //setPage(index);
-    const from = index * 11;
+    const from = 0 ? index * 11 : index * 11 + index;
     const to = from + 11;
 
     const params = new URLSearchParams(searchParams.toString());
@@ -16,10 +14,6 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
     params.set("to", to.toString());
     router.push(`/?${params.toString()}`);
     router.refresh();
-    //router.push(`/?from=${from}&to=${to}`);
-    //console.log("page", page);
-    console.log("from", from);
-    console.log("to", to);
   };
   return (
     <ul className="flex justify-center items-center gap-4 my-8">
@@ -30,7 +24,7 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
           onClick={() => handlePageChange(index)}
           aria-label={`Go to page ${index + 1}`}
         >
-          {index}
+          {index + 1}
         </button>
       ))}
     </ul>

@@ -5,7 +5,6 @@ import { InsertHotel, UpdateHotel } from "@/types/tableType";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-// HOTELS API
 export const getHotels = async () => {
   console.log("hotellll avec FaVirusCovidSlash");
   const supabase = await createClerkSupabaseClient();
@@ -186,7 +185,7 @@ export async function getFilteredHotels(filters: {
   }
 
   const { userId } = await auth();
-  //return data;
+
   const { data: favorites } = await supabase
     .from("favorite")
     .select("hotel_id")

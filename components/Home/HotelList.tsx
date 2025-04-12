@@ -23,9 +23,27 @@ type searchParams = {
 };
 async function HotelList({ searchParams }: { searchParams: searchParams }) {
   const { data } = await getFilteredHotels(searchParams);
+  const containsFilters: boolean = Object.keys(searchParams).some(
+    (value) =>
+      value === "title" ||
+      value === "country" ||
+      value === "state" ||
+      value === "city" ||
+      value === "spa" ||
+      value === "gym" ||
+      value === "bar" ||
+      value === "restaurant" ||
+      value === "freeWifi" ||
+      value === "shopping" ||
+      value === "freeParking" ||
+      value === "swimingPool",
+  );
+  console.log("containsFilters", containsFilters);
   const hotelCount = await getHotelCount();
-  const totalPages = hotelCount && Math.ceil(hotelCount / 12 + 1);
-  console.log("searchParams list", searchParams);
+  const totalPages = containsFilters
+    ? data && data.length / 12 + 1
+    : hotelCount && Math.ceil(hotelCount / 12 + 1);
+
   return (
     <>
       <StyleContainer>

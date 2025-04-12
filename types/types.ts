@@ -17,7 +17,7 @@ export type HotelCardProps = {
   freeWifi?: boolean;
   freeParking?: boolean;
   shopping?: boolean;
-  swimingPool?: boolean; // Alternative name for pool in some contexts
+  swimingPool?: boolean;
 };
 export type RoomBooked = Room & {
   endDate: string;

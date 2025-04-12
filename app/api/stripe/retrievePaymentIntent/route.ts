@@ -6,7 +6,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function GET(req: Request) {
-  // Extraire les paramètres de la requête
   const { searchParams } = new URL(req.url);
   const paymentIntentId = searchParams.get("id");
 
@@ -18,7 +17,6 @@ export async function GET(req: Request) {
   }
 
   try {
-    // Récupérer le Payment Intent avec Stripe
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     return NextResponse.json(paymentIntent, { status: 200 });

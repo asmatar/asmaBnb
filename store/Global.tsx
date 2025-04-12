@@ -1,5 +1,4 @@
 import { create } from "zustand";
-//import { persist } from "zustand/middleware";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
@@ -16,7 +15,7 @@ const useGlobalStore = create<GlobalStoreProps>()(
         setIsViewGrid: (isViewGrid) => set({ isViewGrid }),
       })),
       {
-        name: "global-storage", // This is the key in localStorage
+        name: "global-storage",
       },
     ),
   ),

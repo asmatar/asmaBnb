@@ -21,7 +21,6 @@ export default async function BookingTabs() {
   const roomBooked = await getBookedIMade(userId as string);
   const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId as string);
   const isHost = checkRole("host");
-  // Get some stats for the summary cards
   const totalMyBookings = roomBooked && roomBooked.length;
   const totalGuestBookings = roomVisitorHaveMade && roomVisitorHaveMade.length;
   const totalUpcomingBooking =

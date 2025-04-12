@@ -3,7 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function Loading() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section Skeleton */}
       <div className="relative w-full h-[60vh] bg-muted animate-pulse">
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8">
@@ -14,12 +13,9 @@ export default function Loading() {
         </div>
       </div>
 
-      {/* Content Section Skeleton */}
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-12">
-          {/* Main Content Skeleton */}
           <div className="lg:col-span-2 space-y-12">
-            {/* Description Skeleton */}
             <div className="space-y-6">
               <Skeleton className="h-8 w-48" />
               <div className="space-y-3">
@@ -29,7 +25,6 @@ export default function Loading() {
               </div>
             </div>
 
-            {/* Location Skeleton */}
             <div className="space-y-6">
               <Skeleton className="h-8 w-48" />
               <div className="space-y-3">
@@ -39,7 +34,6 @@ export default function Loading() {
               </div>
             </div>
 
-            {/* Amenities Skeleton - Mobile/Tablet */}
             <div className="lg:hidden space-y-6">
               <Skeleton className="h-8 w-48" />
               <div className="bg-card p-6 rounded-xl border border-primary/10">
@@ -54,7 +48,6 @@ export default function Loading() {
               </div>
             </div>
 
-            {/* Rooms Skeleton */}
             <div className="space-y-6">
               <Skeleton className="h-8 w-48" />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -110,7 +103,6 @@ export default function Loading() {
             </div>
           </div>
 
-          {/* Amenities Sidebar Skeleton - Desktop */}
           <div className="hidden lg:block lg:col-span-1">
             <div className="sticky top-24 space-y-8">
               <div className="bg-card p-6 rounded-xl border border-primary/10">
