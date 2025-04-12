@@ -21,13 +21,15 @@ type searchParams = {
     shopping: string;
     freeParking: string;
     swimingPool: string;
+    from: number;
+    to: number;
   }>;
 };
 /* import FramerDiv from "@/components/framer/div"; */
 export const revalidate = 3600;
 export default async function Home({ searchParams }: searchParams) {
   const searchParamsUrl = await searchParams;
-
+  console.log("SPURL", searchParamsUrl);
   return (
     <>
       {/*  <FramerDiv></FramerDiv> */}

@@ -1,5 +1,7 @@
 import { getFilteredHotels } from "@/services/hotelService";
 
+import { getHotelCount } from "@/services/counterService";
+import Pagination from "../Pagination";
 import StyleContainer from "../StyleContainer";
 import HotelCard from "./HotelCard";
 import NoHotelsFound from "./NoHotelsFound";
@@ -16,41 +18,46 @@ type searchParams = {
   shopping: string;
   freeParking: string;
   swimingPool: string;
+  from: number;
+  to: number;
 };
 async function HotelList({ searchParams }: { searchParams: searchParams }) {
   const { data } = await getFilteredHotels(searchParams);
-
+  const hotelCount = await getHotelCount();
+  const totalPages = hotelCount && Math.ceil(hotelCount / 12 + 1);
+  console.log("searchParams list", searchParams);
   return (
-    /*  <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4"> */
-    <StyleContainer>
-      {data && data.length > 0 ? (
-        data.map((hotel) => (
-          <HotelCard
-            key={hotel.id}
-            id={hotel.id}
-            title={hotel.title!}
-            description={hotel.description!}
-            gym={hotel.gym!}
-            pool={hotel.swimingPool!}
-            city={hotel.city!}
-            spa={hotel.spa!}
-            bar={hotel.bar!}
-            restaurant={hotel.restaurant!}
-            freeWifi={hotel.freeWifi!}
-            swimingPool={hotel.swimingPool!}
-            shopping={hotel.shopping!}
-            freeParking={hotel.freeParking!}
-            country={hotel.country!}
-            /* price={hotel.price!} */
-            image={hotel.image}
-            isFavorite={hotel.isFavorite ?? false}
-          />
-        ))
-      ) : (
-        <NoHotelsFound />
-      )}
-    </StyleContainer>
-    /*    </section> */
+    <>
+      <StyleContainer>
+        {data && data.length > 0 ? (
+          data.map((hotel) => (
+            <HotelCard
+              key={hotel.id}
+              id={hotel.id}
+              title={hotel.title!}
+              description={hotel.description!}
+              gym={hotel.gym!}
+              pool={hotel.swimingPool!}
+              city={hotel.city!}
+              spa={hotel.spa!}
+              bar={hotel.bar!}
+              restaurant={hotel.restaurant!}
+              freeWifi={hotel.freeWifi!}
+              swimingPool={hotel.swimingPool!}
+              shopping={hotel.shopping!}
+              freeParking={hotel.freeParking!}
+              country={hotel.country!}
+              /* price={hotel.price!} */
+              image={hotel.image}
+              isFavorite={hotel.isFavorite ?? false}
+            />
+          ))
+        ) : (
+          <NoHotelsFound />
+        )}
+      </StyleContainer>
+      <Pagination totalPages={totalPages ?? 0} />
+    </>
   );
 }
 
