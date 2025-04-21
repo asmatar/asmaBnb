@@ -17,6 +17,7 @@ import { Room } from "@/types/tableType";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, XCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -27,7 +28,6 @@ import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 import { Checkbox } from "./ui/checkbox";
 import { Textarea } from "./ui/textarea";
-
 type AddRoomFormProps = {
   room?: Room;
   setFormOpen: (value: boolean) => void;
@@ -66,6 +66,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
     }
   }, [form.formState.errors, form.setFocus, form]);
   const { user } = useUser();
+  const { t } = useTranslations("AddRoomForm");
   const isOwner = user?.id === room?.user_id;
   const params = useParams();
   const hotelId = params?.hotelId as string;
@@ -189,10 +190,13 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
             name="roomTitle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Room Title *</FormLabel>
-                <FormDescription>Provide a room name</FormDescription>
+                <FormLabel>{t("roomTitle")}</FormLabel>
+                <FormDescription>{t("provideRoomName")}</FormDescription>
                 <FormControl>
-                  <Input placeholder="double room" {...field} />
+                  <Input
+                    placeholder={t("roomDescriptionPlaceholder")}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -203,13 +207,11 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
             name="roomDescription"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Room description *</FormLabel>
-                <FormDescription>
-                  Is there anythinig special about this room ?
-                </FormDescription>
+                <FormLabel>{t("roomDescription")}</FormLabel>
+                <FormDescription>{t("specialRoom")}</FormDescription>
                 <FormControl>
                   <Textarea
-                    placeholder="double room have 2 king size beds with a sitting area"
+                    placeholder={t("roomDescriptionPlaceholder")}
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -219,8 +221,8 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
             )}
           />
           <div className="">
-            <FormLabel>Choose Room amenities</FormLabel>
-            <FormDescription> what makes this room special ?</FormDescription>
+            <FormLabel>{t("chooseRoomAmenities")}</FormLabel>
+            <FormDescription>{t("whatMakeItSpecial")}</FormDescription>
             <div className="grid grid-cols-2 gap-2 mt-2">
               <FormField
                 control={form.control}
@@ -233,7 +235,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>24hrs Room Services</FormLabel>
+                    <FormLabel>{t("roomServices")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -248,7 +250,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>TV</FormLabel>
+                    <FormLabel>{t("TV")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -263,7 +265,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>balcony</FormLabel>
+                    <FormLabel>{t("balcony")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -278,7 +280,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>Free Wifi</FormLabel>
+                    <FormLabel>{t("freeWifi")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -293,7 +295,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>City view</FormLabel>
+                    <FormLabel>{t("cityView")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -308,7 +310,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>Ocean view</FormLabel>
+                    <FormLabel>{t("oceanView")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -323,7 +325,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>Forest view</FormLabel>
+                    <FormLabel>{t("forestView")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -338,7 +340,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>Mountain view</FormLabel>
+                    <FormLabel>{t("mountainView")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -353,7 +355,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>Air conditioned</FormLabel>
+                    <FormLabel>{t("airCondition")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -369,7 +371,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>Sound Proofed</FormLabel>
+                    <FormLabel>{t("soundProofed")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -381,9 +383,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 <FormItem>
                   <div className="flex gap-4">
                     <div className="flex-1">
-                      <FormLabel>Hotel image</FormLabel>
+                      <FormLabel>{t("hotelImage")}</FormLabel>
                       <FormDescription>
-                        Choose an image that will showcase your hotel nicely
+                        {t("hotelImageDescription")}
                       </FormDescription>
                       <FormControl>
                         <Input
@@ -431,9 +433,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 name="roomPrice"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Room Price in USD *</FormLabel>
+                    <FormLabel>{t("roomPrice")}</FormLabel>
                     <FormDescription>
-                      What is the price for staying in this room 24hrs?
+                      {t("roomPriceDescription")}
                     </FormDescription>
                     <FormControl>
                       <Input type="number" min={0} {...field} />
@@ -447,9 +449,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 name="breakfastPrice"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Breakfast Price in USD (Optional)</FormLabel>
+                    <FormLabel>{t("breakfastPrice")}</FormLabel>
                     <FormDescription>
-                      If you offer breakfast, what is the price
+                      {t("breakfastPriceDescription")}
                     </FormDescription>
                     <FormControl>
                       <Input
@@ -467,9 +469,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 name="bedCount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Bed Count *</FormLabel>
+                    <FormLabel>{t("bedCount")}</FormLabel>
                     <FormDescription>
-                      how many beds are avaliable in this room?
+                      {t("bedCountDescription")}
                     </FormDescription>
                     <FormControl>
                       <Input
@@ -487,10 +489,8 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 name="kingBed"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>King Beds (Optional)</FormLabel>
-                    <FormDescription>
-                      how many king size beds are in this room?
-                    </FormDescription>
+                    <FormLabel>{t("kingBed")}</FormLabel>
+                    <FormDescription>{t("kingBedDescription")}</FormDescription>
                     <FormControl>
                       <Input
                         type="number"
@@ -507,9 +507,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 name="guestCount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Guest Count *</FormLabel>
+                    <FormLabel>{t("guestCount")}</FormLabel>
                     <FormDescription>
-                      How many guest are allowed in this room?
+                      {t("guestCountDescription")}
                     </FormDescription>
                     <FormControl>
                       <Input
@@ -527,9 +527,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 name="queenBed"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Queen Bed (Optional)</FormLabel>
+                    <FormLabel>{t("queenBed")}</FormLabel>
                     <FormDescription>
-                      How many Queen Bed are in this room?
+                      {t("queenBedDescription")}
                     </FormDescription>
                     <FormControl>
                       <Input
@@ -547,9 +547,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
                 name="bathroomCount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Bathroom Count *</FormLabel>
+                    <FormLabel>{t("bathroomCount")}</FormLabel>
                     <FormDescription>
-                      How many bathroom are in this room?
+                      {t("bathroomCountDescription")}
                     </FormDescription>
                     <FormControl>
                       <Input

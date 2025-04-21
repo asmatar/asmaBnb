@@ -37,7 +37,7 @@ const favorites = async () => {
                 {favorites && favorites.length > 0 && (
                   <div className="inline-block bg-background px-3 py-1 rounded-full text-sm font-medium shadow-sm">
                     {favorites.length}{" "}
-                    {favorites.length > 1 ? t("hotels") : t("hotel")}
+                    {favorites.length > 1 ? t("hotels") : t("hotel")}{" "}
                     {favorites.length > 1 ? t("saved") : ""}
                   </div>
                 )}
