@@ -5,6 +5,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { Calendar, Utensils } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
@@ -45,7 +46,7 @@ function Form({
   breakfastPrice: number;
   breakfastIncluded: boolean;
 }) {
-  const t = await getTranslations("CheckoutStripe");
+  const t = useTranslations("CheckoutStripe");
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-4">
@@ -97,7 +98,7 @@ function Form({
   );
 }
 
-function StripeProvider({
+async function StripeProvider({
   startDate,
   endDate,
   totalPrice,

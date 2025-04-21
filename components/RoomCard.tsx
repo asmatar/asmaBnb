@@ -47,13 +47,13 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import { Link } from "../i18n/navigation";
 import {
   Tooltip,
   TooltipContent,

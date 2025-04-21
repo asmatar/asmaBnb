@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 import { Suspense } from "react";
+import { Link } from "../../../i18n/navigation";
 import Loading from "./loading";
 export const metadata: Metadata = {
   title: "My Hotels ",

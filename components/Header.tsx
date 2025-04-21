@@ -14,7 +14,7 @@ import { checkRole } from "@/lib/clerk";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+import { Link } from "../i18n/navigation";
 import { FaHeart, FaHotel, FaRegUser } from "react-icons/fa6";
 import { HiMiniPlus } from "react-icons/hi2";
 import { LuLayoutDashboard, LuLogOut } from "react-icons/lu";

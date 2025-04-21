@@ -110,7 +110,8 @@
     "notPaid": "not paid",
     "paid": "paid",
     "roomNotReserved": "room not reserved",
-    "roomReserved": "room reserved"
+    "roomReserved": "room reserved",
+    "payNow": "Pay Now"
   },
   "HotelDetails": {
     "aboutHotel": "About Hotel",

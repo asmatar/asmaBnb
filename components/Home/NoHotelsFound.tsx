@@ -2,7 +2,7 @@ import { Hotel } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
-const NoHotelsFound = () => {
+const NoHotelsFound = async () => {
   const t = await getTranslations("NoHotelsFound");
   return (
     <div className="flex flex-col items-center justify-center p-6 border rounded-lg bg-background shadow-sm">

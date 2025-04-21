@@ -20,10 +20,10 @@ import {
   Wifi,
   Wine,
 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import IconCTA from "../IconCTA";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { Link } from "../../i18n/navigation";
+import IconCTA from "../IconCTA";
 
 const HotelCard = async ({
   title,

@@ -1,6 +1,6 @@
 import { Hotel } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-const NoGuestReservation = () => {
+const NoGuestReservation = async () => {
   const t = await getTranslations("NoGuestReservation");
   return (
     <div className="col-span-full min-h-[400px] flex flex-col">

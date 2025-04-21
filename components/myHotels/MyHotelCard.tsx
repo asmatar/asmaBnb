@@ -2,11 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { deleteHotel } from "@/services/hotelService";
 import { Eye, Pencil, Trash } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { toast } from "react-toastify";
-import SubmitButton from "../SubmitButton";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import { Link } from "../../i18n/navigation";
+import SubmitButton from "../SubmitButton";
 export type MyHotelProps = {
   id: string;
   title: string;
@@ -49,8 +49,8 @@ const MyHotelCard = ({
           <div className="bg-background/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
             {price.length > 0
               ? `${t("price")} ${Math.min(...price)} - ${Math.max(...price)}`
-              : `NA`}{" "}
-            {t("night")}
+              : `NA`}
+            &euro; / {t("night")}
           </div>
         </div>
       </div>

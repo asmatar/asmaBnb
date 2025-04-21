@@ -110,7 +110,8 @@
     "notPaid": "non payé",
     "paid": "payé",
     "roomNotReserved": "chambre non réservée",
-    "roomReserved": "chambre réservée"
+    "roomReserved": "chambre réservée",
+    "payNow": "Payer"
   },
   "HotelDetails": {
     "aboutHotel": "À propos de l'hôtel",
