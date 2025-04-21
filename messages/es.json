@@ -6,5 +6,146 @@
     "reservationService": "Con nuestro sistema de reserva simple y seguro, encuentra tu viaje ideal en solo unos clics. Disfruta de una experiencia de usuario intuitiva, de un servicio de atención al cliente disponible 24/7 y de ofertas exclusivas.",
     "counter": "Descubre nuestras ofertas especiales",
     "counter2": "Hasta un 25% de descuento para reservas anticipadas"
+  },
+  "SearchBar": {
+    "title": "Busca tu mejor hotel"
+  },
+  "Formulaire": {
+    "searchHotel": "buscar un hotel...",
+    "selectCountry": "seleccionar un país",
+    "selectCity": "seleccionar una ciudad",
+    "selectState": "seleccionar un estado",
+    "amenities": "Amenities & Features",
+    "reset": "Reiniciar",
+    "showFilters": "Mostrar filtros",
+    "hideFilters": "Ocultar filtros",
+    "spa": "Spa",
+    "gym": "Gimnasio",
+    "bar": "Bar",
+    "restaurant": "Restaurante",
+    "freeWifi": "Wifi gratuito",
+    "shopping": "Shopping",
+    "freeParking": "Parking gratuito",
+    "swimingPool": "Piscina"
+  },
+  "ToggleViewLayout": {
+    "viewGrid": "Ver en grilla",
+    "viewList": "Ver en lista"
+  },
+  "HotelCard": {
+    "noImageAvailable": "No hay imagen disponible",
+    "pool": "Piscina",
+    "gym": "Gimnasio",
+    "spa": "Spa",
+    "bar": "Bar",
+    "restaurant": "Restaurante",
+    "freeWifi": "Wifi gratuito",
+    "freeParking": "Parking gratuito",
+    "shopping": "Shopping",
+    "viewDetails": "Ver detalles"
+  },
+  "Checkout": {
+    "title": "Finaliza tu reserva",
+    "description": "Verifica los detalles de tu estancia y procede al pago",
+    "roomDetails": "Detalles de la habitación",
+    "paymentInformation": "Información de pago"
+  },
+  "Favorites": {
+    "title": "Tus favoritos",
+    "description": "Encuentra aquí todos los hoteles que has agregado a tus favoritos para acceder a ellos rápidamente.",
+    "saved": "guardado",
+    "hotel": "hotel",
+    "hotels": "hoteles",
+    "noFavoritesFound": "No se encontraron favoritos",
+    "noFavoritesFoundDescription": "Agrega hoteles a tus favoritos para encontrarlos aquí"
+  },
+  "Hotel": {
+    "hotelRooms": "Habitaciones del hotel"
+  },
+  "RoomCard": {
+    "beds": "Camas",
+    "bathroom": "Baño",
+    "kingBed": "Cama real",
+    "queenBed": "Cama reina",
+    "roomService": "Servicio de habitación",
+    "TV": "Televisión",
+    "balcony": "Balcón",
+    "freeWifi": "Wifi gratuito",
+    "freeParking": "Parking gratuito",
+    "breakfastIncluded": "Desayuno incluido",
+    "viewDetails": "Ver detalles",
+    "soundProofed": "Aislamiento acústico",
+    "airCondition": "Aire acondicionado",
+    "cityView": "Vista de la ciudad",
+    "oceanView": "Vista del mar",
+    "forestView": "Vista del bosque",
+    "mountainView": "Vista de la montaña",
+    "bookingDetails": "Detalles de la reserva",
+    "bookingDetailsDescription": "Habitación reservada por {room.username} para {numberOfNightsBooked} noche(s) - en {leftDays} día(s)",
+    "checkIn": "Check-in: {room.startDate} a las 11am",
+    "checkOut": "Check-out: {room.endDate} a las 17pm",
+    "viewHotel": "Ver hotel",
+    "roomPrice": "Precio de la habitación",
+    "breakfastPrice": "Precio del desayuno",
+    "breakfast": "Desayuno servido",
+    "makeChanges": "Hacer cambios",
+    "updateRoom": "Actualizar habitación",
+    "updateRoomDescription": "Actualizar habitación",
+    "editRoom": "Editar habitación",
+    "deleteRoom": "Eliminar habitación",
+    "deletingRoom": "Eliminando habitación...",
+    "bookRoom": "Reservar habitación",
+    "bookingRoom": "Reservando habitación...",
+    "bookRoomTooltip": "Por favor, inicia sesión para reservar una habitación",
+    "totalPrice": "Precio total",
+    "for": "para",
+    "eur": "eur",
+    "includeBreakfast": "Desayuno incluido",
+    "includeBreakfastTooltip": "¿Quieres incluir el desayuno en tu reserva?",
+    "selectDays": "Selecciona los días que pasarás en esta habitación",
+    "roomBookedBy": "Habitación reservada por",
+    "nights": "noche",
+    "in": "en",
+    "days": "días",
+    "notPaid": "no pagado",
+    "paid": "pagado",
+    "roomNotReserved": "habitación no reservada",
+    "roomReserved": "habitación reservada"
+  },
+  "HotelDetails": {
+    "aboutHotel": "Acerca del hotel",
+    "location": "Ubicación",
+    "amenities": "Amenities",
+    "availableRooms": "Habitaciones disponibles",
+    "swimingPool": "Piscina",
+    "gym": "Gimnasio",
+    "spa": "Spa",
+    "bar": "Bar",
+    "restaurant": "Restaurante",
+    "shopping": "Shopping",
+    "bikeRental": "Alquiler de bicicletas",
+    "laundry": "Lavandería",
+    "movieNights": "Noches de cine",
+    "coffeeShop": "Cafetería",
+    "freeParking": "Parking gratuito",
+    "freeWifi": "Wifi gratuito"
+  },
+  "MyBookings": {
+    "myBookings": "Mis reservas"
+  },
+  "MyHotels": {
+    "myHotels": "Mis hoteles",
+    "addHotel": "Agregar hotel",
+    "addHotelDescription": "Gestiona tus hoteles, agrega nuevas habitaciones y actualiza la información existente."
+  },
+  "ThankYou": {
+    "title": "¡Tu reserva está confirmada!",
+    "backToHome": "Volver al inicio",
+    "seeMyBookings": "Ver mis reservas"
+  },
+  "NotFound": {
+    "title": "¡Ups! Parece que la página que buscas se ha perdido.",
+    "description": "Parece que la página que buscas se ha perdido. No te preocupes, volvamos a la reserva de tu sueño.",
+    "backToHome": "Volver al inicio"
   }
 }

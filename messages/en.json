@@ -9,5 +9,143 @@
   },
   "SearchBar": {
     "title": "Search Your best Hotel"
+  },
+  "Formulaire": {
+    "searchHotel": "search for a hotel...",
+    "selectCountry": "select a country",
+    "selectCity": "select a city",
+    "selectState": "select a state",
+    "amenities": "Amenities & Features",
+    "reset": "Reset",
+    "showFilters": "Show Filters",
+    "hideFilters": "Hide Filters",
+    "spa": "Spa",
+    "gym": "Gym",
+    "bar": "Bar",
+    "restaurant": "Restaurant",
+    "freeWifi": "Free Wifi",
+    "shopping": "Shopping",
+    "freeParking": "Free Parking",
+    "swimingPool": "Swimming Pool"
+  },
+  "ToggleViewLayout": {
+    "viewGrid": "View in Grid",
+    "viewList": "View in List"
+  },
+  "HotelCard": {
+    "noImageAvailable": "No image available",
+    "pool": "Pool",
+    "gym": "Gym",
+    "spa": "Spa",
+    "bar": "Bar",
+    "restaurant": "Restaurant",
+    "freeWifi": "Free Wifi",
+    "freeParking": "Free Parking",
+    "shopping": "Shopping",
+    "viewDetails": "View Details"
+  },
+  "Checkout": {
+    "title": "Finalize your reservation",
+    "description": "Check the details of your stay and proceed to payment",
+    "roomDetails": "Room Details",
+    "paymentInformation": "Payment Information"
+  },
+  "Favorites": {
+    "title": "Your favorites",
+    "description": "Find here all the hotels you have added to your favorites to access them quickly.",
+    "saved": "saved",
+    "hotel": "hotel",
+    "hotels": "hotels",
+    "noFavoritesFound": "No favorites found",
+    "noFavoritesFoundDescription": "Add hotels to your favorites to find them here"
+  },
+  "Hotel": {
+    "hotelRooms": "Hotel Rooms"
+  },
+  "RoomCard": {
+    "beds": "Beds",
+    "bathroom": "Bathroom",
+    "kingBed": "King Bed",
+    "queenBed": "Queen Bed",
+    "roomService": "Room Service",
+    "TV": "TV",
+    "balcony": "Balcony",
+    "freeWifi": "Free Wifi",
+    "freeParking": "Free Parking",
+    "breakfastIncluded": "Breakfast Included",
+    "viewDetails": "View Details",
+    "soundProofed": "Soundproofed",
+    "airCondition": "Air Condition",
+    "cityView": "City View",
+    "oceanView": "Ocean View",
+    "forestView": "Forest View",
+    "mountainView": "Mountain View",
+    "bookingDetails": "Booking Details",
+    "bookingDetailsDescription": "Room booked by {room.username} for {numberOfNightsBooked} night(s) - in {leftDays} day(s)",
+    "checkIn": "Check-in: {room.startDate} at 11am",
+    "checkOut": "Check-out: {room.endDate} at 17pm",
+    "viewHotel": "View Hotel",
+    "roomPrice": "Room Price",
+    "breakfastPrice": "Breakfast Price",
+    "breakfast": "Breakfast",
+    "makeChanges": "Make Changes",
+    "updateRoom": "Update Room",
+    "updateRoomDescription": "Update Room Description",
+    "editRoom": "Edit Room",
+    "deleteRoom": "Delete Room",
+    "deletingRoom": "Deleting Room...",
+    "bookRoom": "Book Room",
+    "bookingRoom": "Booking Room...",
+    "bookRoomTooltip": "Please login to book a room",
+    "totalPrice": "Total Price",
+    "for": "for",
+    "eur": "eur",
+    "includeBreakfast": "Include Breakfast",
+    "includeBreakfastTooltip": "Do you want to include breakfast in your reservation?",
+    "selectDays": "Select the days you will stay in this room",
+    "roomBookedBy": "Room Booked By",
+    "nights": "night",
+    "in": "in",
+    "days": "days",
+    "notPaid": "not paid",
+    "paid": "paid",
+    "roomNotReserved": "room not reserved",
+    "roomReserved": "room reserved"
+  },
+  "HotelDetails": {
+    "aboutHotel": "About Hotel",
+    "location": "Location",
+    "amenities": "Amenities",
+    "availableRooms": "Available Rooms",
+    "swimingPool": "Swimming Pool",
+    "gym": "Gym",
+    "spa": "Spa",
+    "bar": "Bar",
+    "restaurant": "Restaurant",
+    "shopping": "Shopping",
+    "bikeRental": "Bike Rental",
+    "laundry": "Laundry",
+    "movieNights": "Movie Nights",
+    "coffeeShop": "Coffee Shop",
+    "freeParking": "Free Parking",
+    "freeWifi": "Free Wifi"
+  },
+  "MyBookings": {
+    "myBookings": "My Bookings"
+  },
+  "MyHotels": {
+    "myHotels": "My Hotels",
+    "addHotel": "Add Hotel",
+    "addHotelDescription": "Manage your hotels, add new rooms and update existing information."
+  },
+  "ThankYou": {
+    "title": "Your reservation is confirmed!",
+    "backToHome": "Back to Home",
+    "seeMyBookings": "See My Bookings"
+  },
+  "NotFound": {
+    "title": "Oops! You're lost in paradise",
+    "description": "It seems that the page you are looking for has taken a detour. Don't worry, let's get back to booking your dream vacation!",
+    "backToHome": "Back to Home"
   }
 }

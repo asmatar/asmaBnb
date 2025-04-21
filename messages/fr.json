@@ -129,5 +129,23 @@
     "coffeeShop": "Cafétéria",
     "freeParking": "Parking gratuit",
     "freeWifi": "Wifi gratuit"
+  },
+  "MyBookings": {
+    "myBookings": "Mes réservations"
+  },
+  "MyHotels": {
+    "myHotels": "Mes hôtels",
+    "addHotel": "Ajouter un hôtel",
+    "addHotelDescription": " Gérez vos hôtels, ajoutez de nouvelles chambres et mettez à jour les  informations existantes."
+  },
+  "ThankYou": {
+    "title": "Votre réservation est confirmée !",
+    "backToHome": "Retour à l'accueil",
+    "seeMyBookings": "Voir mes réservations"
+  },
+  "NotFound": {
+    "title": "Oops! Vous êtes perdu dans le paradis",
+    "description": "Il semble que la page que vous cherchez ait pris un détour. Pas de soucis, retournons à la réservation de votre séjour rêvé !",
+    "backToHome": "Retour à l'accueil"
   }
 }
