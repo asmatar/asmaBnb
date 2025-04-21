@@ -45,28 +45,33 @@ function Form({
   breakfastPrice: number;
   breakfastIncluded: boolean;
 }) {
+  const t = await getTranslations("CheckoutStripe");
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-4">
-        <h3 className="text-lg font-medium">Informations de paiement</h3>
+        <h3 className="text-lg font-medium">{t("paymentInformation")}</h3>
         <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
       </div>
 
       <Card className="p-6 border-primary/10">
-        <h3 className="text-lg font-medium mb-4">Résumé de la réservation</h3>
+        <h3 className="text-lg font-medium mb-4">{t("summary")}</h3>
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-muted-foreground">
             <Calendar className="w-5 h-5" />
             <div>
-              <p>Arrivée: {startDate} à 17h</p>
-              <p>Départ: {endDate} à 11h</p>
+              <p>
+                {t("arrival")}: {startDate} à 17h
+              </p>
+              <p>
+                {t("departure")}: {endDate} à 11h
+              </p>
             </div>
           </div>
 
           {breakfastIncluded && (
             <div className="flex items-center gap-3 text-muted-foreground">
               <Utensils className="w-5 h-5" />
-              <p>Petit-déjeuner inclus chaque jour à 8h</p>
+              <p>{t("breakfastIncluded")}</p>
             </div>
           )}
 
@@ -75,12 +80,12 @@ function Form({
           <div className="space-y-2">
             {breakfastIncluded && (
               <div className="flex justify-between">
-                <span>Petit-déjeuner:</span>
+                <span>{t("breakfast")}:</span>
                 <span className="font-medium">${breakfastPrice}</span>
               </div>
             )}
             <div className="flex justify-between text-lg">
-              <span className="font-medium">Total:</span>
+              <span className="font-medium">{t("total")}:</span>
               <span className="font-bold">${totalPrice}</span>
             </div>
           </div>

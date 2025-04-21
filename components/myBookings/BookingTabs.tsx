@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { getBookedIMade, getRoomVisitorHaveMade } from "@/services/roomService";
 import { auth } from "@clerk/nextjs/server";
 import { CalendarCheck, CalendarRange, CalendarX } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import RoomCard from "../RoomCard";
 import { Separator } from "../ui/separator";
 import {
@@ -14,9 +15,9 @@ import {
 } from "../ui/tooltip";
 import NoGuestReservation from "./NoGuestReservation";
 import NoReservationMade from "./NoReservationMade";
-
 export default async function BookingTabs() {
   const { userId } = auth();
+  const t = await getTranslations("BookingTabs");
 
   const roomBooked = await getBookedIMade(userId as string);
   const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId as string);
@@ -34,27 +35,31 @@ export default async function BookingTabs() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-primary/5 rounded-lg p-8 border flex flex-col items-center justify-center space-y-2 hover:shadow-md transition-shadow">
           <CalendarRange className="h-10 w-10 text-primary mb-3" />
-          <h3 className="text-xl font-medium">Total Bookings</h3>
+          <h3 className="text-xl font-medium">{t("totalBookings")}</h3>
           <p className="text-4xl font-bold">{totalMyBookings}</p>
-          <p className="text-sm text-muted-foreground">Your reserved rooms</p>
+          <p className="text-sm text-muted-foreground">
+            {t("yourReservedRooms")}
+          </p>
         </div>
 
         {isHost && (
           <div className="bg-primary/5 rounded-lg p-8 border flex flex-col items-center justify-center space-y-2 hover:shadow-md transition-shadow">
             <CalendarCheck className="h-10 w-10 text-green-500 mb-3" />
-            <h3 className="text-xl font-medium">Guest Bookings</h3>
+            <h3 className="text-xl font-medium">{t("guestBookings")}</h3>
             <p className="text-4xl font-bold">{totalGuestBookings}</p>
             <p className="text-sm text-muted-foreground">
-              Bookings on your properties
+              {t("bookingsOnYourProperties")}
             </p>
           </div>
         )}
 
         <div className="bg-primary/5 rounded-lg p-8 border flex flex-col items-center justify-center space-y-2 hover:shadow-md transition-shadow">
           <CalendarX className="h-10 w-10 text-blue-500 mb-3" />
-          <h3 className="text-xl font-medium">Upcoming</h3>
+          <h3 className="text-xl font-medium">{t("upcoming")}</h3>
           <p className="text-4xl font-bold">{totalUpcomingBooking}</p>
-          <p className="text-sm text-muted-foreground">Next reservations</p>
+          <p className="text-sm text-muted-foreground">
+            {t("nextReservations")}
+          </p>
         </div>
       </div>
 
@@ -72,7 +77,7 @@ export default async function BookingTabs() {
             >
               <span className="flex items-center gap-3">
                 <CalendarRange className="h-5 w-5" />
-                <span className="text-base">My Bookings</span>
+                <span className="text-base">{t("myBookings")}</span>
               </span>
             </TabsTrigger>
             {isHost ? (
@@ -89,7 +94,7 @@ export default async function BookingTabs() {
               >
                 <span className="flex items-center gap-3">
                   <CalendarCheck className="h-5 w-5" />
-                  <span className="text-base">Guest Bookings</span>
+                  <span className="text-base">{t("guestBookings")}</span>
                 </span>
               </TabsTrigger>
             ) : (
@@ -109,12 +114,12 @@ export default async function BookingTabs() {
                     >
                       <span className="flex items-center gap-3">
                         <CalendarCheck className="h-5 w-5" />
-                        <span className="text-base">Guest Bookings</span>
+                        <span className="text-base">{t("guestBookings")}</span>
                       </span>
                     </TabsTrigger>
                   </TooltipTrigger>
                   <TooltipContent className="w-[300px]">
-                    vous devez etre host pour avoir acces a ces informations
+                    {t("youMustBeHost")}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -128,10 +133,12 @@ export default async function BookingTabs() {
             <div className="bg-card p-8 rounded-lg border shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl md:text-3xl font-semibold">
-                  <span className="text-accent-gradient">Your Bookings</span>
+                  <span className="text-accent-gradient">
+                    {t("yourBookings")}
+                  </span>
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Total: {totalMyBookings} bookings
+                  {t("total")}: {totalMyBookings} {t("bookings")}
                 </p>
               </div>
 
@@ -162,11 +169,11 @@ export default async function BookingTabs() {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl md:text-3xl font-semibold">
                     <span className="text-accent-gradient">
-                      Guest Bookings on Your Properties
+                      {t("guestBookingsOnYourProperties")}
                     </span>
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    Total: {totalGuestBookings} bookings
+                    {t("total")}: {totalGuestBookings} {t("bookings")}
                   </p>
                 </div>
 

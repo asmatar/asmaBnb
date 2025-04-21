@@ -126,12 +126,6 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
               image: file.name,
               hotel_id: hotelId,
               id,
-              /*  user_id: user?.id || "",
-              // S'assurer que les champs requis sont présents avec des valeurs par défaut si nécessaire
-              roomTitle: values.roomTitle || "Room",
-              roomDescription: values.roomDescription || "Room description",
-              roomPrice: values.roomPrice || 0,
-              breakfastPrice: values.breakfastPrice || 0, */
             };
             console.log(
               "Creating room with values:",

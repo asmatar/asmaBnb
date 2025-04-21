@@ -147,5 +147,90 @@
     "title": "Oops! You're lost in paradise",
     "description": "It seems that the page you are looking for has taken a detour. Don't worry, let's get back to booking your dream vacation!",
     "backToHome": "Back to Home"
-  }
+  },
+  "CheckoutStripe": {
+    "paymentInformation": "Payment Information",
+    "summary": "Reservation Summary",
+    "arrival": "Arrival",
+    "departure": "Departure",
+    "breakfastIncluded": "Breakfast included every day at 8am",
+    "breakfast": "Breakfast",
+    "total": "Total",
+    "breakfastPrice": "Breakfast Price",
+    "totalPrice": "Total Price"
+  },
+  "Counter": {
+    "hotels": "Hotels",
+    "users": "Users",
+    "rooms": "Rooms"
+  },
+  "NoHotelsFound": {
+    "title": "No hotels found",
+    "description": "No hotels match your search. Try adjusting your filters or explore other options."
+  },
+  "NoRoom": {
+    "title": "No rooms available",
+    "description": "This hotel has no rooms available.",
+    "addRoom": "Add a room to allow reservations.",
+    "addRoomButton": "Add a room"
+  },
+  "BookingTabs": {
+    "totalBookings": "Total Bookings",
+    "yourReservedRooms": "Your Reserved Rooms",
+    "guestBookings": "Guest Bookings",
+    "upcoming": "Upcoming",
+    "nextReservations": "Next Reservations",
+    "bookingsOnYourProperties": "Bookings on Your Properties",
+    "youMustBeHost": "You must be host to access these informations",
+    "yourBookings": "Your Bookings",
+    "total": "Total",
+    "bookings": "bookings"
+  },
+  "NoGuestReservation": {
+    "title": "No guest reservations",
+    "description": "You have no guest reservations. Please wait for someone to book a room on one of your hotels."
+  },
+  "NoReservationMade": {
+    "title": "No reservation made",
+    "description": "You have not made any reservations yet. Discover our best offers and find the perfect accommodation for your next stay!",
+    "exploreHotels": "Explore Hotels"
+  },
+  "MyHotelCard": {
+    "viewDetails": "View Details",
+    "update": "Update",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "price": "Price",
+    "night": "night"
+  },
+  "DetailSkeleton": {
+    "locationDetails": "Location Details",
+    "aboutHotel": "About Hotel",
+    "popularAmenities": "Popular Amenities",
+    "roomsAvailable": "Rooms Available"
+  },
+  "Theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "toggleTheme": "Toggle Theme"
+  },
+  "Header": {
+    "welcome": "Welcome",
+    "dashboard": "Dashboard",
+    "myBookings": "My Bookings",
+    "savedProperties": "Saved Properties",
+    "hostOptions": "Host Options",
+    "addProperty": "Add Property",
+    "manageProperties": "Manage Properties",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "joinNow": "Join Now",
+    "theme": "Theme",
+    "signOut": "Sign Out",
+    "developer": "Developed by"
+  },
+  "DatePickerWithRange": {
+    "pickADate": "Pick a date"
+  },
+  "Toast": {}
 }

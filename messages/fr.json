@@ -147,5 +147,90 @@
     "title": "Oops! Vous êtes perdu dans le paradis",
     "description": "Il semble que la page que vous cherchez ait pris un détour. Pas de soucis, retournons à la réservation de votre séjour rêvé !",
     "backToHome": "Retour à l'accueil"
-  }
+  },
+  "CheckoutStripe": {
+    "paymentInformation": "Informations de paiement",
+    "summary": "Résumé de la réservation",
+    "arrival": "Arrivée",
+    "departure": "Départ",
+    "breakfastIncluded": "Petit-déjeuner inclus chaque jour à 8h",
+    "breakfast": "Petit-déjeuner",
+    "total": "Total",
+    "breakfastPrice": "Prix du petit-déjeuner",
+    "totalPrice": "Prix total"
+  },
+  "Counter": {
+    "hotels": "Hôtels",
+    "users": "Utilisateurs",
+    "rooms": "Chambres"
+  },
+  "NoHotelsFound": {
+    "title": "Aucun hôtel trouvé",
+    "description": "Aucun hôtel ne correspond à votre recherche. Essayez d'ajuster vos filtres ou explorez d'autres options."
+  },
+  "NoRoom": {
+    "title": "Aucune chambre disponible",
+    "description": "Cet hôtel n'a pas encore de chambres.",
+    "addRoom": "Ajoutez-en une pour permettre les réservations.",
+    "addRoomButton": "Ajouter une chambre"
+  },
+  "BookingTabs": {
+    "totalBookings": "Total des réservations",
+    "yourReservedRooms": "Vos chambres réservées",
+    "guestBookings": "Réservations des invités",
+    "upcoming": "À venir",
+    "nextReservations": "Prochaines réservations",
+    "bookingsOnYourProperties": "Réservations sur vos propriétés",
+    "youMustBeHost": "Vous devez être hôte pour accéder à ces informations",
+    "yourBookings": "Vos réservations",
+    "total": "Total",
+    "bookings": "réservations"
+  },
+  "NoGuestReservation": {
+    "title": "Aucune réservation invité",
+    "description": "Vous n'avez pas de réservations invités. Veuillez attendre que quelqu'un réserve une chambre sur l'un de vos hôtels."
+  },
+  "NoReservationMade": {
+    "title": "Aucune réservation effectuée",
+    "description": "Vous n'avez pas encore réservé d'hôtel. Découvrez nos meilleures offres et trouvez l'hébergement parfait pour votre prochain séjour !",
+    "exploreHotels": "Explorer les hôtels"
+  },
+  "MyHotelCard": {
+    "viewDetails": "Voir les détails",
+    "update": "Mettre à jour",
+    "delete": "Supprimer",
+    "deleting": "Suppression...",
+    "price": "Prix",
+    "night": "nuit"
+  },
+  "DetailSkeleton": {
+    "locationDetails": "Détails de la localisation",
+    "aboutHotel": "À propos de l'hôtel",
+    "popularAmenities": "Amenités populaires",
+    "roomsAvailable": "Chambres disponibles"
+  },
+  "Theme": {
+    "light": "Clair",
+    "dark": "Sombre",
+    "toggleTheme": "Changer le thème"
+  },
+  "Header": {
+    "welcome": "Bienvenue",
+    "dashboard": "Tableau de bord",
+    "myBookings": "Mes réservations",
+    "savedProperties": "Mes favoris",
+    "hostOptions": "Options hôte",
+    "addProperty": "Ajouter une propriété",
+    "manageProperties": "Gérer mes propriétés",
+    "signIn": "Connexion",
+    "signUp": "Inscription",
+    "joinNow": "Rejoignez-nous maintenant",
+    "theme": "Thème",
+    "signOut": "Déconnexion",
+    "developer": "Développé par"
+  },
+  "DatePickerWithRange": {
+    "pickADate": "Sélectionnez une date"
+  },
+  "Toast": {}
 }
