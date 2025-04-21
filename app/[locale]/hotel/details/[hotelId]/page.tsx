@@ -13,16 +13,16 @@ import {
   Utensils,
   Wine,
 } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { FaSwimmer } from "react-icons/fa";
 import { FaSpa } from "react-icons/fa6";
 import { MdDryCleaning, MdLocalLaundryService } from "react-icons/md";
-
 const HotelId = async ({ params }: { params: { hotelId: string } }) => {
   const hotel = await getOneHotel(params.hotelId ?? "");
   if (!hotel) return null;
   const rooms = await getRoomByHotel(params.hotelId ?? "");
-
+  const t = await getTranslations("HotelDetails");
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -58,9 +58,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
             {/* Description */}
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold">
-                <span className="text-accent-gradient">
-                  À propos de l&apos;hôtel
-                </span>
+                <span className="text-accent-gradient">{t("aboutHotel")}</span>
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 {hotel.description}
@@ -70,7 +68,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
             {/* Location */}
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold">
-                <span className="text-accent-gradient">Localisation</span>
+                <span className="text-accent-gradient">{t("location")}</span>
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 {hotel.locationDescription}
@@ -80,80 +78,80 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
             {/* Amenities - Visible on mobile/tablet */}
             <div className="lg:hidden space-y-6">
               <h2 className="text-2xl font-semibold">
-                <span className="text-accent-gradient">Équipements</span>
+                <span className="text-accent-gradient">{t("amenities")}</span>
               </h2>
               <div className="bg-card p-6 rounded-xl border border-primary/10">
                 <div className="grid grid-cols-2 gap-4">
                   {hotel.swimingPool && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <FaSwimmer className="w-5 h-5 text-primary" />
-                      <span>Piscine</span>
+                      <span>{t("swimingPool")}</span>
                     </div>
                   )}
                   {hotel.gym && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Dumbbell className="w-5 h-5 text-primary" />
-                      <span>Salle de sport</span>
+                      <span>{t("gym")}</span>
                     </div>
                   )}
                   {hotel.spa && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <FaSpa className="w-5 h-5 text-primary" />
-                      <span>Spa</span>
+                      <span>{t("spa")}</span>
                     </div>
                   )}
                   {hotel.bar && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Wine className="w-5 h-5 text-primary" />
-                      <span>Bar</span>
+                      <span>{t("bar")}</span>
                     </div>
                   )}
                   {hotel.freeWifi && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <MdDryCleaning className="w-5 h-5 text-primary" />
-                      <span>WiFi gratuit</span>
+                      <span>{t("freeWifi")}</span>
                     </div>
                   )}
                   {hotel.restaurant && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Utensils className="w-5 h-5 text-primary" />
-                      <span>Restaurant</span>
+                      <span>{t("restaurant")}</span>
                     </div>
                   )}
                   {hotel.shopping && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <ShoppingBasket className="w-5 h-5 text-primary" />
-                      <span>Boutiques</span>
+                      <span>{t("shopping")}</span>
                     </div>
                   )}
                   {hotel.bikeRental && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Bike className="w-5 h-5 text-primary" />
-                      <span>Location de vélos</span>
+                      <span>{t("bikeRental")}</span>
                     </div>
                   )}
                   {hotel.freeParking && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Car className="w-5 h-5 text-primary" />
-                      <span>Parking gratuit</span>
+                      <span>{t("freeParking")}</span>
                     </div>
                   )}
                   {hotel.laundry && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <MdLocalLaundryService className="w-5 h-5 text-primary" />
-                      <span>Service de blanchisserie</span>
+                      <span>{t("laundry")}</span>
                     </div>
                   )}
                   {hotel.movieNights && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Clapperboard className="w-5 h-5 text-primary" />
-                      <span>Soirées cinéma</span>
+                      <span>{t("movieNights")}</span>
                     </div>
                   )}
                   {hotel.coffeeShop && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Wine className="w-5 h-5 text-primary" />
-                      <span>Cafétéria</span>
+                      <span>{t("coffeeShop")}</span>
                     </div>
                   )}
                 </div>
@@ -164,7 +162,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold">
                 <span className="text-accent-gradient">
-                  Chambres disponibles
+                  {t("availableRooms")}
                 </span>
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -184,79 +182,81 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
             <div className="sticky top-24 space-y-8">
               <div className="bg-card p-6 rounded-xl border border-primary/10">
                 <h2 className="text-2xl font-semibold mb-6">
-                  <span className="text-accent-gradient">Équipements</span>
+                  <span className="text-accent-gradient">
+                    {t("availableRooms")}
+                  </span>
                 </h2>
                 <div className="grid grid-cols-1 gap-4">
                   {hotel.swimingPool && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <FaSwimmer className="w-5 h-5 text-primary" />
-                      <span>Piscine</span>
+                      <span>{t("swimingPool")}</span>
                     </div>
                   )}
                   {hotel.gym && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Dumbbell className="w-5 h-5 text-primary" />
-                      <span>Salle de sport</span>
+                      <span>{t("gym")}</span>
                     </div>
                   )}
                   {hotel.spa && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <FaSpa className="w-5 h-5 text-primary" />
-                      <span>Spa</span>
+                      <span>{t("spa")}</span>
                     </div>
                   )}
                   {hotel.bar && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Wine className="w-5 h-5 text-primary" />
-                      <span>Bar</span>
+                      <span>{t("bar")}</span>
                     </div>
                   )}
                   {hotel.freeWifi && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <MdDryCleaning className="w-5 h-5 text-primary" />
-                      <span>WiFi gratuit</span>
+                      <span>{t("freeWifi")}</span>
                     </div>
                   )}
                   {hotel.restaurant && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Utensils className="w-5 h-5 text-primary" />
-                      <span>Restaurant</span>
+                      <span>{t("restaurant")}</span>
                     </div>
                   )}
                   {hotel.shopping && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <ShoppingBasket className="w-5 h-5 text-primary" />
-                      <span>Boutiques</span>
+                      <span>{t("shopping")}</span>
                     </div>
                   )}
                   {hotel.bikeRental && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Bike className="w-5 h-5 text-primary" />
-                      <span>Location de vélos</span>
+                      <span>{t("bikeRental")}</span>
                     </div>
                   )}
                   {hotel.freeParking && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Car className="w-5 h-5 text-primary" />
-                      <span>Parking gratuit</span>
+                      <span>{t("freeParking")}</span>
                     </div>
                   )}
                   {hotel.laundry && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <MdLocalLaundryService className="w-5 h-5 text-primary" />
-                      <span>Service de blanchisserie</span>
+                      <span>{t("laundry")}</span>
                     </div>
                   )}
                   {hotel.movieNights && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Clapperboard className="w-5 h-5 text-primary" />
-                      <span>Soirées cinéma</span>
+                      <span>{t("movieNights")}</span>
                     </div>
                   )}
                   {hotel.coffeeShop && (
                     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
                       <Wine className="w-5 h-5 text-primary" />
-                      <span>Cafétéria</span>
+                      <span>{t("coffeeShop")}</span>
                     </div>
                   )}
                 </div>

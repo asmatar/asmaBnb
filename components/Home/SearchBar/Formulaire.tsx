@@ -39,6 +39,7 @@ import {
   Wifi,
   Wine,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -74,7 +75,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
   const [filteredStates, setFilteredStates] = useState<string[]>([]);
   const [filteredCities, setFilteredCities] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
-
+  const t = useTranslations("Formulaire");
   const form = useForm<SearchHotelFormValues>({
     resolver: zodResolver(searchHotelSchema),
     defaultValues: {
@@ -202,7 +203,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                     title="Search hotel"
                     type="search"
                     {...field}
-                    placeholder="Search hotels..."
+                    placeholder={t("searchHotel")}
                     className="pl-10 border-none bg-background/80 shadow-sm backdrop-blur-sm h-11"
                     value={field.value}
                     onChange={(event) => {
@@ -234,7 +235,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                       <div className="flex items-center">
                         <Globe className="mr-2 h-4 w-4 text-muted-foreground" />
                         <SelectValue
-                          placeholder="Select country"
+                          placeholder={t("selectCountry")}
                           defaultValue={field.value}
                         />
                       </div>
@@ -264,7 +265,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                       <div className="flex items-center">
                         <Building2 className="mr-2 h-4 w-4 text-muted-foreground" />
                         <SelectValue
-                          placeholder="Select state"
+                          placeholder={t("selectState")}
                           defaultValue={field.value}
                         />
                       </div>
@@ -293,7 +294,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                       <div className="flex items-center">
                         <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
                         <SelectValue
-                          placeholder="Select city"
+                          placeholder={t("selectCity")}
                           defaultValue={field.value}
                         />
                       </div>
@@ -308,7 +309,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
 
         <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-medium">Amenities & Features</h3>
+            <h3 className="text-sm font-medium">{t("amenities")}</h3>
             {activeFilters > 0 && (
               <Badge className="bg-primary text-primary-foreground">
                 {activeFilters}
@@ -324,7 +325,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               className="flex items-center gap-1 h-8 px-3 bg-background/80"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              <span>Reset</span>
+              <span>{t("reset")}</span>
             </Button>
             <Button
               type="button"
@@ -333,7 +334,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               onClick={() => setShowFilters(!showFilters)}
               className="text-xs h-8"
             >
-              {showFilters ? "Hide filters" : "Show filters"}
+              {showFilters ? t("hideFilters") : t("showFilters")}
             </Button>
           </div>
         </div>
@@ -350,7 +351,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="spa"
-              label="Spa"
+              label={t("spa")}
               icon={<Bath className="h-4 w-4" />}
               onSubmit={onSubmit}
             />
@@ -358,7 +359,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="gym"
-              label="Gym"
+              label={t("gym")}
               icon={<Dumbbell className="h-4 w-4" />}
               onSubmit={onSubmit}
             />
@@ -366,7 +367,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="bar"
-              label="Bar"
+              label={t("bar")}
               icon={<Wine className="h-4 w-4" />}
               onSubmit={onSubmit}
             />
@@ -374,7 +375,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="restaurant"
-              label="Restaurant"
+              label={t("restaurant")}
               icon={<UtensilsCrossed className="h-4 w-4" />}
               onSubmit={onSubmit}
             />
@@ -382,7 +383,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="freeWifi"
-              label="Free WiFi"
+              label={t("freeWifi")}
               icon={<Wifi className="h-4 w-4" />}
               onSubmit={onSubmit}
             />
@@ -390,7 +391,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="shopping"
-              label="Shopping"
+              label={t("shopping")}
               icon={<Store className="h-4 w-4" />}
               onSubmit={onSubmit}
             />
@@ -398,7 +399,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="freeParking"
-              label="Free Parking"
+              label={t("freeParking")}
               icon={<Car className="h-4 w-4" />}
               onSubmit={onSubmit}
             />
@@ -406,7 +407,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             <FilterCheckbox
               form={form}
               name="swimingPool"
-              label="Swimming Pool"
+              label={t("swimingPool")}
               icon={<Waves className="h-4 w-4" />}
               onSubmit={onSubmit}
             />

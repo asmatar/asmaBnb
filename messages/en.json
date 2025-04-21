@@ -1,0 +1,13 @@
+{
+  "Home": {
+    "servicePremium": "Premium Service",
+    "title": "Asma Hotel - Exclusive Offers",
+    "description": "Discover an exclusive selection of hotels and rooms adapted to all your needs and budgets. Our platform allows you to easily compare the best offers, read traveler reviews, and enjoy unbeatable prices.",
+    "reservationService": "With our simple and secure booking system, find your ideal vacation in just a few clicks. Enjoy an intuitive user experience, a 24/7 customer service available, and exclusive offers.",
+    "counter": "Discover our special offers",
+    "counter2": "Up to 25% discount for early bookings"
+  },
+  "SearchBar": {
+    "title": "Search Your best Hotel"
+  }
+}

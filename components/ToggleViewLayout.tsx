@@ -8,7 +8,9 @@ import {
 import useGlobalStore from "@/store/Global";
 
 import { Grid, List } from "lucide-react";
+import { useTranslations } from "next-intl";
 const ToggleViewLayout = () => {
+  const t = useTranslations("ToggleViewLayout");
   const { setIsViewGrid } = useGlobalStore();
   return (
     <div className="flex gap-2 cursor-pointer">
@@ -18,7 +20,7 @@ const ToggleViewLayout = () => {
             <Grid className="w-6 h-6" onClick={() => setIsViewGrid(true)} />
           </TooltipTrigger>
           <TooltipContent>
-            <p>Voir en grille</p>
+            <p>{t("viewGrid")}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -28,7 +30,7 @@ const ToggleViewLayout = () => {
             <List className="w-6 h-6" onClick={() => setIsViewGrid(false)} />
           </TooltipTrigger>
           <TooltipContent>
-            <p>Voir en collone</p>
+            <p>{t("viewList")}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

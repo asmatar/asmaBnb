@@ -4,11 +4,14 @@ import Container from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { Roboto } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import routing from "../i18n/i18n";
+
+import { routing } from "@/i18n/routing";
+import { setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 import "./globals.css";
 const roboto = Roboto({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -32,6 +35,7 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+  setRequestLocale(locale);
   return (
     <ClerkProvider>
       <html lang={locale} suppressHydrationWarning>

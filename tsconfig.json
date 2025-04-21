@@ -31,7 +31,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/loading.tsx",
-    "app/hotel/details/loading.tsx"
+    "app/[locale]/hotel/details/loading.tsx",
+    "next.config.mts"
   ],
   "exclude": ["node_modules"]
 }

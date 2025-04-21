@@ -5,7 +5,7 @@ import { getAllCountries } from "@/services/locationService";
 import { getRoomByHotel } from "@/services/roomService";
 import { Hotel, Room } from "@/types/tableType";
 import { Metadata } from "next";
-
+import { getTranslations } from "next-intl/server";
 export const generateMetadata = async ({
   params,
 }: {
@@ -22,7 +22,7 @@ export const generateMetadata = async ({
 
 async function page({ params }: { params: { hotelId: string } }) {
   const hotelId = params.hotelId ?? "";
-
+  const t = await getTranslations("Hotel");
   const [rooms, hotel] = (await Promise.all([
     hotelId && getRoomByHotel(hotelId),
     getOneHotel(hotelId),
@@ -36,7 +36,7 @@ async function page({ params }: { params: { hotelId: string } }) {
 
       {rooms.length > 0 ? (
         <div className="mt-8">
-          <h2 className="text-xl font-semibold my-4 mb-4">Hotel Rooms</h2>
+          <h2 className="text-xl font-semibold my-4 mb-4">{t("hotelRooms")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {rooms.map((room) => (
               <RoomCard key={room.id} room={room} />

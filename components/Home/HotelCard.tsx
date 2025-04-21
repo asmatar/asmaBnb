@@ -23,6 +23,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import IconCTA from "../IconCTA";
+import { useTranslations } from "next-intl";
 
 const HotelCard = async ({
   title,
@@ -44,7 +45,7 @@ const HotelCard = async ({
 }: HotelCardProps) => {
   const hasPool = pool || swimingPool;
   const { isViewGrid } = useGlobalStore();
-
+  const t = useTranslations("HotelCard");
   if (isViewGrid) {
     return (
       <Link href={`/hotel/details/${id}`}>
@@ -61,7 +62,7 @@ const HotelCard = async ({
             ) : (
               <div className="h-full w-full bg-muted/50 flex items-center justify-center">
                 <span className="text-muted-foreground">
-                  No image available
+                  {t("noImageAvailable")}
                 </span>
               </div>
             )}
@@ -118,7 +119,7 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <Waves className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">Pool</span>
+                  <span className="truncate text-xs">{t("pool")}</span>
                 </Badge>
               )}
 
@@ -128,7 +129,7 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <Dumbbell className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">Gym</span>
+                  <span className="truncate text-xs">{t("gym")}</span>
                 </Badge>
               )}
 
@@ -138,7 +139,7 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <Bath className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">Spa</span>
+                  <span className="truncate text-xs">{t("spa")}</span>
                 </Badge>
               )}
 
@@ -148,7 +149,7 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <Wine className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">Bar</span>
+                  <span className="truncate text-xs">{t("bar")}</span>
                 </Badge>
               )}
 
@@ -158,7 +159,7 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <UtensilsCrossed className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">Restaurant</span>
+                  <span className="truncate text-xs">{t("restaurant")}</span>
                 </Badge>
               )}
 
@@ -168,7 +169,7 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <Wifi className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">WiFi</span>
+                  <span className="truncate text-xs">{t("freeWifi")}</span>
                 </Badge>
               )}
 
@@ -178,7 +179,7 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <Car className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">Parking</span>
+                  <span className="truncate text-xs">{t("freeParking")}</span>
                 </Badge>
               )}
 
@@ -188,14 +189,14 @@ const HotelCard = async ({
                   className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                 >
                   <ShoppingBag className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate text-xs">Shopping</span>
+                  <span className="truncate text-xs">{t("shopping")}</span>
                 </Badge>
               )}
             </div>
 
             <div className="mt-4 flex justify-end">
               <div className="text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors duration-200">
-                View Details →
+                {t("viewDetails")} →
               </div>
             </div>
           </div>
@@ -219,7 +220,7 @@ const HotelCard = async ({
               ) : (
                 <div className="h-full w-full bg-muted/50 flex items-center justify-center">
                   <span className="text-muted-foreground">
-                    No image available
+                    {t("noImageAvailable")}
                   </span>
                 </div>
               )}
@@ -292,7 +293,7 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <Waves className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">Pool</span>
+                    <span className="truncate text-xs">{t("pool")}</span>
                   </Badge>
                 )}
 
@@ -302,7 +303,7 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <Dumbbell className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">Gym</span>
+                    <span className="truncate text-xs">{t("gym")}</span>
                   </Badge>
                 )}
 
@@ -312,7 +313,7 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <Bath className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">Spa</span>
+                    <span className="truncate text-xs">{t("spa")}</span>
                   </Badge>
                 )}
 
@@ -322,7 +323,7 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <Wine className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">Bar</span>
+                    <span className="truncate text-xs">{t("bar")}</span>
                   </Badge>
                 )}
 
@@ -332,7 +333,7 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <UtensilsCrossed className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">Restaurant</span>
+                    <span className="truncate text-xs">{t("restaurant")}</span>
                   </Badge>
                 )}
 
@@ -342,7 +343,7 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <Wifi className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">WiFi</span>
+                    <span className="truncate text-xs">{t("freeWifi")}</span>
                   </Badge>
                 )}
 
@@ -352,7 +353,7 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <Car className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">Parking</span>
+                    <span className="truncate text-xs">{t("freeParking")}</span>
                   </Badge>
                 )}
 
@@ -362,14 +363,14 @@ const HotelCard = async ({
                     className="flex items-center gap-1 bg-accent/10 text-accent hover:bg-accent/15 justify-start py-1"
                   >
                     <ShoppingBag className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate text-xs">Shopping</span>
+                    <span className="truncate text-xs">{t("shopping")}</span>
                   </Badge>
                 )}
               </div>
 
               <div className="mt-4 flex justify-end">
                 <div className="text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors duration-200">
-                  View Details →
+                  {t("viewDetails")} →
                 </div>
               </div>
             </div>
