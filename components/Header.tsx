@@ -48,7 +48,7 @@ const Header = async () => {
             >
               <Logo />
             </Link>
-            <LocaleSwitcher />
+
             <div className="ml-auto flex items-center space-x-3">
               {username ? (
                 <div className="flex items-center">
@@ -162,6 +162,7 @@ const Header = async () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
+                  <LocaleSwitcher />
                   <ModeToggle />
                   <Separator orientation="vertical" className="h-6" />
                   <Link href="/sign-in">

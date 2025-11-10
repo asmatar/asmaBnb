@@ -198,7 +198,7 @@
   },
   "LocaleSwitcher": {
     "label": "Cambiar de idioma",
-    "locale": "{locale, select, es {Español} en {English} other {Unknown}}"
+    "locale": "{locale, select, es {Español} en {English} fr {Français} other {Unknown}}"
   },
   "MyHotelCard": {
     "viewDetails": "Ver detalles",

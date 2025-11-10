@@ -1,11 +1,11 @@
 "use client";
 
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import clsx from "clsx";
 import { Locale } from "next-intl";
 import { useParams } from "next/navigation";
-import { ChangeEvent, ReactNode, useTransition } from "react";
-
+import { ReactNode, useTransition } from "react";
 type Props = {
   children: ReactNode;
   defaultValue: string;
@@ -22,8 +22,8 @@ export default function LocaleSwitcherSelect({
   const pathname = usePathname();
   const params = useParams();
 
-  function onSelectChange(event: ChangeEvent<HTMLSelectElement>) {
-    const nextLocale = event.target.value as Locale;
+  function onSelectChange(value: string) {
+    const nextLocale = value as Locale;
     startTransition(() => {
       router.replace(
         // @ts-expect-error -- TypeScript will validate that only known `params`
@@ -43,15 +43,18 @@ export default function LocaleSwitcherSelect({
       )}
     >
       <p className="sr-only">{label}</p>
-      <select
-        className="inline-flex appearance-none bg-transparent py-3 pl-2 pr-6"
-        defaultValue={defaultValue}
-        disabled={isPending}
-        onChange={onSelectChange}
-      >
-        {children}
-      </select>
-      <span className="pointer-events-none absolute right-2 top-[8px]">⌄</span>
+      <div className="inline-flex appearance-none bg-transparent">
+        <Select
+          defaultValue={defaultValue}
+          disabled={isPending}
+          onValueChange={onSelectChange}
+        >
+          <SelectTrigger className="w-[180px] cursor-pointer">
+            <SelectValue />
+          </SelectTrigger>
+          {children}
+        </Select>
+      </div>
     </label>
   );
 }
