@@ -43,7 +43,7 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
   const totalPages = containsFilters
     ? data && data.length / 12 + 1
     : hotelCount && Math.ceil(hotelCount / 12 + 1);
-
+  console.log("hotels ******", data);
   return (
     <>
       <StyleContainer>
