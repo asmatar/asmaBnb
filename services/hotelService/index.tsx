@@ -32,7 +32,7 @@ export const createHotel = async (newHotel: InsertHotel) => {
     }
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: "error" /* error.message */ };
   }
 };
 
@@ -101,7 +101,7 @@ export const updateHotel = async (hotel: UpdateHotel) => {
     revalidatePath("/hotel/[hotelId]");
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: "error" /* error.message */ };
   }
 };
 

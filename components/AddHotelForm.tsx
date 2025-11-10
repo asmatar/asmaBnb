@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "@/i18n/navigation";
 import { hotelSchema } from "@/schema/formSchema";
 import { createHotel, deleteHotel, updateHotel } from "@/services/hotelService";
 import { uploadImage } from "@/services/imageService";
@@ -42,7 +43,7 @@ import { ICity, ICountry, IState } from "country-state-city";
 import { Pencil, Plus, Terminal, Trash, View, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link, { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Path, useForm } from "react-hook-form";
 import { MdUpdate } from "react-icons/md";
@@ -71,7 +72,7 @@ const AddHotelForm = ({
   const setIsDialogOpen = (value: boolean) => {
     setIsDialogOpened(value);
   };
-  const { t } = useTranslations("AddHotelForm");
+  const t = useTranslations("AddHotelForm");
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     mode: "onBlur",
