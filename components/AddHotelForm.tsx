@@ -122,7 +122,6 @@ const AddHotelForm = ({
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
     try {
       const file = values.image as File;
-      console.log("file", file);
       if (hotelId) {
         const updatingHotelValues = {
           ...values,
@@ -137,15 +136,11 @@ const AddHotelForm = ({
           toast.success("Hotel updated successfully");
         }
       }
-      console.log(typeof file);
       if (file && file instanceof Object) {
-        console.log("file is a valid File object");
         const formData = new FormData();
         formData.append("image", file);
 
-        console.log("formData created", formData.getAll);
         try {
-          console.log("image uploaded successfully");
           await uploadImage(formData);
         } catch (uploadError) {
           console.error("Upload error:", uploadError);
@@ -164,7 +159,6 @@ const AddHotelForm = ({
 
       const response = await createHotel(createHotelvalues);
       if (response.success === false) {
-        console.log("zrong");
         return toast.error(response.error);
       }
       router.push(`/hotel/${id}`);

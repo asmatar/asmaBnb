@@ -196,6 +196,10 @@
     "description": "Vous n'avez pas encore réservé d'hôtel. Découvrez nos meilleures offres et trouvez l'hébergement parfait pour votre prochain séjour !",
     "exploreHotels": "Explorer les hôtels"
   },
+  "LocaleSwitcher": {
+    "label": "Changer de langue",
+    "locale": "{locale, select, fr {Français} en {English} es {Español} other {Unknown}}"
+  },
   "MyHotelCard": {
     "viewDetails": "Voir les détails",
     "update": "Mettre à jour",

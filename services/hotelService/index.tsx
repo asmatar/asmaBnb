@@ -6,7 +6,6 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 export const getHotels = async () => {
-  console.log("hotellll avec FaVirusCovidSlash");
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase.from("hotel").select("*, favorite(*)");
   // const { data, error } = await supabase.from("hotel").select("*");
@@ -19,7 +18,6 @@ export const getHotels = async () => {
 
 export const createHotel = async (newHotel: InsertHotel) => {
   const imagePath = `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
-  console.log("inside create hotel");
   const supabase = await createClerkSupabaseClient();
   try {
     const { data, error } = await supabase
@@ -51,7 +49,6 @@ export const getOneHotel = async (id: string) => {
 };
 export const deleteHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
-  console.log("delete hotel -----", id);
   try {
     const { error: deleteBookingError, data: hasBooked } = await supabase
       .from("booking")
@@ -138,7 +135,6 @@ export async function getFilteredHotels(filters: {
     from = filters.from ?? 0,
     to = filters.to ?? 11,
   } = filters;
-  console.log("here", filters);
   let query = supabase.from("hotel").select("*");
 
   if (title) {

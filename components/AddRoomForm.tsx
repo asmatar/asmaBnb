@@ -66,7 +66,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
     }
   }, [form.formState.errors, form.setFocus, form]);
   const { user } = useUser();
-  const { t } = useTranslations("AddRoomForm");
+  const t = useTranslations("AddRoomForm");
   const isOwner = user?.id === room?.user_id;
   const params = useParams();
   const hotelId = params?.hotelId as string;
@@ -84,14 +84,9 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
         return;
       }
 
-      console.log("Hotel ID:", hotelId);
-
       // Vérifions si c'est bien un objet File valide
       if (file && typeof file === "object" && "name" in file) {
-        console.log("Valid file object found:", file.name);
-
         if (room) {
-          console.log("Updating existing room");
           const updatingRoomValues = {
             ...values,
             image: file.name || undefined,
@@ -107,19 +102,12 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
             return toast.error(response.error);
           }
         } else {
-          console.log("Creating new room");
-          // Upload d'image
           try {
             const formData = new FormData();
             formData.append("image", file);
-            console.log("FormData created with image:", file.name);
-
-            // Skip image upload for now, just create the room
-            console.log("Skipping image upload, proceeding with room creation");
 
             // Création de chambre
             const id = uuidv4();
-            console.log("Generated new room ID:", id);
 
             // Assurons-nous que tous les champs requis sont présents
             const createRoomvalues = {
@@ -128,48 +116,28 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
               hotel_id: hotelId,
               id,
             };
-            console.log(
-              "Creating room with values:",
-              JSON.stringify(createRoomvalues),
-            );
 
             try {
               const response = await createRoom(createRoomvalues);
-              console.log("Room creation response:", response);
 
               if (response.success) {
                 toast.success("Room created successfully");
                 form.reset();
                 setFormOpen(false);
               } else {
-                console.error("Room creation failed:", response.error);
                 toast.error(response.error || "Failed to create room");
               }
             } catch (roomError) {
-              console.error("Error creating room:", roomError);
-
-              // Afficher plus de détails sur l'erreur
-              if (roomError instanceof Error) {
-                console.error("Error message:", roomError.message);
-                console.error("Error stack:", roomError.stack);
-              }
-
               toast.error("Error creating room - see console for details");
             }
           } catch (uploadError) {
-            console.error(
-              "Error during image upload or room creation:",
-              uploadError,
-            );
             toast.error("Error during room creation process");
           }
         }
       } else {
-        console.error("Invalid file object:", file);
         toast.error("Please select a valid image file for the room");
       }
     } catch (error) {
-      console.error("Overall error in onSubmitRoom:", error);
       toast.error("Failed to create room");
     }
   }

@@ -14,11 +14,12 @@ import { checkRole } from "@/lib/clerk";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { getTranslations } from "next-intl/server";
-import { Link } from "../i18n/navigation";
 import { FaHeart, FaHotel, FaRegUser } from "react-icons/fa6";
 import { HiMiniPlus } from "react-icons/hi2";
 import { LuLayoutDashboard, LuLogOut } from "react-icons/lu";
 import { TbBrandBooking } from "react-icons/tb";
+import { Link } from "../i18n/navigation";
+import LocaleSwitcher from "./i18n/LocaleSwitcher";
 
 const Header = async () => {
   const user = await currentUser();
@@ -47,7 +48,7 @@ const Header = async () => {
             >
               <Logo />
             </Link>
-
+            <LocaleSwitcher />
             <div className="ml-auto flex items-center space-x-3">
               {username ? (
                 <div className="flex items-center">

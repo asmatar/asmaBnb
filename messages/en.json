@@ -196,6 +196,10 @@
     "description": "You have not made any reservations yet. Discover our best offers and find the perfect accommodation for your next stay!",
     "exploreHotels": "Explore Hotels"
   },
+  "LocaleSwitcher": {
+    "label": "Change language",
+    "locale": "{locale, select, en {English} es {Español} fr {Français} other {Unknown}}"
+  },
   "MyHotelCard": {
     "viewDetails": "View Details",
     "update": "Update",

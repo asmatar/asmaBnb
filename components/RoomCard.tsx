@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "@/i18n/navigation";
 import {
   createBooking,
   deleteBooking,
@@ -53,7 +54,6 @@ import { DateRange } from "react-day-picker";
 import { TbReservedLine } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { Link } from "../i18n/navigation";
 import {
   Tooltip,
   TooltipContent,
@@ -146,7 +146,6 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
       return toast.error(createdBookingResponse.error);
     }
   };
-
   return (
     <>
       <Card>
@@ -166,23 +165,25 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
             {room.roomDescription}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-4">
+        <CardContent className="flex-1 flex flex-col">
+          <div className="grid grid-cols-2 gap-4 flex-1">
             <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
               <BedDouble className="h-4 w-4" />
               {room.bedCount} {t("beds")}
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
-              <Bath className="h-4 w-4" />
-              {room.bathroomCount} {t("bathroom")}
-            </div>
-            {room.kingBed && (
+            {room.bathroomCount !== 0 && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
+                <Bath className="h-4 w-4" />
+                {room.bathroomCount} {t("bathroom")}
+              </div>
+            )}
+            {room.kingBed !== 0 && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <BedDouble className="h-4 w-4" />
                 {t("kingBed")}
               </div>
             )}
-            {room.queenBed && (
+            {room.queenBed !== 0 && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <BedDouble className="h-4 w-4" />
                 {t("queenBed")}
@@ -253,15 +254,13 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
           <div className="flex gap-4 justify-between">
             <div className="">
               {t("roomPrice")}:{" "}
-              <span className="font-bold">
-                {t("eur")} {room.roomPrice}
-              </span>
+              <span className="font-bold"> {room.roomPrice} €</span>
               <span className="text-xs"> /24hrs</span>
             </div>
             {!!room.breakfastPrice && (
               <div>
-                {t("breakfastPrice")}:{" "}
-                <span className="font-bold">${room.breakfastPrice}</span>
+                {t("breakfastPrice")}:
+                <span className="font-bold">{room.breakfastPrice} €</span>
               </div>
             )}
           </div>
@@ -357,11 +356,7 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
                 </div>
                 <p className="mb-4">
                   {t("totalPrice")}:{" "}
-                  <span className="font-bold">
-                    {totalPrice}
-                    {t("eur")}
-                  </span>{" "}
-                  {t("for")}{" "}
+                  <span className="font-bold">{totalPrice}€</span> {t("for")}{" "}
                   <span className="font-bold">
                     {numberOfNights} {t("days")}
                   </span>
