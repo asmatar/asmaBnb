@@ -5,7 +5,7 @@ import { InsertRoom, UpdateRoom } from "@/types/tableType";
 import { revalidatePath } from "next/cache";
 export const updateRoom = async (room: UpdateRoom) => {
   const supabase = await createClerkSupabaseClient();
-  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${room.image}`;
+  const imagePath = `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/room/public/${room.image}`;
   try {
     const { data, error } = await supabase
       .from("room")
@@ -19,7 +19,7 @@ export const updateRoom = async (room: UpdateRoom) => {
     revalidatePath("/hotel/[hotelId]");
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: "error" /* error.message */ };
   }
 };
 export const getAllRooms = async () => {
@@ -57,7 +57,7 @@ export const createRoom = async (newRoom: InsertRoom) => {
 
   try {
     const imagePath = newRoom.image
-      ? `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${newRoom.image}`
+      ? `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/room/public/${newRoom.image}`
       : "";
 
     console.log("Image path constructed:", imagePath);

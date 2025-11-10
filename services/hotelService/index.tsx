@@ -18,7 +18,7 @@ export const getHotels = async () => {
 };
 
 export const createHotel = async (newHotel: InsertHotel) => {
-  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
+  const imagePath = `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
   console.log("inside create hotel");
   const supabase = await createClerkSupabaseClient();
   try {
@@ -87,7 +87,7 @@ export const deleteHotel = async (id: string) => {
 
 export const updateHotel = async (hotel: UpdateHotel) => {
   const supabase = await createClerkSupabaseClient();
-  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
+  const imagePath = `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
   try {
     const { data, error } = await supabase
       .from("hotel")
