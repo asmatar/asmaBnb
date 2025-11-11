@@ -6,7 +6,6 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 export const getHotels = async () => {
-  console.log("hotellll avec FaVirusCovidSlash");
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase.from("hotel").select("*, favorite(*)");
   // const { data, error } = await supabase.from("hotel").select("*");
@@ -18,8 +17,7 @@ export const getHotels = async () => {
 };
 
 export const createHotel = async (newHotel: InsertHotel) => {
-  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
-  console.log("inside create hotel");
+  const imagePath = `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/hotels/public/${newHotel.image}`;
   const supabase = await createClerkSupabaseClient();
   try {
     const { data, error } = await supabase
@@ -32,7 +30,7 @@ export const createHotel = async (newHotel: InsertHotel) => {
     }
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: "error" /* error.message */ };
   }
 };
 
@@ -51,7 +49,6 @@ export const getOneHotel = async (id: string) => {
 };
 export const deleteHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
-  console.log("delete hotel -----", id);
   try {
     const { error: deleteBookingError, data: hasBooked } = await supabase
       .from("booking")
@@ -87,7 +84,7 @@ export const deleteHotel = async (id: string) => {
 
 export const updateHotel = async (hotel: UpdateHotel) => {
   const supabase = await createClerkSupabaseClient();
-  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
+  const imagePath = `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/hotels/public/${hotel.image}`;
   try {
     const { data, error } = await supabase
       .from("hotel")
@@ -101,7 +98,7 @@ export const updateHotel = async (hotel: UpdateHotel) => {
     revalidatePath("/hotel/[hotelId]");
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: "error" /* error.message */ };
   }
 };
 
@@ -138,7 +135,6 @@ export async function getFilteredHotels(filters: {
     from = filters.from ?? 0,
     to = filters.to ?? 11,
   } = filters;
-  console.log("here", filters);
   let query = supabase.from("hotel").select("*");
 
   if (title) {

@@ -13,25 +13,28 @@ import { Separator } from "@/components/ui/separator";
 import { checkRole } from "@/lib/clerk";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { FaHeart, FaHotel, FaRegUser } from "react-icons/fa6";
 import { HiMiniPlus } from "react-icons/hi2";
 import { LuLayoutDashboard, LuLogOut } from "react-icons/lu";
 import { TbBrandBooking } from "react-icons/tb";
+import { Link } from "../i18n/navigation";
+import LocaleSwitcher from "./i18n/LocaleSwitcher";
 
 const Header = async () => {
   const user = await currentUser();
   const username = user?.username;
   const firstName = user?.firstName;
   const isHost = checkRole("host");
-
+  const t = await getTranslations("Header");
   return (
     <>
       {/* Top notification bar with subtle gradient */}
       <div className="bg-secondary/80 border-b py-1 text-center text-xs font-medium">
         <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6">
           <span className="gradient-text">
-            ✨ developpé par Deruelle Arthur ✨
+            {t("developer")}
+            {"  "} Deruelle Arthur
           </span>
         </div>
       </div>
@@ -39,7 +42,6 @@ const Header = async () => {
       <header className="sticky top-0 bg-background/80 backdrop-blur-md border-b z-[60] py-3">
         <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6">
           <div className="flex items-center h-16">
-            {/* Logo */}
             <Link
               href="/"
               className="flex items-center gap-1.5 transition-all hover:opacity-80"
@@ -48,18 +50,15 @@ const Header = async () => {
             </Link>
 
             <div className="ml-auto flex items-center space-x-3">
-              {/* User account section */}
               {username ? (
                 <div className="flex items-center">
-                  {/* User greeting on larger screens */}
                   <span className="hidden lg:inline-block text-sm font-normal mr-3 text-muted-foreground">
-                    Bienvenue,{" "}
+                    {t("welcome")},{" "}
                     <span className="font-medium text-foreground">
                       {firstName || username}
                     </span>
                   </span>
 
-                  {/* Account dropdown with improved layout */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
@@ -69,7 +68,7 @@ const Header = async () => {
                       >
                         <LuLayoutDashboard className="h-4 w-4 text-primary" />
                         <span className="hidden sm:inline text-sm font-medium">
-                          Dashboard
+                          {t("dashboard")}
                         </span>
                       </Button>
                     </DropdownMenuTrigger>
@@ -103,14 +102,16 @@ const Header = async () => {
                       <Link href="/my-bookings" className="w-full">
                         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
                           <TbBrandBooking className="h-4 w-4 text-primary" />
-                          <span className="text-sm">My Bookings</span>
+                          <span className="text-sm">{t("myBookings")}</span>
                         </DropdownMenuItem>
                       </Link>
 
                       <Link href="/favorites" className="w-full">
                         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
                           <FaHeart className="h-3.5 w-3.5 text-rose-500" />
-                          <span className="text-sm">Saved Properties</span>
+                          <span className="text-sm">
+                            {t("savedProperties")}
+                          </span>
                         </DropdownMenuItem>
                       </Link>
 
@@ -118,20 +119,24 @@ const Header = async () => {
                         <>
                           <DropdownMenuSeparator />
                           <DropdownMenuLabel className="text-xs font-medium text-muted-foreground px-2 py-1">
-                            Host Options
+                            {t("hostOptions")}
                           </DropdownMenuLabel>
 
                           <Link href="/hotel/new" className="w-full">
                             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
                               <HiMiniPlus className="h-4 w-4 text-green-500" />
-                              <span className="text-sm">Add Property</span>
+                              <span className="text-sm">
+                                {t("addProperty")}
+                              </span>
                             </DropdownMenuItem>
                           </Link>
 
                           <Link href="/my-hotels" className="w-full">
                             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
                               <FaHotel className="h-3.5 w-3.5 text-blue-500" />
-                              <span className="text-sm">Manage Properties</span>
+                              <span className="text-sm">
+                                {t("manageProperties")}
+                              </span>
                             </DropdownMenuItem>
                           </Link>
                         </>
@@ -140,7 +145,7 @@ const Header = async () => {
                       <DropdownMenuSeparator />
                       <div className="flex justify-between items-center px-2 py-1.5">
                         <span className="text-xs text-muted-foreground">
-                          Theme
+                          {t("theme")}
                         </span>
                         <ModeToggle />
                       </div>
@@ -149,7 +154,7 @@ const Header = async () => {
                       <SignOutButton>
                         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-red-50 text-red-600 rounded-md py-1.5 px-2">
                           <LuLogOut className="h-4 w-4" />
-                          <span className="text-sm">Sign out</span>
+                          <span className="text-sm">{t("signOut")}</span>
                         </DropdownMenuItem>
                       </SignOutButton>
                     </DropdownMenuContent>
@@ -157,6 +162,7 @@ const Header = async () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
+                  <LocaleSwitcher />
                   <ModeToggle />
                   <Separator orientation="vertical" className="h-6" />
                   <Link href="/sign-in">
@@ -166,12 +172,12 @@ const Header = async () => {
                       className="flex items-center gap-1.5"
                     >
                       <FaRegUser className="h-3 w-3" />
-                      <span>Sign in</span>
+                      <span>{t("signIn")}</span>
                     </Button>
                   </Link>
                   <Link href="/sign-up">
                     <Button variant="gradient" size="sm" className="shadow-sm">
-                      Join now
+                      {t("joinNow")}
                     </Button>
                   </Link>
                 </div>

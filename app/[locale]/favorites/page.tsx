@@ -4,9 +4,9 @@ import ToggleViewLayout from "@/components/ToggleViewLayout";
 import { getAllFavorites } from "@/services/favoriteservice";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { FaHeart } from "react-icons/fa6";
 import NoFavoritesFound from "./NoFavoritesFound";
-
 export const metadata: Metadata = {
   title: "Vos favoris",
   description: "Retrouvez tous vos hôtels préférés à un seul endroit",
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 const favorites = async () => {
   const { userId } = await auth();
+  const t = await getTranslations("Favorites");
   const { data: favorites, error } = await getAllFavorites(userId as string);
   if (error) {
     console.error(error);
@@ -30,20 +31,19 @@ const favorites = async () => {
                 <div className="flex items-center gap-4">
                   <FaHeart className="w-5 h-5 text-rose-500" />
                   <h1 className="text-3xl font-bold">
-                    <span className="text-accent-gradient">Vos favoris</span>
+                    <span className="text-accent-gradient">{t("title")}</span>
                   </h1>{" "}
                 </div>
                 {favorites && favorites.length > 0 && (
                   <div className="inline-block bg-background px-3 py-1 rounded-full text-sm font-medium shadow-sm">
                     {favorites.length}{" "}
-                    {favorites.length > 1 ? "hôtels" : "hôtel"} enregistré
-                    {favorites.length > 1 ? "s" : ""}
+                    {favorites.length > 1 ? t("hotels") : t("hotel")}{" "}
+                    {favorites.length > 1 ? t("saved") : ""}
                   </div>
                 )}
               </div>
               <p className="text-muted-foreground max-w-md">
-                Retrouvez ici tous les hôtels que vous avez ajoutés à vos
-                favoris pour y accéder rapidement.
+                {t("description")}
               </p>
             </div>
           </div>

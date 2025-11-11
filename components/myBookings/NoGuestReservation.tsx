@@ -1,6 +1,7 @@
 import { Hotel } from "lucide-react";
-
-const NoGuestReservation = () => {
+import { getTranslations } from "next-intl/server";
+const NoGuestReservation = async () => {
+  const t = await getTranslations("NoGuestReservation");
   return (
     <div className="col-span-full min-h-[400px] flex flex-col">
       <div className="relative w-full max-w-2xl ">
@@ -13,12 +14,10 @@ const NoGuestReservation = () => {
 
             <div className="space-y-3">
               <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Aucune réservation reçue
+                {t("title")}
               </h2>
               <p className="text-muted-foreground max-w-md">
-                Vos hôtels n&apos;ont pas encore reçu de réservation. Continuez
-                à promouvoir vos établissements et à améliorer vos offres pour
-                attirer plus de clients.
+                {t("description")}
               </p>
             </div>
           </div>

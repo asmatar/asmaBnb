@@ -11,7 +11,6 @@ export type OneFavoriteHotel = {
 
 export const addFavorite = async (favoriteHotel: OneFavoriteHotel) => {
   const supabase = await createClerkSupabaseClient();
-  console.log("add fav", favoriteHotel);
   try {
     const { error } = await supabase.from("favorite").insert([
       {
@@ -33,7 +32,6 @@ export const addFavorite = async (favoriteHotel: OneFavoriteHotel) => {
 };
 
 export const removeFavorite = async (hotelId: string, userId: string) => {
-  console.log("removeFavorite", hotelId, userId);
   const supabase = await createClerkSupabaseClient();
   try {
     const { error } = await supabase
@@ -58,7 +56,6 @@ export const getAllFavorites = async (userId: string) => {
     .from("favorite")
     .select("*, hotel(*)")
     .eq("user_id", userId);
-  console.log("fav data", data);
   if (error) {
     return { success: false, error: error.message };
   }

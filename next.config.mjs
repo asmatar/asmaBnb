@@ -1,3 +1,5 @@
+import createNextIntlPlugin from "next-intl/plugin";
+const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} 
 const nextConfig = {};
 
@@ -8,10 +10,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cgttmkwcbvtneztdpkod.supabase.co",
+        hostname: "fdnpxniupfpqpzwhongp.supabase.co",
       },
     ],
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

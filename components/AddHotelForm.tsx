@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "@/i18n/navigation";
 import { hotelSchema } from "@/schema/formSchema";
 import { createHotel, deleteHotel, updateHotel } from "@/services/hotelService";
 import { uploadImage } from "@/services/imageService";
@@ -40,8 +41,8 @@ import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
 import { Pencil, Plus, Terminal, Trash, View, XCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Path, useForm } from "react-hook-form";
@@ -50,7 +51,6 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import * as z from "zod";
 import AddRoomForm from "./AddRoomForm";
-
 const AddHotelForm = ({
   countries,
   hotel,
@@ -72,7 +72,7 @@ const AddHotelForm = ({
   const setIsDialogOpen = (value: boolean) => {
     setIsDialogOpened(value);
   };
-
+  const t = useTranslations("AddHotelForm");
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     mode: "onBlur",
@@ -122,7 +122,6 @@ const AddHotelForm = ({
   async function onSubmit(values: z.infer<typeof hotelSchema>) {
     try {
       const file = values.image as File;
-      console.log("file", file);
       if (hotelId) {
         const updatingHotelValues = {
           ...values,
@@ -137,15 +136,11 @@ const AddHotelForm = ({
           toast.success("Hotel updated successfully");
         }
       }
-      console.log(typeof file);
       if (file && file instanceof Object) {
-        console.log("file is a valid File object");
         const formData = new FormData();
         formData.append("image", file);
 
-        console.log("formData created", formData.getAll);
         try {
-          console.log("image uploaded successfully");
           await uploadImage(formData);
         } catch (uploadError) {
           console.error("Upload error:", uploadError);
@@ -164,7 +159,6 @@ const AddHotelForm = ({
 
       const response = await createHotel(createHotelvalues);
       if (response.success === false) {
-        console.log("zrong");
         return toast.error(response.error);
       }
       router.push(`/hotel/${id}`);
@@ -227,7 +221,7 @@ const AddHotelForm = ({
         id="addHotelForm"
         data-form-type="hotel-form"
       >
-        <h3 className="font-semibold text-lg">Describe your hotel</h3>
+        <h3 className="font-semibold text-lg">{t("hotelDescription")}</h3>
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex-1 flex flex-col gap-6">
             <FormField
@@ -235,11 +229,13 @@ const AddHotelForm = ({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hotel title *</FormLabel>
-                  <FormDescription>provide your hotel name</FormDescription>
+                  <FormLabel>{t("hotelTitle")}</FormLabel>
+                  <FormDescription>
+                    {t("hotelTitleDescription")}
+                  </FormDescription>
                   <FormControl>
                     <Input
-                      placeholder="beach hotel"
+                      placeholder={t("hotelTitlePlaceholder")}
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -253,13 +249,13 @@ const AddHotelForm = ({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hotel description *</FormLabel>
+                  <FormLabel>{t("hotelDescription")}</FormLabel>
                   <FormDescription>
-                    provide a detail description of your hotel
+                    {t("hotelDescriptionDescription")}
                   </FormDescription>
                   <FormControl>
                     <Textarea
-                      placeholder="beach hotel is parked with many amenities!"
+                      placeholder={t("hotelDescriptionPlaceholder")}
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -269,9 +265,9 @@ const AddHotelForm = ({
               )}
             />
             <div className="">
-              <FormLabel>Choose Ameñities</FormLabel>
+              <FormLabel>{t("chooseAmenities")}</FormLabel>
               <FormDescription>
-                Choose Amenities popular in your hotel
+                {t("chooseAmenitiesDescription")}
               </FormDescription>
               <div className="grid grid-cols-2 gap-4 mt-2">
                 <FormField
@@ -285,7 +281,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Gym</FormLabel>
+                      <FormLabel>{t("gym")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -300,7 +296,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Spa</FormLabel>
+                      <FormLabel>{t("spa")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -315,7 +311,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Bar</FormLabel>
+                      <FormLabel>{t("bar")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -330,7 +326,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Laundry</FormLabel>
+                      <FormLabel>{t("laundry")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -345,7 +341,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Restaurant</FormLabel>
+                      <FormLabel>{t("restaurant")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -360,7 +356,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Shopping</FormLabel>
+                      <FormLabel>{t("shopping")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -375,7 +371,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Free Parking</FormLabel>
+                      <FormLabel>{t("freeParking")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -390,7 +386,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Bike Rental</FormLabel>
+                      <FormLabel>{t("bikeRental")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -405,7 +401,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Free Wifi</FormLabel>
+                      <FormLabel>{t("freeWifi")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -420,7 +416,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Movie Nights</FormLabel>
+                      <FormLabel>{t("movieNights")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -435,7 +431,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Swiming Pool</FormLabel>
+                      <FormLabel>{t("swimingPool")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -450,7 +446,7 @@ const AddHotelForm = ({
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>Coffee Shop</FormLabel>
+                      <FormLabel>{t("coffeeShop")}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -463,9 +459,9 @@ const AddHotelForm = ({
                 <FormItem>
                   <div className="flex gap-4">
                     <div className="flex-1">
-                      <FormLabel>Hotel image</FormLabel>
+                      <FormLabel>{t("hotelImage")}</FormLabel>
                       <FormDescription>
-                        Choose an image that will showcase your hotel nicely
+                        {t("hotelImageDescription")}
                       </FormDescription>
                       <FormControl>
                         <Input
@@ -517,9 +513,9 @@ const AddHotelForm = ({
                 name="country"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select a Country *</FormLabel>
+                    <FormLabel>{t("selectCountry")}</FormLabel>
                     <FormDescription>
-                      Choose a country where your hotel is located.
+                      {t("selectCountryDescription")}
                     </FormDescription>
                     <Select
                       onValueChange={(country) => {
@@ -531,7 +527,7 @@ const AddHotelForm = ({
                     >
                       <SelectTrigger className="bg-background">
                         <SelectValue
-                          placeholder="select a country"
+                          placeholder={t("selectCountryPlaceholder")}
                           defaultValue={field.value}
                         />
                       </SelectTrigger>
@@ -545,9 +541,9 @@ const AddHotelForm = ({
                 name="state"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select a State *</FormLabel>
+                    <FormLabel>{t("selectState")}</FormLabel>
                     <FormDescription>
-                      Choose a state where your hotel is located.
+                      {t("selectStateDescription")}
                     </FormDescription>
                     <Select
                       disabled={
@@ -561,7 +557,9 @@ const AddHotelForm = ({
                       value={field.value || undefined}
                     >
                       <SelectTrigger className="bg-background">
-                        <SelectValue placeholder="select a state" />
+                        <SelectValue
+                          placeholder={t("selectStatePlaceholder")}
+                        />
                       </SelectTrigger>
                       <SelectContent>{statesOptions}</SelectContent>
                     </Select>
@@ -575,9 +573,9 @@ const AddHotelForm = ({
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Select City (Optional)</FormLabel>
+                  <FormLabel>{t("selectCity")}</FormLabel>
                   <FormDescription>
-                    In wich city is your hotel located.
+                    {t("selectCityDescription")}
                   </FormDescription>
                   <Select
                     disabled={
@@ -587,7 +585,7 @@ const AddHotelForm = ({
                     value={field.value || undefined}
                   >
                     <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="Beach hotel is located at the very end of the beach road" />
+                      <SelectValue placeholder={t("selectCityPlaceholder")} />
                     </SelectTrigger>
                     <SelectContent>{citiesOptions}</SelectContent>
                   </Select>
@@ -599,15 +597,13 @@ const AddHotelForm = ({
               name="locationDescription"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Location description *</FormLabel>
+                  <FormLabel>{t("locationDescription")}</FormLabel>
                   <FormDescription>
-                    Provide more information about the exact location of your
-                    hotel. Tip, use landmarks like school, hospital, church and
-                    roads
+                    {t("locationDescriptionDescription")}
                   </FormDescription>
                   <FormControl>
                     <Textarea
-                      placeholder="Beach hotel is located at the very end of the beach road"
+                      placeholder={t("locationDescriptionPlaceholder")}
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -619,10 +615,10 @@ const AddHotelForm = ({
             {hotelId && (
               <Alert className="bg-indigo-600 text-white">
                 <Terminal className="h-4 w-4 stroke-white" />
-                <AlertTitle>One last step</AlertTitle>
+                <AlertTitle>{t("oneLastStep")}</AlertTitle>
                 <AlertDescription>
-                  Your hotel was creatyed successfully.
-                  <p>please add some rooms to complete your hotel setup</p>
+                  {t("pleaseAddSomeRooms")}
+                  <p>{t("pleaseAddSomeRoomsToCompleteYourHotelSetup")}</p>
                 </AlertDescription>
               </Alert>
             )}
@@ -636,7 +632,7 @@ const AddHotelForm = ({
                       className="max-w-[150px]"
                     >
                       <View className="w-4 h-4 mr-3" />
-                      View
+                      {t("viewHotel")}
                     </Button>
                   </Link>
                   {isOwner ? (
@@ -648,8 +644,8 @@ const AddHotelForm = ({
                       >
                         <MdUpdate className="w-4 h-4 mr-3" />
                         {formHotel.formState.isSubmitting
-                          ? "Updating..."
-                          : "Update"}
+                          ? t("updating")
+                          : t("update")}
                       </Button>
                       <Button
                         variant="outline"
@@ -657,7 +653,7 @@ const AddHotelForm = ({
                         onClick={() => handleDeleteHotel(hotelId as string)}
                       >
                         <Trash className="w-4 h-4 mr-3" />
-                        Delete
+                        {t("delete")}
                       </Button>
                       <Dialog
                         open={isDialogOpened}
@@ -665,13 +661,13 @@ const AddHotelForm = ({
                       >
                         <DialogTrigger className="px-2 bg-background rounded-md flex items-center ">
                           <Plus className="w-4 h-4 mr-3" />
-                          Add room
+                          {t("addRoom")}
                         </DialogTrigger>
                         <DialogContent className="max-w-[900px] w-[90%] z-[80]">
                           <DialogHeader className="px-2">
-                            <DialogTitle>Add a room</DialogTitle>
+                            <DialogTitle>{t("addRoom")}</DialogTitle>
                             <DialogDescription>
-                              All details about a room in your hotel.
+                              {t("allDetailsAboutARoomInYourHotel")}
                             </DialogDescription>
                           </DialogHeader>
                           <AddRoomForm setFormOpen={setIsDialogOpen} />
@@ -689,8 +685,8 @@ const AddHotelForm = ({
                 >
                   <Pencil className="w-4 h-4 mr-2" />
                   {formHotel.formState.isSubmitting
-                    ? "Saving..."
-                    : "create Hotel"}
+                    ? t("saving")
+                    : t("createHotel")}
                 </Button>
               )}
             </div>

@@ -5,7 +5,7 @@ import { InsertRoom, UpdateRoom } from "@/types/tableType";
 import { revalidatePath } from "next/cache";
 export const updateRoom = async (room: UpdateRoom) => {
   const supabase = await createClerkSupabaseClient();
-  const imagePath = `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${room.image}`;
+  const imagePath = `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/room/public/${room.image}`;
   try {
     const { data, error } = await supabase
       .from("room")
@@ -19,7 +19,7 @@ export const updateRoom = async (room: UpdateRoom) => {
     revalidatePath("/hotel/[hotelId]");
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: "error" /* error.message */ };
   }
 };
 export const getAllRooms = async () => {
@@ -41,7 +41,6 @@ export const getRoomByHotel = async (id: string) => {
   if (error) {
     throw new Error("room not found");
   }
-  console.log(data);
   return data;
 };
 export const getOneRoom = async (id: string) => {
@@ -53,22 +52,16 @@ export const getOneRoom = async (id: string) => {
   return data;
 };
 export const createRoom = async (newRoom: InsertRoom) => {
-  console.log("Creating room with data:", newRoom);
-
   try {
     const imagePath = newRoom.image
-      ? `https://cgttmkwcbvtneztdpkod.supabase.co/storage/v1/object/public/room/public/${newRoom.image}`
+      ? `https://fdnpxniupfpqpzwhongp.supabase.co/storage/v1/object/public/room/public/${newRoom.image}`
       : "";
 
-    console.log("Image path constructed:", imagePath);
     const supabase = await createClerkSupabaseClient();
-    console.log("Supabase client created for room creation");
 
     const roomData = newRoom.image
       ? { ...newRoom, image: imagePath }
       : { ...newRoom, image: "" };
-
-    console.log("Final room data to insert:", roomData);
 
     const { data, error } = await supabase
       .from("room")
@@ -80,7 +73,6 @@ export const createRoom = async (newRoom: InsertRoom) => {
       return { success: false, error: error.message };
     }
 
-    console.log("Room created successfully:", data);
     revalidatePath(`/hotel/${newRoom.hotel_id}`);
     return { success: true, data };
   } catch (error) {
@@ -94,7 +86,6 @@ export const createRoom = async (newRoom: InsertRoom) => {
 export const deleteRoom = async (formData: FormData) => {
   const id = formData.get("id");
   const supabase = await createClerkSupabaseClient();
-  console.log("deleteeeeeeeeee", id);
   try {
     const { error: deleteBookingError, data: hasBooked } = await supabase
       .from("booking")

@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "@/i18n/navigation";
 import {
   createBooking,
   deleteBooking,
@@ -45,8 +46,8 @@ import {
   VolumeX,
   Wifi,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
@@ -59,12 +60,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-
 const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const t = useTranslations("RoomCard");
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
@@ -146,7 +146,6 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
       return toast.error(createdBookingResponse.error);
     }
   };
-
   return (
     <>
       <Card>
@@ -166,99 +165,102 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
             {room.roomDescription}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-4">
+        <CardContent className="flex-1 flex flex-col">
+          <div className="grid grid-cols-2 gap-4 flex-1">
             <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
               <BedDouble className="h-4 w-4" />
-              {room.bedCount} Beds
+              {room.bedCount} {t("beds")}
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
-              <Bath className="h-4 w-4" />
-              {room.bathroomCount} Bathroom
-            </div>
-            {room.kingBed && (
+            {room.bathroomCount !== 0 && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
-                <BedDouble className="h-4 w-4" />
-                King Bed
+                <Bath className="h-4 w-4" />
+                {room.bathroomCount} {t("bathroom")}
               </div>
             )}
-            {room.queenBed && (
+            {room.kingBed !== 0 && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <BedDouble className="h-4 w-4" />
-                Queen Bed
+                {t("kingBed")}
+              </div>
+            )}
+            {room.queenBed !== 0 && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
+                <BedDouble className="h-4 w-4" />
+                {t("queenBed")}
               </div>
             )}
             {room.roomService && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <UtensilsCrossed className="h-4 w-4" />
-                Room service
+                {t("roomService")}
               </div>
             )}
             {room.TV && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Bath className="h-4 w-4" />
-                TV
+                {t("TV")}
               </div>
             )}
             {room.balcony && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Home className="h-4 w-4" />
-                Balcony
+                {t("balcony")}
               </div>
             )}
             {room.freeWifi && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Wifi className="h-4 w-4" />
-                Free Wifi
+                {t("freeWifi")}
               </div>
             )}
             {room.cityView && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Castle className="h-4 w-4" />
-                City View
+                {t("cityView")}
               </div>
             )}
             {room.oceanView && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Ship className="h-4 w-4" />
-                Ocean View
+                {t("oceanView")}
               </div>
             )}
             {room.forestView && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <Trees className="h-4 w-4" />
-                Forest View
+                {t("forestView")}
               </div>
             )}
             {room.mountainView && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <MountainSnow className="h-4 w-4" />
-                Mountain View
+                {t("mountainView")}
               </div>
             )}
             {room.airCondition && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <AirVent className="h-4 w-4" />
-                Air Condition
+                {t("airCondition")}
               </div>
             )}
             {room.soundProofed && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-primary/5 px-3 py-2 rounded-lg">
                 <VolumeX className="h-4 w-4" />
-                Sound Proofed
+                {t("soundProofed")}
               </div>
             )}
           </div>
           <Separator className="my-4" />
           <div className="flex gap-4 justify-between">
             <div className="">
-              Room Price: <span className="font-bold">${room.roomPrice}</span>
+              {t("roomPrice")}:{" "}
+              <span className="font-bold"> {room.roomPrice} €</span>
               <span className="text-xs"> /24hrs</span>
             </div>
             {!!room.breakfastPrice && (
               <div>
-                Breakfast Price:{" "}
-                <span className="font-bold">${room.breakfastPrice}</span>
+                {t("breakfastPrice")}:
+                <span className="font-bold">{room.breakfastPrice} €</span>
               </div>
             )}
           </div>
@@ -267,22 +269,23 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
         <CardFooter>
           {pathname.includes("my-bookings") && (
             <div className="flex flex-col gap-2">
-              <CardTitle>Booking Details</CardTitle>
+              <CardTitle>{t("bookingDetails")}</CardTitle>
               <div className="text-primary/90">
                 <div className="">
-                  Room booked by {room.username} for {numberOfNightsBooked}{" "}
-                  nuit(s) - dans {leftDays} jour(s)
+                  {t("roomBookedBy")} {room.username} {t("for")}{" "}
+                  {numberOfNightsBooked} {t("nights")} {t("in")} {leftDays}{" "}
+                  {t("days")}
                 </div>
-                <div className="">Check-in: {room.startDate} at 11am</div>
-                <div className="">Check-out: {room.endDate} at 17pm</div>
-                {room.breakfastIncluded && <p>breakfast will be served</p>}
+                <div className="">{t("checkIn")}</div>
+                <div className="">{t("checkOut")}</div>
+                {room.breakfastIncluded && <p>{t("breakfast")}</p>}
                 {room.paymentStatus === "requires_payment_method" ? (
                   <span className="text-red-600">
-                    not paid ${room.totalPrice} - room not reserved
+                    {t("notPaid")} ${room.totalPrice} - {t("roomNotReserved")}
                   </span>
                 ) : (
                   <span className="text-green-600">
-                    Paid ${room.totalPrice} - room Reserved
+                    {t("paid")} ${room.totalPrice} - {t("roomReserved")}
                   </span>
                 )}
               </div>
@@ -294,7 +297,7 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
                     type="button"
                     className=" text-primary py-2 px-4 rounded-lg w-full"
                   >
-                    View Hotel
+                    {t("viewHotel")}
                   </Button>
                 </Link>
                 {room.paymentStatus === "requires_payment_method" ? (
@@ -305,7 +308,7 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
                         type="button"
                         className=" text-primary py-2 px-4 rounded-lg w-full"
                       >
-                        Pay now
+                        {t("payNow")}
                       </Button>
                     </Link>
 
@@ -327,9 +330,7 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
             <>
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-2">
-                  <p className="dark:text-slate-400">
-                    select days that you will spend in this room
-                  </p>
+                  <p className="dark:text-slate-400">{t("selectDays")}</p>
                   <DatePickerWithRange
                     date={date}
                     setDate={setDate}
@@ -338,9 +339,7 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
 
                   {numberOfNights > 0 && (
                     <>
-                      <p className="mt-2">
-                        Do you want to include breakfast in the reservation ?
-                      </p>
+                      <p className="mt-2">{t("includeBreakfastTooltip")}</p>
                       <div className="flex items-center gap-1 mb-2">
                         <Input
                           type="checkbox"
@@ -350,18 +349,17 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
                           }
                           className="w-4 h-4"
                         />
-                        Include Breakfast
+                        {t("includeBreakfast")}
                       </div>
                     </>
                   )}
                 </div>
                 <p className="mb-4">
-                  Total price:{" "}
+                  {t("totalPrice")}:{" "}
+                  <span className="font-bold">{totalPrice}€</span> {t("for")}{" "}
                   <span className="font-bold">
-                    {totalPrice}
-                    eur
-                  </span>{" "}
-                  for <span className="font-bold">{numberOfNights} days</span>
+                    {numberOfNights} {t("days")}
+                  </span>
                 </p>
 
                 <form action={handleCheckout}>
@@ -372,24 +370,22 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
                           <SubmitButton
                             variant="default"
                             className="w-full"
-                            text="Book room"
-                            loadingText="Booking room..."
+                            text={t("bookRoom")}
+                            loadingText={t("bookingRoom")}
                             disabled={numberOfNights < 1}
                           >
                             <TbReservedLine className="h-4 w-4 mr-2" />
                           </SubmitButton>
                         </TooltipTrigger>
-                        <TooltipContent>
-                          You have to be connected to book this room
-                        </TooltipContent>
+                        <TooltipContent>{t("bookRoomTooltip")}</TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   ) : (
                     <SubmitButton
                       variant="default"
                       className="w-full"
-                      text="Book room"
-                      loadingText="Booking room..."
+                      text={t("bookRoom")}
+                      loadingText={t("bookingRoom")}
                       disabled={numberOfNights < 1}
                     >
                       <TbReservedLine className="h-4 w-4 mr-2" />
@@ -407,8 +403,8 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
                   type="submit"
                   variant="ghost"
                   className="bg-secondary"
-                  text="Delete room"
-                  loadingText="deleting room..."
+                  text={t("deleteRoom")}
+                  loadingText={t("deletingRoom")}
                 >
                   <Trash className="h-4 w-4 mr-2" />
                 </SubmitButton>
@@ -416,13 +412,13 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
                   <Plus className="w-4 h-4 mr-3" />
-                  Edit
+                  {t("editRoom")}
                 </DialogTrigger>
                 <DialogContent className="max-w-[900px] w-[90%]">
                   <DialogHeader className="px-2">
-                    <DialogTitle>Update your room</DialogTitle>
+                    <DialogTitle>{t("updateRoom")}</DialogTitle>
                     <DialogDescription>
-                      Make changes to this room
+                      {t("updateRoomDescription")}
                     </DialogDescription>
                   </DialogHeader>
                   <AddRoomForm room={room} setFormOpen={setIsDialogOpen} />

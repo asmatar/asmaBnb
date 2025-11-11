@@ -3,20 +3,20 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { Hotel, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 const NoRoom = ({ id, userId }: { id: string; userId: string }) => {
+  const t = useTranslations("NoRoom");
   const router = useRouter();
   const { user } = useUser();
   return (
     <div className="flex flex-col items-center justify-center p-6 border rounded-lg bg-card shadow-sm">
       <Alert className="w-full max-w-md bg-background/50">
         <Hotel className="w-6 h-6 text-gray-600" />
-        <AlertTitle>Aucune chambre disponible</AlertTitle>
+        <AlertTitle>{t("title")}</AlertTitle>
         <AlertDescription>
-          Cet hôtel n&apos;a pas encore de chambres.{" "}
-          {user && user.id === userId && (
-            <span>Ajoutez-en une pour permettre les réservations.</span>
-          )}
+          {t("description")}
+          {user && user.id === userId && <span>{t("addRoom")}</span>}
         </AlertDescription>
       </Alert>
       {user && user.id === userId && (
@@ -25,7 +25,7 @@ const NoRoom = ({ id, userId }: { id: string; userId: string }) => {
           className="mt-4"
           onClick={() => router.push(`/hotel/${id}`)}
         >
-          <Plus className="w-4 h-4 mr-2" /> Ajouter une chambre
+          <Plus className="w-4 h-4 mr-2" /> {t("addRoomButton")}
         </Button>
       )}
     </div>

@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-
+import { useTranslations } from "next-intl";
 export function DatePickerWithRange({
   className,
   date,
@@ -25,8 +25,7 @@ export function DatePickerWithRange({
   dateAlreadyBooked: Date[];
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
 }) {
-  // const [date, setDate] = React.useState<DateRange | undefined>();
-
+  const t = useTranslations("DatePickerWithRange");
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -51,7 +50,7 @@ export function DatePickerWithRange({
                 format(date.from, "LLL dd, y")
               )
             ) : (
-              <span className="ml-2">Pick a date</span>
+              <span className="ml-2">{t("pickADate")}</span>
             )}
           </Button>
         </PopoverTrigger>

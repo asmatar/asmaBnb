@@ -2,11 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { deleteHotel } from "@/services/hotelService";
 import { Eye, Pencil, Trash } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 import { toast } from "react-toastify";
+import { Link } from "../../i18n/navigation";
 import SubmitButton from "../SubmitButton";
-
 export type MyHotelProps = {
   id: string;
   title: string;
@@ -22,6 +22,7 @@ const MyHotelCard = ({
   image,
   price,
 }: MyHotelProps) => {
+  const t = useTranslations("MyHotelCard");
   const handleDeleteHotel = async (formData: FormData) => {
     const id = formData.get("id");
     const response = await deleteHotel(id as string);
@@ -47,9 +48,9 @@ const MyHotelCard = ({
         <div className="absolute top-4 right-4">
           <div className="bg-background/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
             {price.length > 0
-              ? `$ ${Math.min(...price)} - $ ${Math.max(...price)}`
-              : `NA`}{" "}
-            /night
+              ? `${t("price")} ${Math.min(...price)} - ${Math.max(...price)}`
+              : `NA`}
+            &euro; / {t("night")}
           </div>
         </div>
       </div>
@@ -64,14 +65,14 @@ const MyHotelCard = ({
           <Link href={`/hotel/details/${id}`}>
             <Button variant="outline" className="w-full">
               <Eye className="w-4 h-4 mr-2" />
-              View Details
+              {t("viewDetails")}
             </Button>
           </Link>
 
           <Link href={`/hotel/${id}`}>
             <Button variant="outline" className="w-full">
               <Pencil className="w-4 h-4 mr-2" />
-              Update
+              {t("update")}
             </Button>
           </Link>
 
@@ -80,8 +81,8 @@ const MyHotelCard = ({
             <SubmitButton
               variant="outline"
               type="submit"
-              text="Delete"
-              loadingText="Deleting..."
+              text={t("delete")}
+              loadingText={t("deleting")}
               className="w-full text-destructive hover:text-destructive hover:bg-destructive/10"
             >
               <Trash className="w-4 h-4 mr-2" />

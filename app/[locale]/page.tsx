@@ -4,6 +4,7 @@ import SearchBar from "@/components/Home/SearchBar/SearchBar";
 import HomeSkeleton from "@/components/Skeleton/HomeSkeleton";
 import ToggleViewLayout from "@/components/ToggleViewLayout";
 import { Badge } from "@/components/ui/badge";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
 import { Suspense } from "react";
@@ -28,6 +29,7 @@ type searchParams = {
 export const revalidate = 3600;
 export default async function Home({ searchParams }: searchParams) {
   const searchParamsUrl = await searchParams;
+  const t = await getTranslations("Home");
   return (
     <>
       <section className="relative overflow-hidden mb-16">
@@ -36,27 +38,17 @@ export default async function Home({ searchParams }: searchParams) {
             <div className="space-y-6">
               <div>
                 <Badge className="mb-4 px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full">
-                  Service Premium
+                  {t("servicePremium")}
                 </Badge>
                 <h1 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                  <span className="text-accent-gradient">
-                    Asma Hotel - Offres exclusives
-                  </span>
+                  <span className="text-accent-gradient">{t("title")}</span>
                 </h1>
               </div>
 
-              <p className="text-lg text-foreground/90">
-                Découvrez une sélection exclusive d&apos;hôtels et de chambres
-                adaptées à tous vos besoins et budgets. Notre plateforme vous
-                permet de comparer facilement les meilleures offres, de lire les
-                avis des voyageurs et de profiter de tarifs imbattables.
-              </p>
+              <p className="text-lg text-foreground/90">{t("description")}</p>
 
               <p className="text-lg text-foreground/90">
-                Avec notre système de réservation simple et sécurisé, trouvez
-                votre séjour idéal en quelques clics seulement. Profitez
-                d&apos;une expérience utilisateur intuitive, d&apos;un service
-                client disponible 24/7, et d&apos;offres exclusives.
+                {t("reservationService")}
               </p>
 
               <CounterFetchWrapper />
@@ -73,13 +65,8 @@ export default async function Home({ searchParams }: searchParams) {
               />
               <div className="absolute bottom-6 left-6 right-6 z-20">
                 <div className="bg-background/20 backdrop-blur-sm p-4 rounded-xl">
-                  <p className="text-lg font-semibold mb-1">
-                    Découvrez nos offres spéciales
-                  </p>
-                  <p className="text-sm text-foreground/90">
-                    Jusqu&apos;à 25% de réduction pour les réservations
-                    anticipées
-                  </p>
+                  <p className="text-lg font-semibold mb-1">{t("counter")}</p>
+                  <p className="text-sm text-foreground/90">{t("counter2")}</p>
                 </div>
               </div>
             </div>

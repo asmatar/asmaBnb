@@ -2,8 +2,9 @@ import { getHotelLocation } from "@/services/hotelService";
 
 import Formulaire from "@/components/Home/SearchBar/Formulaire";
 import { SelectItem } from "@/components/ui/select";
-
+import { getTranslations } from "next-intl/server";
 export default async function SearchBar() {
+  const t = await getTranslations("SearchBar");
   const location = await getHotelLocation();
   const countriesAvailiable =
     location && location.map((location) => location.country);
@@ -20,7 +21,7 @@ export default async function SearchBar() {
         <div className="absolute inset-0 bg-background/30 rounded-2xl backdrop-blur-sm -z-10"></div>
 
         <h2 className="text-2xl font-semibold text-center mb-6 text-primary">
-          Search Your best Hotel
+          {t("title")}
         </h2>
 
         <Formulaire

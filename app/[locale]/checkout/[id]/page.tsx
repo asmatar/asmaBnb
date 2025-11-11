@@ -1,23 +1,21 @@
 import RoomCard from "@/components/RoomCard";
 import { Card } from "@/components/ui/card";
 import { getOneRoomInBooking } from "@/services/roomService";
+import { getTranslations } from "next-intl/server";
 import StripePayment from "./StripePayment";
-
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const room = await getOneRoomInBooking(id);
-
+  const t = await getTranslations("Checkout");
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Finalisez votre réservation
+              {t("title")}
             </h1>
-            <p className="text-muted-foreground">
-              Vérifiez les détails de votre séjour et procédez au paiement
-            </p>
+            <p className="text-muted-foreground">{t("description")}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
@@ -25,7 +23,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <div className="space-y-6">
               <Card className="p-6 border-primary/10">
                 <h2 className="text-xl font-semibold mb-4">
-                  Détails de la chambre
+                  {t("roomDetails")}
                 </h2>
                 <RoomCard room={room[0]} isCheckout={true} />
               </Card>
@@ -35,7 +33,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <div className="space-y-6">
               <Card className="p-6 border-primary/10">
                 <h2 className="text-xl font-semibold mb-4">
-                  Informations de paiement
+                  {t("paymentInformation")}
                 </h2>
                 <StripePayment
                   id={id}

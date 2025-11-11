@@ -2,9 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Hotel, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import { useTranslations } from "next-intl";
 const NoReservationMade = () => {
   const router = useRouter();
+  const t = useTranslations("NoReservationMade");
   return (
     <div className="col-span-full min-h-[400px] flex flex-col ">
       <div className="relative w-full max-w-2xl">
@@ -17,12 +18,10 @@ const NoReservationMade = () => {
 
             <div className="space-y-3">
               <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Aucune réservation effectuée
+                {t("title")}
               </h2>
               <p className="text-muted-foreground max-w-md">
-                Vous n&apos;avez pas encore réservé d&apos;hôtel. Découvrez nos
-                meilleures offres et trouvez l&apos;hébergement parfait pour
-                votre prochain séjour !
+                {t("description")}
               </p>
             </div>
 
@@ -33,7 +32,7 @@ const NoReservationMade = () => {
               onClick={() => router.push("/")}
             >
               <Search className="w-5 h-5 mr-2" />
-              Explorer les hôtels
+              {t("exploreHotels")}
             </Button>
           </div>
         </div>
