@@ -23,7 +23,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
-            {/* Room Details */}
             <div className="space-y-6">
               <Card className="p-6 border-primary/10">
                 <h2 className="text-xl font-semibold mb-4">

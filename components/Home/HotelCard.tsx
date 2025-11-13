@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/tooltip";
 import useGlobalStore from "@/store/Global";
 import { HotelCardProps } from "@/types/types";
-import { useUser } from "@clerk/nextjs";
 import {
   Bath,
   Car,
@@ -25,7 +24,7 @@ import Image from "next/image";
 import { Link } from "../../i18n/navigation";
 import Favorites from "../Favorite";
 
-const HotelCard = async ({
+const HotelCard = ({
   title,
   description,
   image,
@@ -45,7 +44,6 @@ const HotelCard = async ({
 }: HotelCardProps) => {
   const hasPool = pool || swimingPool;
   const { isViewGrid } = useGlobalStore();
-  const { user } = useUser();
   const t = useTranslations("HotelCard");
   if (isViewGrid) {
     return (

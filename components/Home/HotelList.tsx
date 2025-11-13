@@ -23,6 +23,7 @@ type searchParams = {
 };
 async function HotelList({ searchParams }: { searchParams: searchParams }) {
   const { data } = await getFilteredHotels(searchParams);
+  console.log("data---", data?.length);
   const containsFilters: boolean = Object.keys(searchParams).some(
     (value) =>
       value === "title" ||

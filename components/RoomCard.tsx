@@ -146,7 +146,6 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
       return toast.error(createdBookingResponse.error);
     }
   };
-  console.log("user-----999", user);
   return (
     <>
       <Card>

@@ -74,7 +74,6 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
   const inputImageRef = useRef<HTMLInputElement>(null);
   async function onSubmitRoom(values: z.infer<typeof roomSchema>) {
     try {
-      console.log("Starting room submission process with values:", values);
       const file = values.image as File;
 
       // Vérification du hotelId

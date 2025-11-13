@@ -31,9 +31,9 @@ const Favorites = ({ isFavorite, id }: { isFavorite: boolean; id: string }) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <p className="text-sm text-muted-foreground line-clamp-2 cursor-help">
-                <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-105">
+                <span className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-105">
                   <Heart className="w-5 h-5 hover:fill-red-500/20" />
-                </div>
+                </span>
               </p>
             </TooltipTrigger>
             <TooltipContent className="w-fit p-3">

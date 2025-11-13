@@ -11,11 +11,6 @@ export async function createClerkSupabaseClient() {
   return createClient<Database>(supabaseUrl!, supabaseKey!, {
     global: {
       fetch: async (url, options = {}) => {
-        console.log("🟢 [createClerkSupabaseClient] Fetch appelé:", {
-          url: url.toString(),
-          method: options?.method || "GET",
-        });
-
         const clerkToken = await getToken();
 
         const headers = new Headers(options?.headers);

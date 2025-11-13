@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 interface GlobalStoreProps {
@@ -9,15 +9,15 @@ interface GlobalStoreProps {
 
 const useGlobalStore = create<GlobalStoreProps>()(
   devtools(
-    persist(
-      immer((set) => ({
-        isViewGrid: true,
-        setIsViewGrid: (isViewGrid) => set({ isViewGrid }),
-      })),
-      {
-        name: "global-storage",
-      },
-    ),
+    //persist(
+    immer((set) => ({
+      isViewGrid: true,
+      setIsViewGrid: (isViewGrid) => set({ isViewGrid }),
+    })),
+    {
+      name: "global-storage",
+    },
+    //),
   ),
 );
 

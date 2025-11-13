@@ -9,7 +9,6 @@ export const getHotelCount = async () => {
   if (error) {
     throw new Error(error.message);
   }
-  console.log("count---", count);
   return count;
 };
 

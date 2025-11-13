@@ -12,6 +12,7 @@
   },
 
   "Formulaire": {
+    "submit": "Rechercher",
     "searchHotel": "rechercher un hotel...",
     "selectCountry": "sélectionner un pays",
     "selectCity": "sélectionner une ville",

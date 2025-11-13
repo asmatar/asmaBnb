@@ -11,6 +11,7 @@
     "title": "Search Your best Hotel"
   },
   "Formulaire": {
+    "submit": "Search",
     "searchHotel": "search for a hotel...",
     "selectCountry": "select a country",
     "selectCity": "select a city",
