@@ -8,11 +8,11 @@ import {
 } from "@/components/ui/tooltip";
 import useGlobalStore from "@/store/Global";
 import { HotelCardProps } from "@/types/types";
+import { useUser } from "@clerk/nextjs";
 import {
   Bath,
   Car,
   Dumbbell,
-  Heart,
   MapPin,
   ShoppingBag,
   UtensilsCrossed,
@@ -23,7 +23,7 @@ import {
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "../../i18n/navigation";
-import IconCTA from "../IconCTA";
+import Favorites from "../Favorite";
 
 const HotelCard = async ({
   title,
@@ -45,6 +45,7 @@ const HotelCard = async ({
 }: HotelCardProps) => {
   const hasPool = pool || swimingPool;
   const { isViewGrid } = useGlobalStore();
+  const { user } = useUser();
   const t = useTranslations("HotelCard");
   if (isViewGrid) {
     return (
@@ -66,21 +67,9 @@ const HotelCard = async ({
                 </span>
               </div>
             )}
-
             <div className="absolute top-3 right-3 z-10">
-              <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-110">
-                {isFavorite ? (
-                  <IconCTA isFavorite={isFavorite} hotelId={id}>
-                    <Heart className="w-5 h-5 fill-rose-500" />
-                  </IconCTA>
-                ) : (
-                  <IconCTA isFavorite={isFavorite} hotelId={id}>
-                    <Heart className="w-5 h-5 hover:fill-rose-500/20" />
-                  </IconCTA>
-                )}
-              </div>
+              <Favorites isFavorite={isFavorite} id={id} />
             </div>
-
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
               <h3 className="font-semibold text-xl text-white mb-1 line-clamp-1">
                 {title}
@@ -208,7 +197,7 @@ const HotelCard = async ({
       <Link href={`/hotel/details/${id}`} className="w-full">
         <div className="group h-full overflow-hidden bg-card rounded-xl border border-border/40 transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-row h-64 relative">
-            <div className="relative w-1/3 overflow-hidden transition-all duration-500 group-hover:w-full group-hover:absolute group-hover:inset-0 group-hover:z-10">
+            <div className="relative w-1/3 overflow-hidden transition-all duration-500 ">
               {image ? (
                 <Image
                   fill
@@ -224,21 +213,9 @@ const HotelCard = async ({
                   </span>
                 </div>
               )}
-
               <div className="absolute top-3 right-3 z-10">
-                <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-110">
-                  {isFavorite ? (
-                    <IconCTA isFavorite={isFavorite} hotelId={id}>
-                      <Heart className="w-5 h-5 fill-rose-500" />
-                    </IconCTA>
-                  ) : (
-                    <IconCTA isFavorite={isFavorite} hotelId={id}>
-                      <Heart className="w-5 h-5 hover:fill-rose-500/20" />
-                    </IconCTA>
-                  )}
-                </div>
+                <Favorites isFavorite={isFavorite} id={id} />
               </div>
-
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end">
                 <h3 className="font-semibold text-xl text-white mb-1 line-clamp-1">
                   {title}
@@ -256,7 +233,7 @@ const HotelCard = async ({
               </div>
             </div>
 
-            <div className="p-4 w-2/3 transition-all duration-500 group-hover:opacity-0">
+            <div className="p-4 w-2/3 transition-all duration-500 ">
               <div className="mb-2">
                 <h3 className="font-semibold text-xl line-clamp-1">{title}</h3>
                 {country || city ? (

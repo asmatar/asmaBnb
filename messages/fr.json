@@ -10,6 +10,7 @@
   "SearchBar": {
     "title": "Recherchez votre meilleur hôtel"
   },
+
   "Formulaire": {
     "searchHotel": "rechercher un hotel...",
     "selectCountry": "sélectionner un pays",
@@ -33,6 +34,9 @@
     "viewList": "Voir en collone"
   },
   "HotelCard": {
+    "favorites": {
+      "isFavoriteAllowed": "Vous devez être connecté pour ajouter aux favoris"
+    },
     "noImageAvailable": "Aucune image disponible",
     "pool": "Piscine",
     "gym": "Gym",

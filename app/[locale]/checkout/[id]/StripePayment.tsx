@@ -39,13 +39,17 @@ const StripePayment = ({
 
         const data = await response.json();
         setClientSecret(data.client_secret);
-      } catch (err: any) {
-        toast.error(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+        } else {
+          toast.error("An unknown error occurred");
+        }
       }
     };
 
     fetchPaymentIntent();
-  }, [clientSecret]);
+  }, [clientSecret, id]);
 
   return (
     <div className="space-y-6">

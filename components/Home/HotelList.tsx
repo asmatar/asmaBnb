@@ -41,8 +41,9 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
 
   const hotelCount = await getHotelCount();
   const totalPages = containsFilters
-    ? data && data.length / 12 + 1
-    : hotelCount && Math.ceil(hotelCount / 12 + 1);
+    ? data && data.length / 12
+    : hotelCount && Math.ceil(hotelCount / 12);
+
   return (
     <>
       <StyleContainer>

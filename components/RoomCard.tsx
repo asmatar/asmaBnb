@@ -146,6 +146,7 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
       return toast.error(createdBookingResponse.error);
     }
   };
+  console.log("user-----999", user);
   return (
     <>
       <Card>
@@ -327,46 +328,45 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
             </div>
           )}
           {pathname.includes("details") && (
-            <>
+            <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
-                <div className="flex flex-col gap-2">
-                  <p className="dark:text-slate-400">{t("selectDays")}</p>
-                  <DatePickerWithRange
-                    date={date}
-                    setDate={setDate}
-                    dateAlreadyBooked={dateAlreadyBooked}
-                  />
+                <p className="dark:text-slate-400">{t("selectDays")}</p>
+                <DatePickerWithRange
+                  date={date}
+                  setDate={setDate}
+                  dateAlreadyBooked={dateAlreadyBooked}
+                />
 
-                  {numberOfNights > 0 && (
-                    <>
-                      <p className="mt-2">{t("includeBreakfastTooltip")}</p>
-                      <div className="flex items-center gap-1 mb-2">
-                        <Input
-                          type="checkbox"
-                          checked={hasBreakfastIncluded}
-                          onChange={() =>
-                            setHasBreakfastIncluded((prev) => !prev)
-                          }
-                          className="w-4 h-4"
-                        />
-                        {t("includeBreakfast")}
-                      </div>
-                    </>
-                  )}
-                </div>
-                <p className="mb-4">
-                  {t("totalPrice")}:{" "}
-                  <span className="font-bold">{totalPrice}€</span> {t("for")}{" "}
-                  <span className="font-bold">
-                    {numberOfNights} {t("days")}
-                  </span>
-                </p>
-
-                <form action={handleCheckout}>
-                  {!user ? (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
+                {numberOfNights > 0 && (
+                  <>
+                    <p className="mt-2">{t("includeBreakfastTooltip")}</p>
+                    <div className="flex items-center gap-1 mb-2">
+                      <Input
+                        type="checkbox"
+                        checked={hasBreakfastIncluded}
+                        onChange={() =>
+                          setHasBreakfastIncluded((prev) => !prev)
+                        }
+                        className="w-4 h-4"
+                      />
+                      {t("includeBreakfast")}
+                    </div>
+                  </>
+                )}
+              </div>
+              <p className="mb-4">
+                {t("totalPrice")}:{" "}
+                <span className="font-bold">{totalPrice}€</span> {t("for")}{" "}
+                <span className="font-bold">
+                  {numberOfNights} {t("days")}
+                </span>
+              </p>
+              <form action={handleCheckout}>
+                {!user ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="cursor-not-allowed">
                           <SubmitButton
                             variant="default"
                             className="w-full"
@@ -376,24 +376,24 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
                           >
                             <TbReservedLine className="h-4 w-4 mr-2" />
                           </SubmitButton>
-                        </TooltipTrigger>
-                        <TooltipContent>{t("bookRoomTooltip")}</TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : (
-                    <SubmitButton
-                      variant="default"
-                      className="w-full"
-                      text={t("bookRoom")}
-                      loadingText={t("bookingRoom")}
-                      disabled={numberOfNights < 1}
-                    >
-                      <TbReservedLine className="h-4 w-4 mr-2" />
-                    </SubmitButton>
-                  )}
-                </form>
-              </div>
-            </>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>{t("bookRoomTooltip")}</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <SubmitButton
+                    variant="default"
+                    className="w-full"
+                    text={t("bookRoom")}
+                    loadingText={t("bookingRoom")}
+                    disabled={numberOfNights < 1}
+                  >
+                    <TbReservedLine className="h-4 w-4 mr-2" />
+                  </SubmitButton>
+                )}
+              </form>
+            </div>
           )}
           {pathname.includes("hotel") && !pathname.includes("details") && (
             <div className="flex w-full justify-between">

@@ -22,6 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { getFilteredHotels } from "@/services/hotelService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -309,7 +310,16 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
 
         <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-medium">{t("amenities")}</h3>
+            {showFilters ? (
+              <h3
+                className={cn(
+                  "text-sm font-medium transition-all duration-500 ease-in-out",
+                  showFilters ? "opacity-100" : "opacity-0",
+                )}
+              >
+                {t("amenities")}
+              </h3>
+            ) : null}
             {activeFilters > 0 && (
               <Badge className="bg-primary text-primary-foreground">
                 {activeFilters}
@@ -340,12 +350,12 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
         </div>
 
         <div
-          className="overflow-hidden transition-all duration-500 ease-in-out"
-          style={{
-            maxHeight: showFilters ? "500px" : "0",
-            opacity: showFilters ? 1 : 0,
-            marginTop: showFilters ? "0.5rem" : "0",
-          }}
+          className={cn(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showFilters
+              ? "max-h-[500px] opacity-100 mt-1"
+              : "max-h-0 opacity-0 mt-0",
+          )}
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 p-4 bg-background/50 rounded-xl shadow-sm backdrop-blur-sm">
             <FilterCheckbox

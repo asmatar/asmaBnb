@@ -37,7 +37,13 @@ export default async function RootLayout({
   }
   setRequestLocale(locale);
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      signInUrl={`/${locale}/sign-in`}
+      signUpUrl={`/${locale}/sign-up`}
+      localization={{
+        locale: locale,
+      }}
+    >
       <html lang={locale} suppressHydrationWarning>
         <body className={cn(roboto.className)}>
           <NextIntlClientProvider>

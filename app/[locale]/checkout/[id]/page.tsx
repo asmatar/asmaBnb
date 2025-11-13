@@ -2,11 +2,15 @@ import RoomCard from "@/components/RoomCard";
 import { Card } from "@/components/ui/card";
 import { getOneRoomInBooking } from "@/services/roomService";
 import { getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
 import StripePayment from "./StripePayment";
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const room = await getOneRoomInBooking(id);
   const t = await getTranslations("Checkout");
+  if (!room || room.length === 0) {
+    notFound();
+  }
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12">

@@ -33,6 +33,9 @@
     "viewList": "View in List"
   },
   "HotelCard": {
+    "favorites": {
+      "isFavoriteAllowed": "You have to be connected to put in favorites"
+    },
     "noImageAvailable": "No image available",
     "pool": "Pool",
     "gym": "Gym",

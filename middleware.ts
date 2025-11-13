@@ -3,14 +3,15 @@ import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 
-const isProtectedRoute = createRouteMatcher([
-  "/hotel/new(.*)",
-  /*  "/my-bookings(.*)", */
-  "/my-hotels(.*)",
-  "/checkout(.*)",
-  "/thankyou(.*)",
-  /*   "/hotel/:id(.*)", */
+const protectedRoutesPatern = routing.locales.flatMap((locale) => [
+  `/${locale}/hotel/new(.*)`,
+  `/${locale}/my-hotels(.*)`,
+  `/${locale}/checkout(.*)`,
+  `/${locale}/thankyou(.*)`,
+  `/${locale}/hotel/new(.*)`,
 ]);
+
+const isProtectedRoute = createRouteMatcher(protectedRoutesPatern);
 
 // Create middleware for internationalization
 const handleI18nRouting = createMiddleware(routing);
