@@ -80,8 +80,10 @@ const GridCardHotel = ({
         <div className="flex flex-wrap gap-1.5 mt-3">
           {(Object.keys(featuresConfig) as FeaturesKeys[]).map((key) => {
             if (!features[key]) return null;
+
             const { icon: Icon, translationKey } =
               featuresConfig[key as FeaturesKeys];
+
             return (
               <FeaturesBadge
                 key={key}

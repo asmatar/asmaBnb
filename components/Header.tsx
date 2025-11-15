@@ -29,7 +29,6 @@ const Header = async () => {
   const t = await getTranslations("Header");
   return (
     <>
-      {/* Top notification bar with subtle gradient */}
       <div className="bg-secondary/80 border-b py-1 text-center text-xs font-medium">
         <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6">
           <span className="gradient-text">
@@ -105,7 +104,6 @@ const Header = async () => {
                           <span className="text-sm">{t("myBookings")}</span>
                         </DropdownMenuItem>
                       </Link>
-
                       <Link href="/favorites" className="w-full">
                         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
                           <FaHeart className="h-3.5 w-3.5 text-rose-500" />
@@ -149,6 +147,7 @@ const Header = async () => {
                         </span>
                         <ModeToggle />
                       </div>
+                      <LocaleSwitcher />
 
                       <DropdownMenuSeparator />
                       <SignOutButton>

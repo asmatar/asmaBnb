@@ -10,17 +10,10 @@ const HotelCard = ({
   description,
   image,
   country,
-  gym,
   city,
   id,
   isFavorite,
-  spa,
-  bar,
-  restaurant,
-  freeWifi,
-  freeParking,
-  shopping,
-  swimingPool,
+  ...features
 }: HotelCardProps) => {
   const { isViewGrid } = useGlobalStore();
 
@@ -35,14 +28,7 @@ const HotelCard = ({
           city={city}
           id={id}
           isFavorite={isFavorite}
-          gym={gym}
-          spa={spa}
-          bar={bar}
-          restaurant={restaurant}
-          freeWifi={freeWifi}
-          freeParking={freeParking}
-          shopping={shopping}
-          swimingPool={swimingPool}
+          {...features}
         />
       </Link>
     );
@@ -57,14 +43,7 @@ const HotelCard = ({
           city={city}
           id={id}
           isFavorite={isFavorite}
-          gym={gym}
-          spa={spa}
-          bar={bar}
-          restaurant={restaurant}
-          freeWifi={freeWifi}
-          freeParking={freeParking}
-          shopping={shopping}
-          swimingPool={swimingPool}
+          {...features}
         />
       </Link>
     );

@@ -64,9 +64,9 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
               shopping={hotel.shopping!}
               freeParking={hotel.freeParking!}
               country={hotel.country!}
-              /* price={hotel.price!} */
               image={hotel.image}
               isFavorite={hotel.isFavorite ?? false}
+              /* price={hotel.price!} */
             />
           ))
         ) : (

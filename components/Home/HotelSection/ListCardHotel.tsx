@@ -48,6 +48,7 @@ const ListCardHotel = ({
             <Favorites isFavorite={isFavorite} id={id} />
           </div>
         </div>
+
         <div className="p-4 w-2/3 transition-all duration-500 ">
           <div className="mb-2">
             <h3 className="font-semibold text-xl line-clamp-1">{title}</h3>
