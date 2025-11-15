@@ -11,7 +11,6 @@
     "title": "Busca tu mejor hotel"
   },
   "Formulaire": {
-    "submit": "Buscar",
     "searchHotel": "buscar un hotel...",
     "selectCountry": "seleccionar un país",
     "selectCity": "seleccionar una ciudad",
@@ -202,9 +201,6 @@
     "locale": "{locale, select, es {Español} en {English} fr {Français} other {Unknown}}"
   },
   "MyHotelCard": {
-    "favorites": {
-      "isFavoriteAllowed": "Tienes que estar conectado para agregar a favoritos"
-    },
     "viewDetails": "Ver detalles",
     "update": "Actualizar",
     "delete": "Eliminar",

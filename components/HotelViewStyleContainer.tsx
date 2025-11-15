@@ -1,6 +1,6 @@
 "use client";
 import useGlobalStore from "@/store/Global";
-function StyleContainer({ children }: { children: React.ReactNode }) {
+function HotelViewStyleContainer({ children }: { children: React.ReactNode }) {
   const { isViewGrid } = useGlobalStore();
   return (
     <section
@@ -14,4 +14,4 @@ function StyleContainer({ children }: { children: React.ReactNode }) {
     </section>
   );
 }
-export default StyleContainer;
+export default HotelViewStyleContainer;

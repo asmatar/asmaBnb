@@ -1,10 +1,10 @@
 import { getFilteredHotels } from "@/services/hotelService";
 
+import HotelCard from "@/components/Home/HotelSection/HotelCard";
+import NoHotelsFound from "@/components/Home/NoHotelsFound";
+import HotelViewStyleContainer from "@/components/HotelViewStyleContainer";
+import Pagination from "@/components/Pagination";
 import { getHotelCount } from "@/services/counterService";
-import Pagination from "../Pagination";
-import StyleContainer from "../StyleContainer";
-import HotelCard from "./HotelCard";
-import NoHotelsFound from "./NoHotelsFound";
 type searchParams = {
   title: string;
   country: string;
@@ -23,7 +23,6 @@ type searchParams = {
 };
 async function HotelList({ searchParams }: { searchParams: searchParams }) {
   const { data } = await getFilteredHotels(searchParams);
-  console.log("data---", data?.length);
   const containsFilters: boolean = Object.keys(searchParams).some(
     (value) =>
       value === "title" ||
@@ -39,7 +38,7 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
       value === "freeParking" ||
       value === "swimingPool",
   );
-
+  // filtre qui ne fonctionne pas correctement----------------------------------
   const hotelCount = await getHotelCount();
   const totalPages = containsFilters
     ? data && data.length / 12
@@ -47,7 +46,7 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
 
   return (
     <>
-      <StyleContainer>
+      <HotelViewStyleContainer>
         {data && data.length > 0 ? (
           data.map((hotel) => (
             <HotelCard
@@ -56,7 +55,6 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
               title={hotel.title!}
               description={hotel.description!}
               gym={hotel.gym!}
-              pool={hotel.swimingPool!}
               city={hotel.city!}
               spa={hotel.spa!}
               bar={hotel.bar!}
@@ -74,7 +72,7 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
         ) : (
           <NoHotelsFound />
         )}
-      </StyleContainer>
+      </HotelViewStyleContainer>
       <Pagination totalPages={totalPages ?? 0} />
     </>
   );

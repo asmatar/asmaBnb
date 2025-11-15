@@ -141,7 +141,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     setFilteredStates(filteredStates as string[]);
   };
 
-  const fetchCities = async (value: string) => {
+  const fetchCities = (value: string) => {
     const filteredCitiesDuplicate = location
       .filter((location) => location.state === value)
       .map((location) => location.city);
@@ -174,7 +174,12 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     form.getValues("freeParking"),
     form.getValues("swimingPool"),
   ].filter(Boolean).length;
-
+  // TODO
+  // faire des composants pour les select de localisation
+  // rename les variables pour plus de clarté
+  // checker le typage des variables
+  // map sur les amaneties et creation d'un fichier de config
+  // dans la page faire un composant pour le header de la page avec description et image sur la droite
   return (
     <Form {...form}>
       <form

@@ -8,16 +8,15 @@ export type HotelCardProps = {
   country: string;
   city: string;
   gym: boolean;
-  pool: boolean;
   id: string;
   isFavorite: boolean;
-  spa?: boolean;
-  bar?: boolean;
-  restaurant?: boolean;
-  freeWifi?: boolean;
-  freeParking?: boolean;
-  shopping?: boolean;
-  swimingPool?: boolean;
+  spa: boolean;
+  bar: boolean;
+  restaurant: boolean;
+  freeWifi: boolean;
+  freeParking: boolean;
+  shopping: boolean;
+  swimingPool: boolean;
 };
 export type RoomBooked = Room & {
   endDate: string;
