@@ -44,34 +44,32 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
     ? data && data.length / 12
     : hotelCount && Math.ceil(hotelCount / 12);
 
+  if (!data || data.length === 0) return <NoHotelsFound />;
+
   return (
     <>
       <HotelViewStyleContainer>
-        {data && data.length > 0 ? (
-          data.map((hotel) => (
-            <HotelCard
-              key={hotel.id}
-              id={hotel.id}
-              title={hotel.title!}
-              description={hotel.description!}
-              gym={hotel.gym!}
-              city={hotel.city!}
-              spa={hotel.spa!}
-              bar={hotel.bar!}
-              restaurant={hotel.restaurant!}
-              freeWifi={hotel.freeWifi!}
-              swimingPool={hotel.swimingPool!}
-              shopping={hotel.shopping!}
-              freeParking={hotel.freeParking!}
-              country={hotel.country!}
-              image={hotel.image}
-              isFavorite={hotel.isFavorite ?? false}
-              /* price={hotel.price!} */
-            />
-          ))
-        ) : (
-          <NoHotelsFound />
-        )}
+        {data.map((hotel) => (
+          <HotelCard
+            key={hotel.id}
+            id={hotel.id}
+            title={hotel.title!}
+            description={hotel.description!}
+            gym={hotel.gym!}
+            city={hotel.city!}
+            spa={hotel.spa!}
+            bar={hotel.bar!}
+            restaurant={hotel.restaurant!}
+            freeWifi={hotel.freeWifi!}
+            swimingPool={hotel.swimingPool!}
+            shopping={hotel.shopping!}
+            freeParking={hotel.freeParking!}
+            country={hotel.country!}
+            image={hotel.image}
+            isFavorite={hotel.isFavorite ?? false}
+            /* price={hotel.price!} */
+          />
+        ))}
       </HotelViewStyleContainer>
       <Pagination totalPages={totalPages ?? 0} />
     </>

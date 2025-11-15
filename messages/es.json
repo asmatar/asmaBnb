@@ -26,7 +26,8 @@
     "freeWifi": "Wifi gratuito",
     "shopping": "Shopping",
     "freeParking": "Parking gratuito",
-    "swimingPool": "Piscina"
+    "swimingPool": "Piscina",
+    "filterBy": "Filtrado por"
   },
   "ToggleViewLayout": {
     "viewGrid": "Ver en grilla",

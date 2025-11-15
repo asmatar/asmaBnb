@@ -1,36 +1,14 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { SelectItem } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Bath,
-  Building2,
   Car,
   Dumbbell,
-  Globe,
-  MapPin,
   RotateCcw,
   Search,
   Store,
@@ -42,9 +20,11 @@ import {
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../../ui/button";
+import { FilterCheckbox } from "./FilterCheckbox";
+import { LocationFields } from "./LocationFields";
 
 type FormProps = {
   countryOptions: JSX.Element[];
@@ -69,7 +49,7 @@ export const searchHotelSchema = z.object({
   swimingPool: z.boolean().optional(),
 });
 
-type SearchHotelFormValues = z.infer<typeof searchHotelSchema>;
+export type SearchHotelFormValues = z.infer<typeof searchHotelSchema>;
 
 export default function Formulaire({ location, countryOptions }: FormProps) {
   const [filteredStates, setFilteredStates] = useState<string[]>([]);
@@ -126,7 +106,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     router.replace(`?${query}`);
   }
 
-  const fetchStates = (value: string) => {
+  const getFilteredStates = (value: string) => {
     const filteredStatesDuplicate = location
       .filter((location) => location.country === value)
       .map((location) => location.state);
@@ -141,7 +121,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     setFilteredStates(filteredStates as string[]);
   };
 
-  const fetchCities = (value: string) => {
+  const getFilteredCities = (value: string) => {
     const filteredCitiesDuplicate = location
       .filter((location) => location.state === value)
       .map((location) => location.city);
@@ -163,7 +143,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
       {city}
     </SelectItem>
   ));
-
+  console.log(form.getValues());
   const activeFilters = [
     form.getValues("spa"),
     form.getValues("gym"),
@@ -175,11 +155,8 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     form.getValues("swimingPool"),
   ].filter(Boolean).length;
   // TODO
-  // faire des composants pour les select de localisation
-  // rename les variables pour plus de clarté
   // checker le typage des variables
   // map sur les amaneties et creation d'un fichier de config
-  // dans la page faire un composant pour le header de la page avec description et image sur la droite
   return (
     <Form {...form}>
       <form
@@ -211,89 +188,27 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
           </div>
 
           <div className="md:col-span-3 flex space-x-3">
-            <FormField
+            <LocationFields
               control={form.control}
               name="country"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Select
-                    onValueChange={(country) => {
-                      field.onChange(country);
-                      fetchStates(country);
-                    }}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
-                      <div className="flex items-center">
-                        <Globe className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={t("selectCountry")}
-                          defaultValue={field.value}
-                        />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>{countryOptions}</SelectContent>
-                  </Select>
-                </FormItem>
-              )}
+              placeholder={t("selectCountry")}
+              filteredFunction={getFilteredStates}
+              optionsFields={countryOptions}
             />
-
-            <FormField
+            <LocationFields
               control={form.control}
               name="state"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Select
-                    disabled={form.getValues("country") === "" ? true : false}
-                    onValueChange={async (state) => {
-                      field.onChange(state);
-                      await fetchCities(state);
-                    }}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
-                      <div className="flex items-center">
-                        <Building2 className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={t("selectState")}
-                          defaultValue={field.value}
-                        />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>{statesOptions}</SelectContent>
-                  </Select>
-                </FormItem>
-              )}
+              placeholder={t("selectState")}
+              disabled={form.getValues("country") === "" ? true : false}
+              filteredFunction={getFilteredCities}
+              optionsFields={statesOptions}
             />
-
-            <FormField
+            <LocationFields
               control={form.control}
               name="city"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Select
-                    disabled={form.getValues("state") === "" ? true : false}
-                    onValueChange={(city) => {
-                      field.onChange(city);
-                    }}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
-                      <div className="flex items-center">
-                        <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={t("selectCity")}
-                          defaultValue={field.value}
-                        />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>{citiesOptions}</SelectContent>
-                  </Select>
-                </FormItem>
-              )}
+              placeholder={t("selectCity")}
+              disabled={form.getValues("state") === "" ? true : false}
+              optionsFields={citiesOptions}
             />
           </div>
         </div>
@@ -420,50 +335,3 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     </Form>
   );
 }
-
-const FilterCheckbox = ({
-  form,
-  name,
-  label,
-  icon,
-}: {
-  form: UseFormReturn<SearchHotelFormValues>;
-  name: keyof SearchHotelFormValues;
-  label: string;
-  icon: React.ReactNode;
-}) => {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <FormField
-          control={form.control}
-          name={name}
-          render={({ field }) => (
-            <FormItem className="flex items-center space-x-2 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value as boolean | undefined}
-                  onCheckedChange={(checked) => {
-                    field.onChange(checked);
-                  }}
-                  className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                />
-              </FormControl>
-              <TooltipTrigger asChild>
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <div className="text-muted-foreground">{icon}</div>
-                  <FormLabel className="cursor-pointer text-sm">
-                    {label}
-                  </FormLabel>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <p>Filter by {label}</p>
-              </TooltipContent>
-            </FormItem>
-          )}
-        />
-      </Tooltip>
-    </TooltipProvider>
-  );
-};

@@ -20,9 +20,8 @@ const favorites = async () => {
   }
   const nbFavorites = favorites?.length ?? 0;
 
-  if (nbFavorites === 0 || !favorites) {
-    return <NoFavoritesFound />;
-  }
+  if (nbFavorites === 0 || !favorites) return <NoFavoritesFound />;
+
   return (
     <>
       <Banner nbFavorites={nbFavorites} />
