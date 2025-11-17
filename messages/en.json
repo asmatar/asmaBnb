@@ -181,10 +181,12 @@
     "addRoomButton": "Add a room"
   },
   "BookingTabs": {
-    "totalBookings": "Total Bookings",
+    "guestBookingsOnYourProperties": "Guest Bookings on Your Properties",
+    "myBookings": "My Bookings",
+    "totalBookings": "Total of your bookings",
     "yourReservedRooms": "Your Reserved Rooms",
     "guestBookings": "Guest Bookings",
-    "upcoming": "Upcoming",
+    "upcoming": "Payments Pending",
     "nextReservations": "Next Reservations",
     "bookingsOnYourProperties": "Bookings on Your Properties",
     "youMustBeHost": "You must be host to access these informations",

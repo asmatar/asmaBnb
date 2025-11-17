@@ -37,9 +37,7 @@ export interface RoomBooked {
     endDate: string;
     totalPrice: number;
     breakfastIncluded: boolean;
-    isPaid: boolean;
     paymentIntentId: string;
     created_at: string;
   }[];
-  isPaid?: boolean;
 }

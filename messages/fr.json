@@ -182,10 +182,12 @@
     "addRoomButton": "Ajouter une chambre"
   },
   "BookingTabs": {
-    "totalBookings": "Total des réservations",
+    "guestBookingsOnYourProperties": "Réservations des invités sur vos propriétés",
+    "myBookings": "Mes réservations",
+    "totalBookings": "Total de vos réservations",
     "yourReservedRooms": "Vos chambres réservées",
     "guestBookings": "Réservations des invités",
-    "upcoming": "À venir",
+    "upcoming": "Réservations en attente de paiement",
     "nextReservations": "Prochaines réservations",
     "bookingsOnYourProperties": "Réservations sur vos propriétés",
     "youMustBeHost": "Vous devez être hôte pour accéder à ces informations",

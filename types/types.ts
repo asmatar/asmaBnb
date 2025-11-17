@@ -46,3 +46,4 @@ export type RoomBooked = Room & {
   paymentStatus: string;
   username: string;
 };
+export type View = "details" | "hotel" | "booked";

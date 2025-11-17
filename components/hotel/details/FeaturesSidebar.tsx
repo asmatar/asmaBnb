@@ -22,7 +22,6 @@ export const FeaturesSidebar = async ({
   const t = await getTranslations("HotelDetails");
 
   type FeaturesKeys = keyof typeof featuresConfigSidebar;
-  console.log(features);
   return (
     <div className="lg:block lg:col-span-1">
       <div className="sticky top-24 space-y-6">

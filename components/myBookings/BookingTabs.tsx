@@ -148,6 +148,7 @@ export default async function BookingTabs() {
                 <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                   {roomBooked.map((room) => (
                     <RoomCard
+                      view="booked"
                       key={room.id as string}
                       room={room as any}
                       userId={userId as string}
@@ -183,6 +184,7 @@ export default async function BookingTabs() {
                   <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                     {roomVisitorHaveMade.map((room) => (
                       <RoomCard
+                        view="booked"
                         key={room.id as string}
                         room={room as any}
                         userId={userId as string}

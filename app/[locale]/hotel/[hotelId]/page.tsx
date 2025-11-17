@@ -39,7 +39,7 @@ async function page({ params }: { params: { hotelId: string } }) {
           <h2 className="text-xl font-semibold my-4 mb-4">{t("hotelRooms")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {rooms.map((room) => (
-              <RoomCard key={room.id} room={room} />
+              <RoomCard key={room.id} room={room} view="hotel" />
             ))}
           </div>
         </div>

@@ -1,6 +1,6 @@
 import BookingTabs from "@/components/myBookings/BookingTabs";
-import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import Loading from "./loading";
 export const metadata: Metadata = {

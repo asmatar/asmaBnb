@@ -32,12 +32,18 @@ const favorites = async () => {
             <HotelCard
               key={favorite.id}
               id={favorite.hotel_id ?? favorite.id}
-              title={favorite.hotel.title!}
-              description={favorite.hotel.description!}
-              gym={favorite.hotel.gym!}
-              swimingPool={favorite.hotel.swimingPool!}
-              city={favorite.hotel.city!}
-              country={favorite.hotel.country!}
+              title={favorite.hotel.title}
+              description={favorite.hotel.description}
+              gym={favorite.hotel.gym}
+              swimingPool={favorite.hotel.swimingPool}
+              city={favorite.hotel.city ?? ""}
+              country={favorite.hotel.country}
+              spa={favorite.hotel.spa}
+              bar={favorite.hotel.bar}
+              restaurant={favorite.hotel.restaurant}
+              freeWifi={favorite.hotel.freeWifi}
+              shopping={favorite.hotel.shopping}
+              freeParking={favorite.hotel.freeParking}
               /* price={favorite.price!} */
               image={favorite.hotel.image}
               isFavorite={true}

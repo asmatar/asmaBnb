@@ -143,7 +143,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
       {city}
     </SelectItem>
   ));
-  console.log(form.getValues());
   const activeFilters = [
     form.getValues("spa"),
     form.getValues("gym"),
@@ -154,9 +153,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     form.getValues("freeParking"),
     form.getValues("swimingPool"),
   ].filter(Boolean).length;
-  // TODO
-  // checker le typage des variables
-  // map sur les amaneties et creation d'un fichier de config
+
   return (
     <Form {...form}>
       <form
