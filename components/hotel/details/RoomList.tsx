@@ -1,13 +1,13 @@
+import NoRoom from "@/components/hotel/details/NoRoom";
 import RoomCard from "@/components/RoomCard";
-import { Booking, Room } from "@/types/tableType";
-import NoRoom from "./NoRoom";
-type R = Room & { booking: Booking[] };
+import { RoomCardProps } from "@/types/room";
+
 export const RoomList = ({
   rooms,
   hotelId,
   userId,
 }: {
-  rooms: R[];
+  rooms: RoomCardProps[];
   hotelId: string;
   userId: string;
 }) => {

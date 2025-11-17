@@ -33,7 +33,7 @@ const RoomCardDetailView = ({
 }) => {
   const t = useTranslations("RoomCard");
   const { user } = useUser();
-  console.log("---------user----------", user);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-2">

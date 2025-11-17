@@ -1,4 +1,7 @@
 "use client";
+import { RoomCardBookedView } from "@/components/RoomCardBookedView";
+import RoomCardDetailView from "@/components/RoomCardDetailView";
+import { RoomCardHotelView } from "@/components/RoomCardHotelView";
 import {
   Card,
   CardContent,
@@ -14,9 +17,10 @@ import {
   existingBooking,
 } from "@/services/bookingService";
 import { deleteRoom } from "@/services/roomService";
-import { Booking, Room } from "@/types/tableType";
+import { RoomCardProps } from "@/types/room";
+import { Booking } from "@/types/tableType";
 import { View } from "@/types/types";
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@clerk/nextjs";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import {
   AirVent,
@@ -38,17 +42,22 @@ import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { RoomCardBookedView } from "./RoomCardBookedView";
-import RoomCardDetailView from "./RoomCardDetailView";
-import { RoomCardHotelView } from "./RoomCardHotelView";
 
-type R = Room & { booking: Booking[] };
-const RoomCard = ({ room, view }: { room: R; userId: string; view: View }) => {
+const RoomCard = ({
+  room,
+  view,
+  userId,
+}: {
+  room: RoomCardProps;
+  userId?: string;
+  view?: View;
+}) => {
   const router = useRouter();
   const t = useTranslations("RoomCard");
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
+
   const handleDeleteBooking = async (formData: FormData) => {
     const response = await deleteBooking(formData);
     if (response.success === true) {
@@ -57,16 +66,16 @@ const RoomCard = ({ room, view }: { room: R; userId: string; view: View }) => {
       return toast.error(response.error);
     }
   };
+
   const numberOfNights =
     differenceInDays(date?.to ?? new Date(), date?.from ?? new Date()) < 0
       ? 0
       : differenceInDays(date?.to ?? new Date(), date?.from ?? new Date());
+  const totalPrice = hasBreakfastIncluded
+    ? numberOfNights * (room.roomPrice ?? 0) +
+      numberOfNights * (room.breakfastPrice ?? 0)
+    : numberOfNights * (room.roomPrice ?? 0);
 
-  const leftDays = differenceInDays(date?.from ?? room.startDate, new Date());
-  const numberOfNightsBooked = differenceInDays(
-    date?.to ?? room.endDate,
-    date?.from ?? room.startDate,
-  );
   const handleDeleteRoom = async (formData: FormData) => {
     const response = await deleteRoom(formData);
     if (response.success === true) {
@@ -75,16 +84,16 @@ const RoomCard = ({ room, view }: { room: R; userId: string; view: View }) => {
       return toast.error(response.error);
     }
   };
-  const totalPrice = hasBreakfastIncluded
-    ? numberOfNights * (room.roomPrice ?? 0) +
-      numberOfNights * (room.breakfastPrice ?? 0)
-    : numberOfNights * (room.roomPrice ?? 0);
-  const dateAlreadyBooked = room.booking?.flatMap((booking) => {
-    return eachDayOfInterval({
-      start: new Date(booking.startDate),
-      end: new Date(booking.endDate),
-    });
-  });
+
+  const dateAlreadyBooked =
+    "booking" in room
+      ? room.booking?.flatMap((booking: Booking) => {
+          return eachDayOfInterval({
+            start: new Date(booking.startDate),
+            end: new Date(booking.endDate),
+          });
+        }) ?? []
+      : [];
 
   const handleCheckout = async () => {
     const id = uuidv4();
@@ -127,7 +136,6 @@ const RoomCard = ({ room, view }: { room: R; userId: string; view: View }) => {
       return toast.error(createdBookingResponse.error);
     }
   };
-
   return (
     <>
       <Card>
@@ -249,10 +257,10 @@ const RoomCard = ({ room, view }: { room: R; userId: string; view: View }) => {
           <Separator className="my-4" />
         </CardContent>
         <CardFooter>
-          {view === "booked" && (
+          {"totalPrice" in room && view === "booked" && (
             <RoomCardBookedView
-              leftDays={leftDays}
-              numberOfNightsBooked={numberOfNightsBooked}
+              date={date}
+              userId={userId ?? ""}
               room={room}
               handleDeleteBooking={handleDeleteBooking}
             />

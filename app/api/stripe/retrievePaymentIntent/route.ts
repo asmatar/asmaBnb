@@ -20,10 +20,12 @@ export async function GET(req: Request) {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     return NextResponse.json(paymentIntent, { status: 200 });
-  } catch (error: any) {
-    console.error("Error retrieving payment intent:", error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error retrieving payment intent:", error.message);
+    }
     return NextResponse.json(
-      { error: "Failed to retrieve payment intent", message: error.message },
+      { error: "Failed to retrieve payment intent", message: "Unknown error" },
       { status: 500 },
     );
   }

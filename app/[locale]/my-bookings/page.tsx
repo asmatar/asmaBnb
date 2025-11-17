@@ -1,4 +1,4 @@
-import BookingTabs from "@/components/myBookings/BookingTabs";
+import MyBookings from "@/components/myBookings/MyBookings";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
@@ -17,7 +17,7 @@ const page = async () => {
           <span className="text-accent-gradient">{t("myBookings")}</span>
         </h1>
         <Suspense fallback={<Loading />}>
-          <BookingTabs />
+          <MyBookings />
         </Suspense>
       </div>
     </section>

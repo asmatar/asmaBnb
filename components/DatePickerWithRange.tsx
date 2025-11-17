@@ -62,8 +62,6 @@ export function DatePickerWithRange({
             onSelect={setDate}
             numberOfMonths={2}
             disabled={[...dateAlreadyBooked, { before: new Date() }]}
-
-            //disabled={{ before: new Date() }}
           />
         </PopoverContent>
       </Popover>

@@ -1,6 +1,8 @@
 import { Link } from "@/i18n/navigation";
 import { RoomBooked } from "@/types/room";
+import { differenceInDays } from "date-fns";
 import { useTranslations } from "next-intl";
+import { DateRange } from "react-day-picker";
 import SubmitButton from "./SubmitButton";
 import { Button } from "./ui/button";
 import { CardTitle } from "./ui/card";
@@ -8,15 +10,20 @@ import { Separator } from "./ui/separator";
 
 export const RoomCardBookedView = ({
   room,
-  leftDays,
-  numberOfNightsBooked,
   handleDeleteBooking,
+  userId,
+  date,
 }: {
   room: RoomBooked;
-  leftDays: number;
-  numberOfNightsBooked: number;
   handleDeleteBooking: (formData: FormData) => void;
+  userId: string;
+  date: DateRange | undefined;
 }) => {
+  const leftDays = differenceInDays(date?.from ?? room.startDate, new Date());
+  const numberOfNightsBooked = differenceInDays(
+    date?.to ?? room.endDate,
+    date?.from ?? room.startDate,
+  );
   const t = useTranslations("RoomCard");
   return (
     <div className="flex flex-col gap-2">
@@ -50,7 +57,8 @@ export const RoomCardBookedView = ({
             {t("viewHotel")}
           </Button>
         </Link>
-        {room.paymentStatus === "requires_payment_method" ? (
+        {room.paymentStatus === "requires_payment_method" &&
+        room.user_id === userId ? (
           <>
             <Link href={`/checkout/${room.paymentIntentId}`}>
               <Button

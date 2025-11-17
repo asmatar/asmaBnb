@@ -28,11 +28,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 <h2 className="text-xl font-semibold mb-4">
                   {t("roomDetails")}
                 </h2>
-                <RoomCard room={room[0]} isCheckout={true} />
+                <RoomCard room={room[0]} />
               </Card>
             </div>
 
-            {/* Payment Section */}
             <div className="space-y-6">
               <Card className="p-6 border-primary/10">
                 <h2 className="text-xl font-semibold mb-4">

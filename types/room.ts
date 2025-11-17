@@ -1,43 +1,21 @@
-export interface RoomBooked {
-  id: string;
-  roomTitle: string;
-  roomDescription: string;
-  image: string;
-  bedCount: number;
-  bathroomCount: number;
-  guestCount: number;
-  roomPrice: number;
-  breakfastPrice: number;
-  totalPrice: number;
+import { Booking, Room } from "./tableType";
+
+export type RoomBooked = Room & {
+  // Propriétés de Booking (fusionnées)
+  booked_At: string;
   breakfastIncluded: boolean;
-  startDate: string;
+  clientSecret: string;
+  currency: string;
   endDate: string;
-  kingBed?: boolean;
-  queenBed?: boolean;
-  roomService?: boolean;
-  TV?: boolean;
-  balcony?: boolean;
-  freeWifi?: boolean;
-  cityView?: boolean;
-  oceanView?: boolean;
-  forestView?: boolean;
-  mountainView?: boolean;
-  airCondition?: boolean;
-  soundProofed?: boolean;
-  hotel_id: string;
-  paymentStatus?: string;
-  paymentIntentId?: string;
-  username?: string;
-  booking?: {
-    id: string;
-    user_id: string;
-    roomBooked: string;
-    hotelBooked: string;
-    startDate: string;
-    endDate: string;
-    totalPrice: number;
-    breakfastIncluded: boolean;
-    paymentIntentId: string;
-    created_at: string;
-  }[];
-}
+  startDate: string;
+  hotelBooked: string;
+  hotelOwnerId: string;
+  paymentIntentId: string;
+  paymentStatus: string;
+  roomBooked: string;
+  totalPrice: number;
+  user_email: string;
+  username: string;
+};
+
+export type RoomCardProps = (Room & { booking?: Booking[] }) | RoomBooked;
