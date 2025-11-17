@@ -1,12 +1,12 @@
 "use client";
+import SubmitButton from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { deleteHotel } from "@/services/hotelService";
 import { Eye, Pencil, Trash } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { Link } from "../../i18n/navigation";
-import SubmitButton from "../SubmitButton";
 export type MyHotelProps = {
   id: string;
   title: string;
@@ -22,6 +22,7 @@ const MyHotelCard = ({
   image,
   price,
 }: MyHotelProps) => {
+  const locale = useLocale();
   const t = useTranslations("MyHotelCard");
   const handleDeleteHotel = async (formData: FormData) => {
     const id = formData.get("id");
@@ -62,14 +63,14 @@ const MyHotelCard = ({
         </div>
 
         <div className="flex flex-col gap-2">
-          <Link href={`/hotel/details/${id}`}>
+          <Link href={`/${locale}/hotel/details/${id}`}>
             <Button variant="outline" className="w-full">
               <Eye className="w-4 h-4 mr-2" />
               {t("viewDetails")}
             </Button>
           </Link>
 
-          <Link href={`/hotel/${id}`}>
+          <Link href={`/${locale}/hotel/${id}`}>
             <Button variant="outline" className="w-full">
               <Pencil className="w-4 h-4 mr-2" />
               {t("update")}

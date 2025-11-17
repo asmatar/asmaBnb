@@ -41,7 +41,8 @@ import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ICity, ICountry, IState } from "country-state-city";
 import { Pencil, Plus, Terminal, Trash, View, XCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { getLocale } from "next-intl/server";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -73,6 +74,7 @@ const AddHotelForm = ({
     setIsDialogOpened(value);
   };
   const t = useTranslations("AddHotelForm");
+  const locale = useLocale();
   const formHotel = useForm<z.infer<typeof hotelSchema>>({
     resolver: zodResolver(hotelSchema),
     mode: "onBlur",
@@ -111,11 +113,11 @@ const AddHotelForm = ({
 
     if (response.success === true) {
       if (response.roomData && response.roomData.length > 0) {
-        router.push("/hotel/new");
+        router.push(`/${getLocale()}/hotel/new`);
         return toast.success("Hotel deleted with his rooms");
       }
 
-      router.push("/hotel/new");
+      router.push(`/${getLocale()}/hotel/new`);
       return toast.success("Hotel deleted successfully");
     }
   };
@@ -625,7 +627,7 @@ const AddHotelForm = ({
             <div className="flex justify-between gap-2 flex-wrap">
               {hotelId ? (
                 <>
-                  <Link href={`/hotel/details/${hotelId}`}>
+                  <Link href={`/${locale}/hotel/details/${hotelId}`}>
                     <Button
                       variant="outline"
                       type="button"

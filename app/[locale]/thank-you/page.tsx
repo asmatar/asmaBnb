@@ -1,9 +1,9 @@
 "use client";
+import congrat from "@/app/assets/lotties/congrat.json";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import Lottie from "react-lottie-player";
-import congrat from "../assets/lotties/congrat.json";
 function BookedPage() {
   const router = useRouter();
   const t = useTranslations("ThankYou");
