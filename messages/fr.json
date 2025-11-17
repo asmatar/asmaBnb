@@ -344,5 +344,39 @@
     "selectStatePlaceholder": "Sélectionnez un état",
     "selectCityPlaceholder": "Sélectionnez une ville",
     "locationDescriptionPlaceholder": "situé au centre de la ville..."
+  },
+  "Metadata": {
+    "thankYou": {
+      "title": "Merci",
+      "description": "Merci pour votre réservation"
+    },
+    "myHotels": {
+      "title": "Mes hôtels",
+      "description": "Gérez vos hôtels, ajoutez de nouvelles chambres et mettez à jour les informations existantes. Créez et gérez votre portefeuille d'hôtels en un seul endroit."
+    },
+    "myBookings": {
+      "title": "Mes réservations",
+      "description": "Consultez et gérez toutes vos réservations d'hôtels. Retrouvez l'historique de vos séjours passés et vos prochains voyages en un seul endroit."
+    },
+    "checkout": {
+      "title": "Finalisez votre réservation",
+      "description": "Vérifiez les détails de votre séjour et procédez au paiement"
+    },
+    "favorites": {
+      "title": "Vos favoris",
+      "description": "Retrouvez ici tous les hôtels que vous avez ajoutés à vos favoris pour y accéder rapidement."
+    },
+    "hotel": {
+      "title": "Modifier votre hôtel",
+      "description": "Gérez les détails de votre hôtel, ajoutez, modifiez ou supprimez des chambres, et mettez à jour les informations de votre établissement."
+    },
+    "hotelDetails": {
+      "title": "Détails de l'hôtel",
+      "description": "Découvrez les détails de l'hôtel, ajoutez, modifiez ou supprimez des chambres, et mettez à jour les informations de votre établissement."
+    },
+    "hotelNew": {
+      "title": "Ajouter un nouvel hôtel",
+      "description": "Créez et configurez un nouvel hôtel pour votre établissement. Ajoutez des informations détaillées et des caractéristiques pour attirer les clients."
+    }
   }
 }

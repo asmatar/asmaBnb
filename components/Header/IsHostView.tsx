@@ -4,13 +4,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "@/i18n/navigation";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { FaHotel } from "react-icons/fa6";
 import { HiMiniPlus } from "react-icons/hi2";
 
 export const IsHostView = async () => {
   const t = await getTranslations("Header");
-  const locale = await getLocale();
   return (
     <>
       <DropdownMenuSeparator />

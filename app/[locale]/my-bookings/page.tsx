@@ -3,11 +3,14 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import Loading from "./loading";
-export const metadata: Metadata = {
-  title: "My Bookings ",
-  description:
-    "Consultez et gérez toutes vos réservations d'hôtels. Retrouvez l'historique de vos séjours passés et vos prochains voyages en un seul endroit.",
-};
+export async function generateMetadata(): Promise<Metadata> =>{
+const t= await getTranslations("Metadata");
+  return {
+    title: t("myBookings.title"),
+    description: t("myBookings.description")
+  };
+}
+
 const page = async () => {
   const t = await getTranslations("MyBookings");
   return (

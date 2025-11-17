@@ -6,11 +6,15 @@ import ToggleViewLayout from "@/components/ToggleViewLayout";
 import { getAllFavorites } from "@/services/favoriteservice";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Vos favoris",
-  description: "Retrouvez tous vos hôtels préférés à un seul endroit",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+  return {
+    title: t("favorites.title"),
+    description: t("favorites.description"),
+  };
+}
 
 const favorites = async () => {
   const { userId } = auth();

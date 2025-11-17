@@ -8,6 +8,18 @@ import TextBlock from "@/components/hotel/details/TextBlock";
 import Titles from "@/components/hotel/details/titles";
 import { getTranslations } from "next-intl/server";
 
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { hotelId: string };
+}) => {
+  const hotel = await getOneHotel(params.hotelId ?? "");
+  const t = await getTranslations("Metadata");
+  return {
+    title: `${t("hotelDetails.title")} - ${hotel?.title}`,
+    description: `${hotel?.description}`,
+  };
+};
 const HotelId = async ({ params }: { params: { hotelId: string } }) => {
   const hotel = await getOneHotel(params.hotelId ?? "");
   if (!hotel) return null;

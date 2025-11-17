@@ -4,6 +4,20 @@ import { getOneRoomInBooking } from "@/services/roomService";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import StripePayment from "./StripePayment";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
+  const { id } = params;
+  const t = await getTranslations("Metadata");
+  const room = await getOneRoomInBooking(id);
+  return {
+    title: `${t("checkout.title")} - ${room?.[0]?.roomTitle}`,
+    description: `${t("checkout.description")}`,
+  };
+};
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const room = await getOneRoomInBooking(id);

@@ -7,11 +7,13 @@ import { Suspense } from "react";
 import { Link } from "../../../i18n/navigation";
 import Loading from "./loading";
 
-export const metadata: Metadata = {
-  title: "My Hotels ",
-  description:
-    "Gérez vos hôtels, ajoutez de nouvelles chambres et mettez à jour les informations existantes. Créez et gérez votre portefeuille d'hôtels en un seul endroit.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+  return {
+    title: t("myHotels.title"),
+    description: t("myHotels.description"),
+  };
+}
 
 async function MyHotels() {
   const t = await getTranslations("MyHotels");

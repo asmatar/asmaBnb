@@ -11,12 +11,12 @@ export const generateMetadata = async ({
 }: {
   params: { hotelId: string };
 }): Promise<Metadata> => {
+  const t = await getTranslations("Metadata");
   const hotelId = params.hotelId ?? "";
   const hotel = await getOneHotel(hotelId);
   return {
-    title: `Modifier ${hotel?.title ?? "Hôtel"}`,
-    description:
-      "Gérez les détails de votre hôtel, ajoutez, modifiez ou supprimez des chambres, et mettez à jour les informations de votre établissement.",
+    title: `${t("hotel.title")} - ${hotel?.title ?? "Hôtel"}`,
+    description: `${t("hotel.description")}`,
   };
 };
 

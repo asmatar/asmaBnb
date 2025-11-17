@@ -345,5 +345,39 @@
     "selectStatePlaceholder": "Select State",
     "selectCityPlaceholder": "Select City",
     "locationDescriptionPlaceholder": "located in the center of the city..."
+  },
+  "Metadata": {
+    "thankYou": {
+      "title": "Thank You",
+      "description": "Thank You for your reservation"
+    },
+    "myHotels": {
+      "title": "My Hotels",
+      "description": "Manage your hotels, add new rooms and update existing information."
+    },
+    "myBookings": {
+      "title": "My Bookings",
+      "description": "Manage your bookings, add new rooms and update existing information."
+    },
+    "checkout": {
+      "title": "Finalize your reservation",
+      "description": "Check the details of your stay and proceed to payment"
+    },
+    "favorites": {
+      "title": "Your favorites",
+      "description": "Find here all the hotels you have added to your favorites to access them quickly."
+    },
+    "hotel": {
+      "title": "Modify your hotel",
+      "description": "Manage the details of your hotel, add, modify or delete rooms, and update the information of your establishment."
+    },
+    "hotelDetails": {
+      "title": "Hotel Details",
+      "description": "Discover the details of the hotel, add, modify or delete rooms, and update the information of your establishment."
+    },
+    "hotelNew": {
+      "title": "Add a new hotel",
+      "description": "Create and configure a new hotel for your establishment. Add detailed information and features to attract customers."
+    }
   }
 }
