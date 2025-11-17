@@ -12,7 +12,7 @@ import {
 import { Link } from "@/i18n/navigation";
 import { checkRole } from "@/lib/clerk";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { FaHeart } from "react-icons/fa6";
 import { LuLayoutDashboard, LuLogOut } from "react-icons/lu";
 import { TbBrandBooking } from "react-icons/tb";
@@ -24,8 +24,7 @@ export const LoginView = async ({
   username: string;
   email: string;
 }) => {
-  const locale = await getLocale();
-  const isHost = await checkRole("host");
+  const isHost = checkRole("host");
   const t = await getTranslations("Header");
 
   return (
@@ -68,13 +67,13 @@ export const LoginView = async ({
 
           <DropdownMenuSeparator />
 
-          <Link href={`/${locale}/my-bookings`} className="w-full">
+          <Link href="/my-bookings" className="w-full">
             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
               <TbBrandBooking className="h-4 w-4 text-primary" />
               <span className="text-sm">{t("myBookings")}</span>
             </DropdownMenuItem>
           </Link>
-          <Link href={`/${locale}/favorites`} className="w-full">
+          <Link href="/favorites" className="w-full">
             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
               <FaHeart className="h-3.5 w-3.5 text-rose-500" />
               <span className="text-sm">{t("savedProperties")}</span>

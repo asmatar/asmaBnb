@@ -4,7 +4,6 @@ import ListCardHotel from "@/components/Home/HotelSection/ListCardHotel";
 import { Link } from "@/i18n/navigation";
 import useGlobalStore from "@/store/Global";
 import { HotelCardProps } from "@/types/types";
-import { useLocale } from "next-intl";
 
 const HotelCard = ({
   title,
@@ -17,10 +16,10 @@ const HotelCard = ({
   ...features
 }: HotelCardProps) => {
   const { isViewGrid } = useGlobalStore();
-  const locale = useLocale();
+
   if (isViewGrid) {
     return (
-      <Link href={`/${locale}/hotel/details/${id}`}>
+      <Link href={`/hotel/details/${id}`}>
         <GridCardHotel
           title={title}
           description={description}
@@ -35,7 +34,7 @@ const HotelCard = ({
     );
   } else {
     return (
-      <Link href={`/${locale}/hotel/details/${id}`}>
+      <Link href={`/hotel/details/${id}`}>
         <ListCardHotel
           title={title}
           description={description}

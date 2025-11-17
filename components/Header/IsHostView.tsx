@@ -18,17 +18,17 @@ export const IsHostView = async () => {
         {t("hostOptions")}
       </DropdownMenuLabel>
 
-      <Link href={`/${locale}/hotel/new`} className="w-full">
+      <Link href={`/hotel/new`} className="w-full">
         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
           <HiMiniPlus className="h-4 w-4 text-green-500" />
           <span className="text-sm">{t("addProperty")}</span>
         </DropdownMenuItem>
       </Link>
 
-      <Link href={`/${locale}/my-hotels`} className="w-full">
+      <Link href={`/my-hotels`} className="w-full">
         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
           <FaHotel className="h-3.5 w-3.5 text-blue-500" />
-          <span className="text-sm">{t("manageProperties")}</span>
+          <span className="text-sm">{t("manageProperties")}</span>+++
         </DropdownMenuItem>
       </Link>
     </>
