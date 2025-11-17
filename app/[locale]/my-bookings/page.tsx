@@ -3,11 +3,11 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import Loading from "./loading";
-export async function generateMetadata(): Promise<Metadata> =>{
-const t= await getTranslations("Metadata");
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
   return {
     title: t("myBookings.title"),
-    description: t("myBookings.description")
+    description: t("myBookings.description"),
   };
 }
 
