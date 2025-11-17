@@ -1,13 +1,16 @@
-import BookingTabs from "@/components/myBookings/BookingTabs";
-import { getTranslations } from "next-intl/server";
+import MyBookings from "@/components/myBookings/MyBookings";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import Loading from "./loading";
-export const metadata: Metadata = {
-  title: "My Bookings ",
-  description:
-    "Consultez et gérez toutes vos réservations d'hôtels. Retrouvez l'historique de vos séjours passés et vos prochains voyages en un seul endroit.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+  return {
+    title: t("myBookings.title"),
+    description: t("myBookings.description"),
+  };
+}
+
 const page = async () => {
   const t = await getTranslations("MyBookings");
   return (
@@ -17,7 +20,7 @@ const page = async () => {
           <span className="text-accent-gradient">{t("myBookings")}</span>
         </h1>
         <Suspense fallback={<Loading />}>
-          <BookingTabs />
+          <MyBookings />
         </Suspense>
       </div>
     </section>

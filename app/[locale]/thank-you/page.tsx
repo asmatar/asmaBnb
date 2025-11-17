@@ -1,9 +1,20 @@
 "use client";
+import congrat from "@/app/assets/lotties/congrat.json";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { useRouter } from "next/navigation";
 import Lottie from "react-lottie-player";
-import congrat from "../assets/lotties/congrat.json";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+  return {
+    title: t("thankYou.title"),
+    description: t("thankYou.description"),
+  };
+}
+
 function BookedPage() {
   const router = useRouter();
   const t = useTranslations("ThankYou");

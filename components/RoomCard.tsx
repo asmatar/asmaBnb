@@ -1,8 +1,7 @@
 "use client";
-import AddRoomForm from "@/components/AddRoomForm";
-import { DatePickerWithRange } from "@/components/DatePickerWithRange";
-import SubmitButton from "@/components/SubmitButton";
-import { Button } from "@/components/ui/button";
+import { RoomCardBookedView } from "@/components/RoomCardBookedView";
+import RoomCardDetailView from "@/components/RoomCardDetailView";
+import { RoomCardHotelView } from "@/components/RoomCardHotelView";
 import {
   Card,
   CardContent,
@@ -11,25 +10,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "@/i18n/navigation";
 import {
   createBooking,
   deleteBooking,
   existingBooking,
 } from "@/services/bookingService";
 import { deleteRoom } from "@/services/roomService";
-import { RoomBooked } from "@/types/types";
-import { useUser } from "@clerk/clerk-react";
+import { RoomCardProps } from "@/types/room";
+import { Booking } from "@/types/tableType";
+import { View } from "@/types/types";
+import { useUser } from "@clerk/nextjs";
 import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import {
   AirVent,
@@ -38,9 +29,7 @@ import {
   Castle,
   Home,
   MountainSnow,
-  Plus,
   Ship,
-  Trash,
   Trees,
   UtensilsCrossed,
   VolumeX,
@@ -48,26 +37,27 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { TbReservedLine } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
-const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
-  const pathname = usePathname();
+
+const RoomCard = ({
+  room,
+  view,
+  userId,
+}: {
+  room: RoomCardProps;
+  userId?: string;
+  view?: View;
+}) => {
   const router = useRouter();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const t = useTranslations("RoomCard");
   const { user } = useUser();
   const [hasBreakfastIncluded, setHasBreakfastIncluded] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
+
   const handleDeleteBooking = async (formData: FormData) => {
     const response = await deleteBooking(formData);
     if (response.success === true) {
@@ -76,16 +66,16 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
       return toast.error(response.error);
     }
   };
+
   const numberOfNights =
     differenceInDays(date?.to ?? new Date(), date?.from ?? new Date()) < 0
       ? 0
       : differenceInDays(date?.to ?? new Date(), date?.from ?? new Date());
+  const totalPrice = hasBreakfastIncluded
+    ? numberOfNights * (room.roomPrice ?? 0) +
+      numberOfNights * (room.breakfastPrice ?? 0)
+    : numberOfNights * (room.roomPrice ?? 0);
 
-  const leftDays = differenceInDays(date?.from ?? room.startDate, new Date());
-  const numberOfNightsBooked = differenceInDays(
-    date?.to ?? room.endDate,
-    date?.from ?? room.startDate,
-  );
   const handleDeleteRoom = async (formData: FormData) => {
     const response = await deleteRoom(formData);
     if (response.success === true) {
@@ -94,16 +84,16 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
       return toast.error(response.error);
     }
   };
-  const totalPrice = hasBreakfastIncluded
-    ? numberOfNights * (room.roomPrice ?? 0) +
-      numberOfNights * (room.breakfastPrice ?? 0)
-    : numberOfNights * (room.roomPrice ?? 0);
-  const dateAlreadyBooked = room.booking?.flatMap((booking) => {
-    return eachDayOfInterval({
-      start: new Date(booking.startDate),
-      end: new Date(booking.endDate),
-    });
-  });
+
+  const dateAlreadyBooked =
+    "booking" in room
+      ? room.booking?.flatMap((booking: Booking) => {
+          return eachDayOfInterval({
+            start: new Date(booking.startDate),
+            end: new Date(booking.endDate),
+          });
+        }) ?? []
+      : [];
 
   const handleCheckout = async () => {
     const id = uuidv4();
@@ -267,164 +257,31 @@ const RoomCard = ({ room }: { room: RoomBooked; userId: string }) => {
           <Separator className="my-4" />
         </CardContent>
         <CardFooter>
-          {pathname.includes("my-bookings") && (
-            <div className="flex flex-col gap-2">
-              <CardTitle>{t("bookingDetails")}</CardTitle>
-              <div className="text-primary/90">
-                <div className="">
-                  {t("roomBookedBy")} {room.username} {t("for")}{" "}
-                  {numberOfNightsBooked} {t("nights")} {t("in")} {leftDays}{" "}
-                  {t("days")}
-                </div>
-                <div className="">{t("checkIn")}</div>
-                <div className="">{t("checkOut")}</div>
-                {room.breakfastIncluded && <p>{t("breakfast")}</p>}
-                {room.paymentStatus === "requires_payment_method" ? (
-                  <span className="text-red-600">
-                    {t("notPaid")} ${room.totalPrice} - {t("roomNotReserved")}
-                  </span>
-                ) : (
-                  <span className="text-green-600">
-                    {t("paid")} ${room.totalPrice} - {t("roomReserved")}
-                  </span>
-                )}
-              </div>
-              <Separator className="my-4" />
-              <div className="flex items-center gap-4 justify-between">
-                <Link href={`/hotel/details/${room.hotel_id}`}>
-                  <Button
-                    variant="outline"
-                    type="button"
-                    className=" text-primary py-2 px-4 rounded-lg w-full"
-                  >
-                    {t("viewHotel")}
-                  </Button>
-                </Link>
-                {room.paymentStatus === "requires_payment_method" ? (
-                  <>
-                    <Link href={`/checkout/${room.paymentIntentId}`}>
-                      <Button
-                        variant="outline"
-                        type="button"
-                        className=" text-primary py-2 px-4 rounded-lg w-full"
-                      >
-                        {t("payNow")}
-                      </Button>
-                    </Link>
-
-                    <form action={handleDeleteBooking}>
-                      <input type="hidden" name="id" value={room.id} />
-                      <SubmitButton
-                        variant="outline"
-                        className="bg-secondary"
-                        text="Delete reservation"
-                        loadingText="deleting reservation..."
-                      />
-                    </form>
-                  </>
-                ) : null}
-              </div>
-            </div>
+          {"totalPrice" in room && view === "booked" && (
+            <RoomCardBookedView
+              date={date}
+              userId={userId ?? ""}
+              room={room}
+              handleDeleteBooking={handleDeleteBooking}
+            />
           )}
-          {pathname.includes("details") && (
-            <>
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-col gap-2">
-                  <p className="dark:text-slate-400">{t("selectDays")}</p>
-                  <DatePickerWithRange
-                    date={date}
-                    setDate={setDate}
-                    dateAlreadyBooked={dateAlreadyBooked}
-                  />
-
-                  {numberOfNights > 0 && (
-                    <>
-                      <p className="mt-2">{t("includeBreakfastTooltip")}</p>
-                      <div className="flex items-center gap-1 mb-2">
-                        <Input
-                          type="checkbox"
-                          checked={hasBreakfastIncluded}
-                          onChange={() =>
-                            setHasBreakfastIncluded((prev) => !prev)
-                          }
-                          className="w-4 h-4"
-                        />
-                        {t("includeBreakfast")}
-                      </div>
-                    </>
-                  )}
-                </div>
-                <p className="mb-4">
-                  {t("totalPrice")}:{" "}
-                  <span className="font-bold">{totalPrice}€</span> {t("for")}{" "}
-                  <span className="font-bold">
-                    {numberOfNights} {t("days")}
-                  </span>
-                </p>
-
-                <form action={handleCheckout}>
-                  {!user ? (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <SubmitButton
-                            variant="default"
-                            className="w-full"
-                            text={t("bookRoom")}
-                            loadingText={t("bookingRoom")}
-                            disabled={numberOfNights < 1}
-                          >
-                            <TbReservedLine className="h-4 w-4 mr-2" />
-                          </SubmitButton>
-                        </TooltipTrigger>
-                        <TooltipContent>{t("bookRoomTooltip")}</TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : (
-                    <SubmitButton
-                      variant="default"
-                      className="w-full"
-                      text={t("bookRoom")}
-                      loadingText={t("bookingRoom")}
-                      disabled={numberOfNights < 1}
-                    >
-                      <TbReservedLine className="h-4 w-4 mr-2" />
-                    </SubmitButton>
-                  )}
-                </form>
-              </div>
-            </>
+          {view === "details" && (
+            <RoomCardDetailView
+              date={date}
+              setDate={setDate}
+              dateAlreadyBooked={dateAlreadyBooked}
+              numberOfNights={numberOfNights}
+              hasBreakfastIncluded={hasBreakfastIncluded}
+              setHasBreakfastIncluded={setHasBreakfastIncluded}
+              totalPrice={totalPrice}
+              handleCheckout={handleCheckout}
+            />
           )}
-          {pathname.includes("hotel") && !pathname.includes("details") && (
-            <div className="flex w-full justify-between">
-              <form action={handleDeleteRoom}>
-                <input type="hidden" name="id" value={room.id} />
-                <SubmitButton
-                  type="submit"
-                  variant="ghost"
-                  className="bg-secondary"
-                  text={t("deleteRoom")}
-                  loadingText={t("deletingRoom")}
-                >
-                  <Trash className="h-4 w-4 mr-2" />
-                </SubmitButton>
-              </form>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger className="px-2 bg-secondary rounded-md flex items-center">
-                  <Plus className="w-4 h-4 mr-3" />
-                  {t("editRoom")}
-                </DialogTrigger>
-                <DialogContent className="max-w-[900px] w-[90%]">
-                  <DialogHeader className="px-2">
-                    <DialogTitle>{t("updateRoom")}</DialogTitle>
-                    <DialogDescription>
-                      {t("updateRoomDescription")}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <AddRoomForm room={room} setFormOpen={setIsDialogOpen} />
-                </DialogContent>
-              </Dialog>
-            </div>
+          {view === "hotel" && (
+            <RoomCardHotelView
+              room={room}
+              handleDeleteRoom={handleDeleteRoom}
+            />
           )}
         </CardFooter>
       </Card>

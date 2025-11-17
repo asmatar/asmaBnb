@@ -5,26 +5,31 @@ import { createClient } from "@supabase/supabase-js";
 export async function createClerkSupabaseClient() {
   const { getToken } = auth();
 
-  return createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_KEY!,
-    {
-      global: {
-        fetch: async (url, options = {}) => {
-          const clerkToken = await getToken({ template: "supabase" });
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
-          const headers = new Headers(options?.headers);
+  return createClient<Database>(supabaseUrl!, supabaseKey!, {
+    global: {
+      fetch: async (url, options = {}) => {
+        const clerkToken = await getToken();
 
-          if (clerkToken) {
-            headers.set("Authorization", `Bearer ${clerkToken}`);
-          }
+        const headers = new Headers(options?.headers);
 
-          return fetch(url, {
-            ...options,
-            headers,
-          });
-        },
+        if (clerkToken) {
+          headers.set("Authorization", `Bearer ${clerkToken}`);
+        } else {
+          console.log(
+            "🟡 [createClerkSupabaseClient] ⚠️ Aucun token Clerk disponible!",
+          );
+        }
+
+        const response = await fetch(url, {
+          ...options,
+          headers,
+        });
+
+        return response;
       },
     },
-  );
+  });
 }

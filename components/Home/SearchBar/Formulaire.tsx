@@ -1,36 +1,14 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { getFilteredHotels } from "@/services/hotelService";
+import { SelectItem } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Bath,
-  Building2,
   Car,
   Dumbbell,
-  Globe,
-  MapPin,
   RotateCcw,
   Search,
   Store,
@@ -42,9 +20,11 @@ import {
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../../ui/button";
+import { FilterCheckbox } from "./FilterCheckbox";
+import { LocationFields } from "./LocationFields";
 
 type FormProps = {
   countryOptions: JSX.Element[];
@@ -69,7 +49,7 @@ export const searchHotelSchema = z.object({
   swimingPool: z.boolean().optional(),
 });
 
-type SearchHotelFormValues = z.infer<typeof searchHotelSchema>;
+export type SearchHotelFormValues = z.infer<typeof searchHotelSchema>;
 
 export default function Formulaire({ location, countryOptions }: FormProps) {
   const [filteredStates, setFilteredStates] = useState<string[]>([]);
@@ -78,6 +58,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
   const t = useTranslations("Formulaire");
   const form = useForm<SearchHotelFormValues>({
     resolver: zodResolver(searchHotelSchema),
+    reValidateMode: "onSubmit",
     defaultValues: {
       title: "",
       country: "",
@@ -101,19 +82,8 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     setFilteredCities([]);
     router.push(pathname);
   };
-  async function onSubmit(values: SearchHotelFormValues) {
-    await getFilteredHotels({
-      ...values,
-      spa: values.spa?.toString(),
-      gym: values.gym?.toString(),
-      bar: values.bar?.toString(),
-      restaurant: values.restaurant?.toString(),
-      freeWifi: values.freeWifi?.toString(),
-      shopping: values.shopping?.toString(),
-      freeParking: values.freeParking?.toString(),
-      swimingPool: values.swimingPool?.toString(),
-    });
 
+  async function onSubmit(values: SearchHotelFormValues) {
     const formatedValues = Object.entries(values).reduce(
       (acc, [key, value]) => {
         if (key === "gym" && value !== true) return acc;
@@ -133,10 +103,10 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     );
 
     const query = new URLSearchParams(formatedValues).toString();
-    router.push(`?${query}`);
+    router.replace(`?${query}`);
   }
 
-  const fetchStates = (value: string) => {
+  const getFilteredStates = (value: string) => {
     const filteredStatesDuplicate = location
       .filter((location) => location.country === value)
       .map((location) => location.state);
@@ -151,7 +121,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     setFilteredStates(filteredStates as string[]);
   };
 
-  const fetchCities = async (value: string) => {
+  const getFilteredCities = (value: string) => {
     const filteredCitiesDuplicate = location
       .filter((location) => location.state === value)
       .map((location) => location.city);
@@ -173,7 +143,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
       {city}
     </SelectItem>
   ));
-
   const activeFilters = [
     form.getValues("spa"),
     form.getValues("gym"),
@@ -208,7 +177,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
                     value={field.value}
                     onChange={(event) => {
                       field.onChange(event.target.value);
-                      form.handleSubmit(onSubmit)();
                     }}
                   />
                 </div>
@@ -217,104 +185,50 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
           </div>
 
           <div className="md:col-span-3 flex space-x-3">
-            <FormField
+            <LocationFields
               control={form.control}
               name="country"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Select
-                    onValueChange={(country) => {
-                      field.onChange(country);
-                      fetchStates(country);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
-                      <div className="flex items-center">
-                        <Globe className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={t("selectCountry")}
-                          defaultValue={field.value}
-                        />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>{countryOptions}</SelectContent>
-                  </Select>
-                </FormItem>
-              )}
+              placeholder={t("selectCountry")}
+              filteredFunction={getFilteredStates}
+              optionsFields={countryOptions}
             />
-
-            <FormField
+            <LocationFields
               control={form.control}
               name="state"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Select
-                    disabled={form.getValues("country") === "" ? true : false}
-                    onValueChange={async (state) => {
-                      field.onChange(state);
-                      await fetchCities(state);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
-                      <div className="flex items-center">
-                        <Building2 className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={t("selectState")}
-                          defaultValue={field.value}
-                        />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>{statesOptions}</SelectContent>
-                  </Select>
-                </FormItem>
-              )}
+              placeholder={t("selectState")}
+              disabled={form.getValues("country") === "" ? true : false}
+              filteredFunction={getFilteredCities}
+              optionsFields={statesOptions}
             />
-
-            <FormField
+            <LocationFields
               control={form.control}
               name="city"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Select
-                    disabled={form.getValues("state") === "" ? true : false}
-                    onValueChange={(city) => {
-                      field.onChange(city);
-                      form.handleSubmit(onSubmit)();
-                    }}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="bg-background/80 shadow-sm backdrop-blur-sm border-none h-11">
-                      <div className="flex items-center">
-                        <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={t("selectCity")}
-                          defaultValue={field.value}
-                        />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>{citiesOptions}</SelectContent>
-                  </Select>
-                </FormItem>
-              )}
+              placeholder={t("selectCity")}
+              disabled={form.getValues("state") === "" ? true : false}
+              optionsFields={citiesOptions}
             />
           </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-medium">{t("amenities")}</h3>
-            {activeFilters > 0 && (
-              <Badge className="bg-primary text-primary-foreground">
-                {activeFilters}
-              </Badge>
-            )}
+            {showFilters ? (
+              <>
+                <h3
+                  className={cn(
+                    "text-sm font-medium transition-all duration-500 ease-in-out",
+                    showFilters ? "opacity-100" : "opacity-0",
+                  )}
+                >
+                  {t("amenities")}
+                </h3>
+                {activeFilters > 0 && (
+                  <Badge className="bg-primary text-primary-foreground">
+                    {activeFilters}
+                  </Badge>
+                )}
+              </>
+            ) : null}
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -326,6 +240,15 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span>{t("reset")}</span>
+            </Button>
+            <Button
+              type="submit"
+              variant="gradient"
+              size="sm"
+              className="flex items-center gap-1 h-8 px-3 bg-background/80"
+            >
+              <Search className="h-3.5 w-3.5" />
+              <span>{t("submit")}</span>
             </Button>
             <Button
               type="button"
@@ -340,12 +263,12 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
         </div>
 
         <div
-          className="overflow-hidden transition-all duration-500 ease-in-out"
-          style={{
-            maxHeight: showFilters ? "500px" : "0",
-            opacity: showFilters ? 1 : 0,
-            marginTop: showFilters ? "0.5rem" : "0",
-          }}
+          className={cn(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showFilters
+              ? "max-h-[500px] opacity-100 mt-1"
+              : "max-h-0 opacity-0 mt-0",
+          )}
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 p-4 bg-background/50 rounded-xl shadow-sm backdrop-blur-sm">
             <FilterCheckbox
@@ -353,7 +276,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="spa"
               label={t("spa")}
               icon={<Bath className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
 
             <FilterCheckbox
@@ -361,7 +283,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="gym"
               label={t("gym")}
               icon={<Dumbbell className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
 
             <FilterCheckbox
@@ -369,7 +290,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="bar"
               label={t("bar")}
               icon={<Wine className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
 
             <FilterCheckbox
@@ -377,7 +297,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="restaurant"
               label={t("restaurant")}
               icon={<UtensilsCrossed className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
 
             <FilterCheckbox
@@ -385,7 +304,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="freeWifi"
               label={t("freeWifi")}
               icon={<Wifi className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
 
             <FilterCheckbox
@@ -393,7 +311,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="shopping"
               label={t("shopping")}
               icon={<Store className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
 
             <FilterCheckbox
@@ -401,7 +318,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="freeParking"
               label={t("freeParking")}
               icon={<Car className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
 
             <FilterCheckbox
@@ -409,7 +325,6 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               name="swimingPool"
               label={t("swimingPool")}
               icon={<Waves className="h-4 w-4" />}
-              onSubmit={onSubmit}
             />
           </div>
         </div>
@@ -417,53 +332,3 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
     </Form>
   );
 }
-
-const FilterCheckbox = ({
-  form,
-  name,
-  label,
-  icon,
-  onSubmit,
-}: {
-  form: UseFormReturn<SearchHotelFormValues>;
-  name: keyof SearchHotelFormValues;
-  label: string;
-  icon: React.ReactNode;
-  onSubmit: (values: SearchHotelFormValues) => Promise<void>;
-}) => {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <FormField
-          control={form.control}
-          name={name}
-          render={({ field }) => (
-            <FormItem className="flex items-center space-x-2 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value as boolean | undefined}
-                  onCheckedChange={(checked) => {
-                    field.onChange(checked);
-                    form.handleSubmit(onSubmit)();
-                  }}
-                  className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                />
-              </FormControl>
-              <TooltipTrigger asChild>
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <div className="text-muted-foreground">{icon}</div>
-                  <FormLabel className="cursor-pointer text-sm">
-                    {label}
-                  </FormLabel>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <p>Filter by {label}</p>
-              </TooltipContent>
-            </FormItem>
-          )}
-        />
-      </Tooltip>
-    </TooltipProvider>
-  );
-};

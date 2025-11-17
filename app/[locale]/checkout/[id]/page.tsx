@@ -2,11 +2,29 @@ import RoomCard from "@/components/RoomCard";
 import { Card } from "@/components/ui/card";
 import { getOneRoomInBooking } from "@/services/roomService";
 import { getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
 import StripePayment from "./StripePayment";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
+  const { id } = params;
+  const t = await getTranslations("Metadata");
+  const room = await getOneRoomInBooking(id);
+  return {
+    title: `${t("checkout.title")} - ${room?.[0]?.roomTitle}`,
+    description: `${t("checkout.description")}`,
+  };
+};
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const room = await getOneRoomInBooking(id);
   const t = await getTranslations("Checkout");
+  if (!room || room.length === 0) {
+    notFound();
+  }
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12">
@@ -19,17 +37,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
-            {/* Room Details */}
             <div className="space-y-6">
               <Card className="p-6 border-primary/10">
                 <h2 className="text-xl font-semibold mb-4">
                   {t("roomDetails")}
                 </h2>
-                <RoomCard room={room[0]} isCheckout={true} />
+                <RoomCard room={room[0]} />
               </Card>
             </div>
 
-            {/* Payment Section */}
             <div className="space-y-6">
               <Card className="p-6 border-primary/10">
                 <h2 className="text-xl font-semibold mb-4">

@@ -6,6 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { Calendar, Utensils } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { getLocale } from "next-intl/server";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
@@ -132,7 +133,7 @@ async function StripeProvider({
         console.error("Error confirming payment:", error.message);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         await updateBooking(paymentIntent.id);
-        router.push("/thank-you");
+        router.push(`/${getLocale()}/thank-you`);
       }
       console.log(error);
     } catch (error) {

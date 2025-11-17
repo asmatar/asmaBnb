@@ -11,6 +11,7 @@
     "title": "Search Your best Hotel"
   },
   "Formulaire": {
+    "submit": "Search",
     "searchHotel": "search for a hotel...",
     "selectCountry": "select a country",
     "selectCity": "select a city",
@@ -26,13 +27,17 @@
     "freeWifi": "Free Wifi",
     "shopping": "Shopping",
     "freeParking": "Free Parking",
-    "swimingPool": "Swimming Pool"
+    "swimingPool": "Swimming Pool",
+    "filterBy": "Filter by"
   },
   "ToggleViewLayout": {
     "viewGrid": "View in Grid",
     "viewList": "View in List"
   },
   "HotelCard": {
+    "favorites": {
+      "isFavoriteAllowed": "You have to be connected to put in favorites"
+    },
     "noImageAvailable": "No image available",
     "pool": "Pool",
     "gym": "Gym",
@@ -176,10 +181,12 @@
     "addRoomButton": "Add a room"
   },
   "BookingTabs": {
-    "totalBookings": "Total Bookings",
+    "guestBookingsOnYourProperties": "Guest Bookings on Your Properties",
+    "myBookings": "My Bookings",
+    "totalBookings": "Total of your bookings",
     "yourReservedRooms": "Your Reserved Rooms",
     "guestBookings": "Guest Bookings",
-    "upcoming": "Upcoming",
+    "upcoming": "Payments Pending",
     "nextReservations": "Next Reservations",
     "bookingsOnYourProperties": "Bookings on Your Properties",
     "youMustBeHost": "You must be host to access these informations",
@@ -338,5 +345,39 @@
     "selectStatePlaceholder": "Select State",
     "selectCityPlaceholder": "Select City",
     "locationDescriptionPlaceholder": "located in the center of the city..."
+  },
+  "Metadata": {
+    "thankYou": {
+      "title": "Thank You",
+      "description": "Thank You for your reservation"
+    },
+    "myHotels": {
+      "title": "My Hotels",
+      "description": "Manage your hotels, add new rooms and update existing information."
+    },
+    "myBookings": {
+      "title": "My Bookings",
+      "description": "Manage your bookings, add new rooms and update existing information."
+    },
+    "checkout": {
+      "title": "Finalize your reservation",
+      "description": "Check the details of your stay and proceed to payment"
+    },
+    "favorites": {
+      "title": "Your favorites",
+      "description": "Find here all the hotels you have added to your favorites to access them quickly."
+    },
+    "hotel": {
+      "title": "Modify your hotel",
+      "description": "Manage the details of your hotel, add, modify or delete rooms, and update the information of your establishment."
+    },
+    "hotelDetails": {
+      "title": "Hotel Details",
+      "description": "Discover the details of the hotel, add, modify or delete rooms, and update the information of your establishment."
+    },
+    "hotelNew": {
+      "title": "Add a new hotel",
+      "description": "Create and configure a new hotel for your establishment. Add detailed information and features to attract customers."
+    }
   }
 }

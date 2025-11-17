@@ -11,12 +11,12 @@ export const generateMetadata = async ({
 }: {
   params: { hotelId: string };
 }): Promise<Metadata> => {
+  const t = await getTranslations("Metadata");
   const hotelId = params.hotelId ?? "";
   const hotel = await getOneHotel(hotelId);
   return {
-    title: `Modifier ${hotel?.title ?? "Hôtel"}`,
-    description:
-      "Gérez les détails de votre hôtel, ajoutez, modifiez ou supprimez des chambres, et mettez à jour les informations de votre établissement.",
+    title: `${t("hotel.title")} - ${hotel?.title ?? "Hôtel"}`,
+    description: `${t("hotel.description")}`,
   };
 };
 
@@ -39,7 +39,7 @@ async function page({ params }: { params: { hotelId: string } }) {
           <h2 className="text-xl font-semibold my-4 mb-4">{t("hotelRooms")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {rooms.map((room) => (
-              <RoomCard key={room.id} room={room} />
+              <RoomCard key={room.id} room={room} view="hotel" />
             ))}
           </div>
         </div>

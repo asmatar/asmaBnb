@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "../../i18n/navigation";
 export default async function NotFound() {
   const t = await getTranslations("NotFound");
+
   return (
     <section
       className="absolute right-0 left-0 top-0 flex flex-col items-center justify-center h-screen bg-cover bg-center text-center  animate-fade-in"

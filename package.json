@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/localizations": "^3.27.2",
     "@clerk/nextjs": "^5.1.6",
     "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-checkbox": "^1.1.0",

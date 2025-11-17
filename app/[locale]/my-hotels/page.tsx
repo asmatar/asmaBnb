@@ -6,14 +6,18 @@ import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { Link } from "../../../i18n/navigation";
 import Loading from "./loading";
-export const metadata: Metadata = {
-  title: "My Hotels ",
-  description:
-    "Gérez vos hôtels, ajoutez de nouvelles chambres et mettez à jour les informations existantes. Créez et gérez votre portefeuille d'hôtels en un seul endroit.",
-};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+  return {
+    title: t("myHotels.title"),
+    description: t("myHotels.description"),
+  };
+}
 
 async function MyHotels() {
   const t = await getTranslations("MyHotels");
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">

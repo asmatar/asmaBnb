@@ -1,11 +1,15 @@
 import AddHotelForm from "@/components/AddHotelForm";
 import { getAllCountries } from "@/services/locationService";
 import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Ajouter un nouvel hôtel",
-  description:
-    "Créez et configurez un nouvel hôtel pour votre établissement. Ajoutez des informations détaillées et des caractéristiques pour attirer les clients.",
-};
+import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+  return {
+    title: `${t("hotelNew.title")}`,
+    description: `${t("hotelNew.description")}`,
+  };
+}
 
 async function HotelNew() {
   const countries = await getAllCountries();

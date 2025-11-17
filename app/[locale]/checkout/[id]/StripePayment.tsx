@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const stripePromise = loadStripe(
-  "pk_test_51JmxBgFkr8gEJezM0gPQ7Ugs9M4PPDdHk54S4Rs9JQjJfr8GJbXe1r0LFafzlupFGTfZKhMNdTLf6kRBMCJTWsiP00gaYhPXQd",
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
 );
 
 const StripePayment = ({
@@ -39,13 +39,17 @@ const StripePayment = ({
 
         const data = await response.json();
         setClientSecret(data.client_secret);
-      } catch (err: any) {
-        toast.error(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+        } else {
+          toast.error("An unknown error occurred");
+        }
       }
     };
 
     fetchPaymentIntent();
-  }, [clientSecret]);
+  }, [clientSecret, id]);
 
   return (
     <div className="space-y-6">

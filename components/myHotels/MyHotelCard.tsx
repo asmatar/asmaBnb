@@ -1,4 +1,5 @@
 "use client";
+import SubmitButton from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { deleteHotel } from "@/services/hotelService";
 import { Eye, Pencil, Trash } from "lucide-react";
@@ -6,7 +7,6 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { Link } from "../../i18n/navigation";
-import SubmitButton from "../SubmitButton";
 export type MyHotelProps = {
   id: string;
   title: string;

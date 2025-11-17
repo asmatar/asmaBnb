@@ -26,7 +26,8 @@
     "freeWifi": "Wifi gratuito",
     "shopping": "Shopping",
     "freeParking": "Parking gratuito",
-    "swimingPool": "Piscina"
+    "swimingPool": "Piscina",
+    "filterBy": "Filtrado por"
   },
   "ToggleViewLayout": {
     "viewGrid": "Ver en grilla",
@@ -176,10 +177,12 @@
     "addRoomButton": "Agregar una habitación"
   },
   "BookingTabs": {
-    "totalBookings": "Total de reservas",
+    "guestBookingsOnYourProperties": "Reservas de invitados en tus propiedades",
+    "myBookings": "Mis reservas",
+    "totalBookings": "Total de tus reservas",
     "yourReservedRooms": "Tus habitaciones reservadas",
     "guestBookings": "Reservas de invitados",
-    "upcoming": "Próximas reservas",
+    "upcoming": "Reservas en espera de pago",
     "nextReservations": "Próximas reservas",
     "bookingsOnYourProperties": "Reservas en tus propiedades",
     "youMustBeHost": "Debes ser host para acceder a estas informaciones",
@@ -337,5 +340,38 @@
     "selectCityPlaceholder": "Seleccionar una ciudad",
     "swimingPool": "Piscina",
     "locationDescriptionPlaceholder": "ubicado en el centro de la ciudad..."
+  },
+  "Metadata": {
+    "thankYou": {
+      "title": "Gracias",
+      "description": "Gracias por tu reserva"
+    },
+    "myHotels": {
+      "title": "Mis hoteles",
+      "description": "Gestiona tus hoteles, agrega nuevas habitaciones y actualiza la información existente."
+    },
+    "myBookings": {
+      "title": "Mis reservas",
+      "description": "Gestiona tus reservas, agrega nuevas habitaciones y actualiza la información existente."
+    },
+    "checkout": {
+      "title": "Finaliza tu reserva",
+      "description": "Verifica los detalles de tu estancia y procede al pago"
+    },
+    "favorites": {
+      "title": "Tus favoritos",
+      "description": "Encuentra aquí todos los hoteles que has agregado a tus favoritos para acceder a ellos rápidamente."
+    },
+    "hotel": {
+      "title": "Modificar tu hotel",
+      "description": "Gestiona los detalles de tu hotel, agrega, modifica o elimina habitaciones y actualiza la información de tu establecimiento."
+    },
+    "hotelDetails": {
+      "title": "Detalles del hotel"
+    },
+    "hotelNew": {
+      "title": "Agregar un nuevo hotel",
+      "description": "Crea y configura un nuevo hotel para tu establecimiento. Agrega información detallada y características para atraer a los clientes."
+    }
   }
 }

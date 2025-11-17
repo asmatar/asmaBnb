@@ -2,25 +2,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkRole } from "@/lib/clerk";
 import { cn } from "@/lib/utils";
 import { getBookedIMade, getRoomVisitorHaveMade } from "@/services/roomService";
+import { RoomBooked } from "@/types/room";
 import { auth } from "@clerk/nextjs/server";
-import { CalendarCheck, CalendarRange, CalendarX } from "lucide-react";
+import { CalendarCheck, CalendarRange } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import RoomCard from "../RoomCard";
 import { Separator } from "../ui/separator";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import { GuestReservationList } from "./GuestReservationList";
+import { Informations } from "./Informations";
+import { MyReservationList } from "./MyReservationList";
 import NoGuestReservation from "./NoGuestReservation";
 import NoReservationMade from "./NoReservationMade";
-export default async function BookingTabs() {
+
+export default async function MyBookings() {
   const { userId } = auth();
   const t = await getTranslations("BookingTabs");
 
-  const roomBooked = await getBookedIMade(userId as string);
-  const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId as string);
+  const roomBooked: RoomBooked[] | null = await getBookedIMade(userId ?? "");
+  const roomVisitorHaveMade = await getRoomVisitorHaveMade(userId ?? "");
   const isHost = checkRole("host");
   const totalMyBookings = roomBooked && roomBooked.length;
   const totalGuestBookings = roomVisitorHaveMade && roomVisitorHaveMade.length;
@@ -31,38 +29,12 @@ export default async function BookingTabs() {
 
   return (
     <div className="space-y-8 w-full mx-auto">
-      {/* Stats Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-primary/5 rounded-lg p-8 border flex flex-col items-center justify-center space-y-2 hover:shadow-md transition-shadow">
-          <CalendarRange className="h-10 w-10 text-primary mb-3" />
-          <h3 className="text-xl font-medium">{t("totalBookings")}</h3>
-          <p className="text-4xl font-bold">{totalMyBookings}</p>
-          <p className="text-sm text-muted-foreground">
-            {t("yourReservedRooms")}
-          </p>
-        </div>
-
-        {isHost && (
-          <div className="bg-primary/5 rounded-lg p-8 border flex flex-col items-center justify-center space-y-2 hover:shadow-md transition-shadow">
-            <CalendarCheck className="h-10 w-10 text-green-500 mb-3" />
-            <h3 className="text-xl font-medium">{t("guestBookings")}</h3>
-            <p className="text-4xl font-bold">{totalGuestBookings}</p>
-            <p className="text-sm text-muted-foreground">
-              {t("bookingsOnYourProperties")}
-            </p>
-          </div>
-        )}
-
-        <div className="bg-primary/5 rounded-lg p-8 border flex flex-col items-center justify-center space-y-2 hover:shadow-md transition-shadow">
-          <CalendarX className="h-10 w-10 text-blue-500 mb-3" />
-          <h3 className="text-xl font-medium">{t("upcoming")}</h3>
-          <p className="text-4xl font-bold">{totalUpcomingBooking}</p>
-          <p className="text-sm text-muted-foreground">
-            {t("nextReservations")}
-          </p>
-        </div>
-      </div>
-
+      <Informations
+        totalMyBookings={totalMyBookings ?? 0}
+        totalGuestBookings={totalGuestBookings ?? 0}
+        totalUpcomingBooking={totalUpcomingBooking ?? 0}
+        isHost={isHost}
+      />
       <div className="bg-background rounded-lg shadow-sm p-2 mb-6">
         <Tabs defaultValue="my-bookings" className="w-full">
           <TabsList className="w-full mb-8 grid grid-cols-2 p-1 bg-muted/30">
@@ -97,33 +69,7 @@ export default async function BookingTabs() {
                   <span className="text-base">{t("guestBookings")}</span>
                 </span>
               </TabsTrigger>
-            ) : (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <TabsTrigger
-                      value="guest-bookings"
-                      disabled={!isHost}
-                      className={cn(
-                        "py-4 transition-all duration-200",
-                        "data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:font-medium",
-                        "data-[state=active]:border-b-2 data-[state=active]:border-primary",
-                        "data-[state=inactive]:bg-background data-[state=inactive]:hover:bg-muted/20",
-                        !isHost && "opacity-50",
-                      )}
-                    >
-                      <span className="flex items-center gap-3">
-                        <CalendarCheck className="h-5 w-5" />
-                        <span className="text-base">{t("guestBookings")}</span>
-                      </span>
-                    </TabsTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent className="w-[300px]">
-                    {t("youMustBeHost")}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+            ) : null}
           </TabsList>
 
           <TabsContent
@@ -145,15 +91,10 @@ export default async function BookingTabs() {
               <Separator className="mb-8" />
 
               {roomBooked && roomBooked.length > 0 ? (
-                <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                  {roomBooked.map((room) => (
-                    <RoomCard
-                      key={room.id as string}
-                      room={room as any}
-                      userId={userId as string}
-                    />
-                  ))}
-                </ul>
+                <MyReservationList
+                  roomBooked={roomBooked}
+                  userId={userId as string}
+                />
               ) : (
                 <NoReservationMade />
               )}
@@ -179,16 +120,11 @@ export default async function BookingTabs() {
 
                 <Separator className="mb-8" />
 
-                {roomVisitorHaveMade.length > 0 ? (
-                  <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                    {roomVisitorHaveMade.map((room) => (
-                      <RoomCard
-                        key={room.id as string}
-                        room={room as any}
-                        userId={userId as string}
-                      />
-                    ))}
-                  </ul>
+                {roomVisitorHaveMade && roomVisitorHaveMade.length > 0 ? (
+                  <GuestReservationList
+                    roomVisitorHaveMade={roomVisitorHaveMade}
+                    userId={userId as string}
+                  />
                 ) : (
                   <NoGuestReservation />
                 )}
