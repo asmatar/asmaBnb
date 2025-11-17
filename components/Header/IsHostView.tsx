@@ -28,7 +28,7 @@ export const IsHostView = async () => {
       <Link href={`/my-hotels`} className="w-full">
         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer hover:bg-primary/5 rounded-md py-1.5 px-2">
           <FaHotel className="h-3.5 w-3.5 text-blue-500" />
-          <span className="text-sm">{t("manageProperties")}</span>+++
+          <span className="text-sm">{t("manageProperties")}</span>
         </DropdownMenuItem>
       </Link>
     </>
