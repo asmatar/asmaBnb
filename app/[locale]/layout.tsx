@@ -1,3 +1,4 @@
+import ClientThemeProvider from "@/components/ClientThemeProvider";
 import Header from "@/components/Header";
 import Container from "@/components/ui/Container";
 import { routing } from "@/i18n/routing";
@@ -6,7 +7,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { ThemeProvider } from "next-themes";
 import { Roboto } from "next/font/google";
 import { notFound } from "next/navigation";
 import { ToastContainer } from "react-toastify";
@@ -46,12 +46,7 @@ export default async function RootLayout({
       <html lang={locale} suppressHydrationWarning>
         <body className={cn(roboto.className)}>
           <NextIntlClientProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
+            <ClientThemeProvider>
               <Header />
               <Container>{children}</Container>
               <ToastContainer
@@ -66,7 +61,7 @@ export default async function RootLayout({
                 theme="light"
                 limit={3}
               />
-            </ThemeProvider>
+            </ClientThemeProvider>
           </NextIntlClientProvider>
         </body>
       </html>

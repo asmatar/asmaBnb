@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const favorites = async () => {
+const Favorites = async () => {
   const { userId } = auth();
   const { data: favorites, error } = await getAllFavorites(userId ?? "");
   if (error) {
@@ -59,4 +59,4 @@ const favorites = async () => {
   );
 };
 
-export default favorites;
+export default Favorites;
