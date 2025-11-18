@@ -1,17 +1,16 @@
 import Header from "@/components/Header";
-import { ThemeProvider } from "@/components/theme-provider";
 import Container from "@/components/ui/Container";
+import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
+import { ThemeProvider } from "next-themes";
 import { Roboto } from "next/font/google";
+import { notFound } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { routing } from "@/i18n/routing";
-import { setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
 import "./globals.css";
 const roboto = Roboto({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -52,6 +51,7 @@ export default async function RootLayout({
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
+              forcedTheme="light"
             >
               <Header />
               <Container>{children}</Container>
