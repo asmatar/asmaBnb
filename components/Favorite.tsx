@@ -18,11 +18,19 @@ const Favorites = ({ isFavorite, id }: { isFavorite: boolean; id: string }) => {
         <div className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-110">
           {isFavorite ? (
             <IconCTA isFavorite={isFavorite} hotelId={id}>
-              <Heart className="w-5 h-5 fill-red-500" />
+              <Heart
+                className="w-5 h-5 fill-rose-500"
+                stroke="none"
+                strokeWidth={0}
+              />
             </IconCTA>
           ) : (
             <IconCTA isFavorite={isFavorite} hotelId={id}>
-              <Heart className="w-5 h-5 hover:fill-rose-500/20" />
+              <Heart
+                className="w-5 h-5 stroke-rose-500 hover:fill-rose-500/20 transition-colors"
+                fill="none"
+                strokeWidth={2}
+              />
             </IconCTA>
           )}
         </div>
@@ -32,7 +40,11 @@ const Favorites = ({ isFavorite, id }: { isFavorite: boolean; id: string }) => {
             <TooltipTrigger asChild>
               <p className="text-sm text-muted-foreground line-clamp-2 cursor-help">
                 <span className="bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-sm transition-transform hover:scale-105">
-                  <Heart className="w-5 h-5 hover:fill-red-500/20" />
+                  <Heart
+                    className="w-5 h-5 stroke-rose-500 hover:fill-rose-500/20 transition-colors"
+                    fill="none"
+                    strokeWidth={2}
+                  />
                 </span>
               </p>
             </TooltipTrigger>
