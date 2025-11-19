@@ -25,13 +25,13 @@ function BookedPage() {
 
         <h1 className="text-2xl font-bold mt-4 mb-6 ">{t("title")}</h1>
         <div className="flex flex-col space-y-3">
-          <Button className="w-full" onClick={() => router.push(`/${locale}`)}>
+          <Button className="w-full" onClick={() => router.push(`/`)}>
             {t("backToHome")}
           </Button>
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => router.push("/my-bookings")}
+            onClick={() => router.push(`/${locale}/my-bookings`)}
           >
             {t("seeMyBookings")}
           </Button>

@@ -162,7 +162,7 @@ const AddHotelForm = ({
       if (response.success === false) {
         return toast.error(response.error);
       }
-      router.push(`/hotel/${id}`);
+      router.push(`/${getLocale()}/hotel/${id}`);
     } catch (error) {
       toast.error("Something went wrong");
     }

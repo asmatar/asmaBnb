@@ -3,12 +3,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { Hotel, Plus } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 const NoRoom = ({ id, userId }: { id: string; userId: string }) => {
   const t = useTranslations("NoRoom");
   const router = useRouter();
   const { user } = useUser();
+  const locale = useLocale();
   return (
     <div className="flex flex-col items-center justify-center p-6 border rounded-lg bg-card shadow-sm">
       <Alert className="w-full max-w-md bg-background/50">
@@ -23,7 +24,7 @@ const NoRoom = ({ id, userId }: { id: string; userId: string }) => {
         <Button
           variant="outline"
           className="mt-4"
-          onClick={() => router.push(`/hotel/${id}`)}
+          onClick={() => router.push(`/${locale}/hotel/${id}`)}
         >
           <Plus className="w-4 h-4 mr-2" /> {t("addRoomButton")}
         </Button>

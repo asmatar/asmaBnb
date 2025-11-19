@@ -9,6 +9,7 @@ const protectedRoutesPatern = routing.locales.flatMap((locale) => [
   `/${locale}/checkout(.*)`,
   `/${locale}/thankyou(.*)`,
   `/${locale}/hotel/new(.*)`,
+  `/${locale}/my-bookings(.*)`,
 ]);
 
 const isProtectedRoute = createRouteMatcher(protectedRoutesPatern);
