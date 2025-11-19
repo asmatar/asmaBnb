@@ -16,7 +16,7 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
     router.refresh();
   };
   return (
-    <ul className="flex justify-center items-center gap-4 my-8">
+    <ul className="flex justify-center items-center gap-4 my-8 flex-wrap">
       {Array.from({ length: totalPages }, (_, index) => (
         <button
           key={index}

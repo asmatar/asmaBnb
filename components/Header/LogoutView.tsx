@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
-import { FaRegUser } from "react-icons/fa6";
+import { FaRegUser, FaUserPlus } from "react-icons/fa6";
 
 export const LogoutView = async () => {
   const t = await getTranslations("Header");
@@ -20,7 +20,8 @@ export const LogoutView = async () => {
         </Button>
       </Link>
       <Link href="/sign-up">
-        <Button variant="gradient" size="sm" className="shadow-sm">
+        <Button variant="gradient" size="sm" className="shadow-sm flex gap-2">
+          <FaUserPlus className="h-3 w-3" />
           {t("joinNow")}
         </Button>
       </Link>
