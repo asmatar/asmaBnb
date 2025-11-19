@@ -6,7 +6,7 @@ function HotelViewStyleContainer({ children }: { children: React.ReactNode }) {
     <section
       className={`${
         isViewGrid
-          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4"
+          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4 xl:gap-x-8 xl:gap-y-12 mt-4"
           : "grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4"
       } `}
     >

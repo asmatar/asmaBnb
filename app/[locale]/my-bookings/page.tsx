@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const page = async () => {
   const t = await getTranslations("MyBookings");
   return (
-    <section className="container max-w-screen-2xl mx-auto py-12 px-4 sm:px-6">
+    <section className="max-w-screen-2xl mx-auto py-12">
       <div className="space-y-6">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
           <span className="text-accent-gradient">{t("myBookings")}</span>

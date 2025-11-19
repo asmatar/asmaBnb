@@ -30,7 +30,7 @@ const Favorites = async () => {
     <>
       <Banner nbFavorites={nbFavorites} />
       <ToggleViewLayout />
-      <div className="container mx-auto px-4 mb-16">
+      <div className=" mx-auto mb-16">
         <HotelViewStyleContainer>
           {favorites.map((favorite) => (
             <HotelCard

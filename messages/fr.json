@@ -87,9 +87,9 @@
     "forestView": "vue sur la forêt",
     "mountainView": "vue sur la montagne",
     "bookingDetails": "Détails de la réservation",
-    "bookingDetailsDescription": "Chambre réservée par {room.username} pour {numberOfNightsBooked} nuit(s) - dans {leftDays} jour(s)",
-    "checkIn": "Check-in: {room.startDate} à 11am",
-    "checkOut": "Check-out: {room.endDate} à 17pm",
+    "bookingDetailsDescription": "Chambre réservée par {username} pour {numberOfNightsBooked} nuit(s) - dans {leftDays} jour(s)",
+    "checkIn": "Check-in: {startDate} à 11am",
+    "checkOut": "Check-out: {endDate} à 17pm",
     "viewHotel": "Voir l'hôtel",
     "roomPrice": "prix de la chambre",
     "breakfastPrice": "prix du petit-déjeuner",
@@ -228,6 +228,7 @@
     "toggleTheme": "Changer le thème"
   },
   "Header": {
+    "home": "Accueil",
     "welcome": "Bienvenue",
     "dashboard": "Tableau de bord",
     "myBookings": "Mes réservations",

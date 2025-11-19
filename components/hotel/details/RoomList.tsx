@@ -12,7 +12,7 @@ export const RoomList = ({
   userId: string;
 }) => {
   if (rooms.length === 0) return <NoRoom id={hotelId} userId={userId} />;
-
+  console.log(rooms);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {rooms.map((room) => (

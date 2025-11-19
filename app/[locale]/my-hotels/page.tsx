@@ -19,7 +19,7 @@ async function MyHotels() {
   const t = await getTranslations("MyHotels");
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="mx-auto py-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{t("myHotels")}</h1>

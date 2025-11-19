@@ -24,17 +24,21 @@ export const RoomCardBookedView = ({
     date?.to ?? room.endDate,
     date?.from ?? room.startDate,
   );
+  console.log(room.startDate);
   const t = useTranslations("RoomCard");
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       <CardTitle>{t("bookingDetails")}</CardTitle>
       <div className="text-primary/90">
         <div className="">
-          {t("roomBookedBy")} {room.username} {t("for")} {numberOfNightsBooked}{" "}
-          {t("nights")} {t("in")} {leftDays} {t("days")}
+          {t("bookingDetailsDescription", {
+            username: room.username,
+            numberOfNightsBooked: numberOfNightsBooked,
+            leftDays,
+          })}
         </div>
-        <div className="">{t("checkIn")}</div>
-        <div className="">{t("checkOut")}</div>
+        <div className="">{t("checkIn", { startDate: room.startDate })}</div>
+        <div className="">{t("checkOut", { endDate: room.endDate })}</div>
         {room.breakfastIncluded && <p>{t("breakfast")}</p>}
         {room.paymentStatus === "requires_payment_method" ? (
           <span className="text-red-600">
@@ -47,7 +51,7 @@ export const RoomCardBookedView = ({
         )}
       </div>
       <Separator className="my-4" />
-      <div className="flex items-center gap-4 justify-between">
+      <div className="flex items-center gap-4 justify-between flex-wrap">
         <Link href={`/hotel/details/${room.hotel_id}`}>
           <Button
             variant="outline"

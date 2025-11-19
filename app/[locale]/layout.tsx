@@ -1,5 +1,6 @@
 import ClientThemeProvider from "@/components/ClientThemeProvider";
 import Header from "@/components/Header";
+import Copiright from "@/components/Header/Copiright";
 import Container from "@/components/ui/Container";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -49,6 +50,7 @@ export default async function RootLayout({
             <ClientThemeProvider>
               <Header />
               <Container>{children}</Container>
+              <Copiright />
               <ToastContainer
                 position="bottom-right"
                 autoClose={1000}

@@ -1,14 +1,13 @@
 "use client";
 import congrat from "@/app/assets/lotties/congrat.json";
 import { Button } from "@/components/ui/button";
-import { Metadata } from "next";
-import { useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import Lottie from "react-lottie-player";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Metadata");
+export function Metadata(): Metadata {
+  const t = useTranslations("Metadata");
   return {
     title: t("thankYou.title"),
     description: t("thankYou.description"),
@@ -18,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 function BookedPage() {
   const router = useRouter();
   const t = useTranslations("ThankYou");
-
+  const locale = useLocale();
   return (
     <div className="min-h-[80vh] flex items-center justify-center  ">
       <div className="p-8 rounded-lg shadow-xl text-center bg-popover">
@@ -26,7 +25,7 @@ function BookedPage() {
 
         <h1 className="text-2xl font-bold mt-4 mb-6 ">{t("title")}</h1>
         <div className="flex flex-col space-y-3">
-          <Button className="w-full" onClick={() => router.push("/")}>
+          <Button className="w-full" onClick={() => router.push(`/${locale}`)}>
             {t("backToHome")}
           </Button>
           <Button

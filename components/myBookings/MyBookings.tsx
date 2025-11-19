@@ -48,7 +48,7 @@ export default async function MyBookings() {
               )}
             >
               <span className="flex items-center gap-3">
-                <CalendarRange className="h-5 w-5" />
+                <CalendarRange className="h-5 w-5 hidden sm:block" />
                 <span className="text-base">{t("myBookings")}</span>
               </span>
             </TabsTrigger>
@@ -65,7 +65,7 @@ export default async function MyBookings() {
                 )}
               >
                 <span className="flex items-center gap-3">
-                  <CalendarCheck className="h-5 w-5" />
+                  <CalendarCheck className="h-5 w-5 hidden sm:block" />
                   <span className="text-base">{t("guestBookings")}</span>
                 </span>
               </TabsTrigger>
@@ -76,7 +76,7 @@ export default async function MyBookings() {
             value="my-bookings"
             className="space-y-6 animate-in fade-in-50"
           >
-            <div className="bg-card p-8 rounded-lg border shadow-sm">
+            <div className="bg-card py-6 px-2 shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl md:text-3xl font-semibold">
                   <span className="text-accent-gradient">
@@ -106,7 +106,7 @@ export default async function MyBookings() {
               value="guest-bookings"
               className="space-y-6 animate-in fade-in-50"
             >
-              <div className="bg-card p-8 rounded-lg border shadow-sm">
+              <div className="bg-card py-6 px-2 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl md:text-3xl font-semibold">
                     <span className="text-accent-gradient">

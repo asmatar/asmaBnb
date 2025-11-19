@@ -227,6 +227,7 @@
     "toggleTheme": "Toggle Theme"
   },
   "Header": {
+    "home": "Home",
     "welcome": "Welcome",
     "dashboard": "Dashboard",
     "myBookings": "My Bookings",

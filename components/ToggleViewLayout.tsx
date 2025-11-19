@@ -13,7 +13,7 @@ const ToggleViewLayout = () => {
   const t = useTranslations("ToggleViewLayout");
   const { setIsViewGrid } = useGlobalStore();
   return (
-    <div className="flex gap-2 cursor-pointer">
+    <div className="gap-2 cursor-pointer hidden sm:flex">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>

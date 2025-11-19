@@ -223,6 +223,7 @@
     "toggleTheme": "Cambiar tema"
   },
   "Header": {
+    "home": "Inicio",
     "welcome": "Bienvenido",
     "dashboard": "Panel de control",
     "myBookings": "Mis reservas",

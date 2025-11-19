@@ -19,7 +19,7 @@ async function MyHotelList() {
   };
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4">
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 xl:gap-x-8 gap-y-8 xl:gap-y-12 mt-4">
       {hotels &&
         hotels.map((hotel) => (
           <MyHotelCard

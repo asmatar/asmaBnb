@@ -184,7 +184,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             />
           </div>
 
-          <div className="md:col-span-3 flex space-x-3">
+          <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
             <LocationFields
               control={form.control}
               name="country"
@@ -230,7 +230,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
               </>
             ) : null}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Button
               type="button"
               onClick={() => cleanForm()}

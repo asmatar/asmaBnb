@@ -2,6 +2,7 @@ import { featuresConfigSidebar } from "@/helpers";
 import { getTranslations } from "next-intl/server";
 import Feature from "./Feature";
 type FeaturesSidebarProps = {
+  mode: "sidebar" | "detail";
   swimingPool: boolean;
   gym: boolean;
   spa: boolean;
@@ -17,6 +18,7 @@ type FeaturesSidebarProps = {
 };
 
 export const FeaturesSidebar = async ({
+  mode,
   ...features
 }: FeaturesSidebarProps) => {
   const t = await getTranslations("HotelDetails");
@@ -25,7 +27,9 @@ export const FeaturesSidebar = async ({
   return (
     <div className="lg:block lg:col-span-1">
       <div className="sticky top-24 space-y-6">
-        <div className="bg-card p-6 rounded-xl border border-primary/10">
+        <div
+          className={`bg-card  ${mode === "sidebar" ? "rounded-xl border border-primary/10 p-6" : "py-6 px-0"}`}
+        >
           <h2 className="text-2xl font-semibold mb-6">
             <span className="text-accent-gradient">{t("amenities")}</span>
           </h2>

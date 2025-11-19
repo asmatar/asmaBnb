@@ -73,7 +73,7 @@ const RoomCardDetailView = ({
                 <div className="cursor-not-allowed">
                   <SubmitButton
                     variant="default"
-                    className="w-full"
+                    className="w-full "
                     text={t("bookRoom")}
                     loadingText={t("bookingRoom")}
                     disabled={numberOfNights < 1}
@@ -88,7 +88,7 @@ const RoomCardDetailView = ({
         ) : (
           <SubmitButton
             variant="default"
-            className="w-full"
+            className="w-full text-white"
             text={t("bookRoom")}
             loadingText={t("bookingRoom")}
             disabled={numberOfNights < 1}

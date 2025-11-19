@@ -46,6 +46,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
 
             <div className="block lg:hidden">
               <FeaturesSidebar
+                mode="detail"
                 swimingPool={hotel.swimingPool}
                 gym={hotel.gym}
                 spa={hotel.spa}
@@ -71,6 +72,7 @@ const HotelId = async ({ params }: { params: { hotelId: string } }) => {
           </div>
 
           <FeaturesSidebar
+            mode="sidebar"
             swimingPool={hotel.swimingPool}
             gym={hotel.gym}
             spa={hotel.spa}
