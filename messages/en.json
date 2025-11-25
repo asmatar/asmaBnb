@@ -37,6 +37,10 @@
     "viewList": "View in List"
   },
   "HotelCard": {
+    "addToComparator": "Add to comparator",
+    "removeFromComparator": "Remove from comparator",
+    "comparatorLimitReached": "You can only compare 2 hotels at a time",
+    "viewComparatorHotels": "View comparator hotels",
     "favorites": {
       "isFavoriteAllowed": "You have to be connected to put in favorites"
     },
@@ -381,6 +385,13 @@
     "hotelNew": {
       "title": "Add a new hotel",
       "description": "Create and configure a new hotel for your establishment. Add detailed information and features to attract customers."
+    },
+    "Home": {
+      "description": "Discover Asma Hotel, your luxury destination for unforgettable trips. Enjoy our elegant rooms, modern installations and exceptional service for a perfect hotel experience."
+    },
+    "HotelComparator": {
+      "title": "Hotel Comparator",
+      "description": "Compare hotel prices and features"
     }
   }
 }

@@ -36,6 +36,10 @@
     "viewList": "Ver en lista"
   },
   "HotelCard": {
+    "addToComparator": "Agregar al comparador",
+    "removeFromComparator": "Retirar del comparador",
+    "comparatorLimitReached": "Solo puedes comparar 2 hoteles a la vez",
+    "viewComparatorHotels": "Ver hoteles comparados",
     "noImageAvailable": "No hay imagen disponible",
     "pool": "Piscina",
     "gym": "Gimnasio",
@@ -375,6 +379,13 @@
     "hotelNew": {
       "title": "Agregar un nuevo hotel",
       "description": "Crea y configura un nuevo hotel para tu establecimiento. Agrega información detallada y características para atraer a los clientes."
+    },
+    "Home": {
+      "description": "Descubre Asma Hotel, tu destino de lujo para viajes inolvidables. Disfruta de nuestras habitaciones elegantes, instalaciones modernas y servicio excepcional para una experiencia hotelera perfecta."
+    },
+    "HotelComparator": {
+      "title": "Comparador de hoteles",
+      "description": "Compara los precios y características de los hoteles"
     }
   }
 }

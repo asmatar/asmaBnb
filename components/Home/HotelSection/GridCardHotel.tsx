@@ -1,3 +1,5 @@
+import ActionLink from "@/components/ActionLink";
+import ComparatorBadge from "@/components/ComparatorBadge";
 import Favorites from "@/components/Favorite";
 import {
   Tooltip,
@@ -100,11 +102,11 @@ const GridCardHotel = ({
             );
           })}
         </div>
-
-        <div className="mt-4 flex justify-end">
-          <div className="text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors duration-200">
+        <div className="flex items-center justify-between mt-4">
+          <ComparatorBadge hotelId={id} />
+          <ActionLink href={`/hotel/details/${id}`}>
             {t("viewDetails")} →
-          </div>
+          </ActionLink>
         </div>
       </div>
     </div>

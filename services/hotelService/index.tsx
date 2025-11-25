@@ -140,7 +140,6 @@ export async function getFilteredHotels(filters: {
     to = filters.to ?? 11,
   } = filters;
   let query = supabase.from("hotel").select("*", { count: "exact" });
-  console.log("filters", filters);
   if (title) {
     query = query.ilike("title", `%${title}%`);
   }

@@ -214,6 +214,7 @@ const AddHotelForm = ({
       formHotel.setFocus(firstError as Path<z.infer<typeof hotelSchema>>);
     }
   }, [formHotel.formState.errors, formHotel.setFocus, formHotel]);
+
   return (
     <Form {...formHotel}>
       <form

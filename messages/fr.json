@@ -10,7 +10,6 @@
   "SearchBar": {
     "title": "Recherchez votre meilleur hôtel"
   },
-
   "Formulaire": {
     "submit": "Rechercher",
     "searchHotel": "rechercher un hotel...",
@@ -38,6 +37,10 @@
     "viewList": "Voir en collone"
   },
   "HotelCard": {
+    "addToComparator": "Ajouter au comparateur",
+    "removeFromComparator": "Retirer du comparateur",
+    "comparatorLimitReached": "Vous ne pouvez comparer que 2 hôtels à la fois",
+    "viewComparatorHotels": "Voir les hôtels comparés",
     "favorites": {
       "isFavoriteAllowed": "Vous devez être connecté pour ajouter aux favoris"
     },
@@ -346,7 +349,9 @@
     "selectCountryPlaceholder": "Sélectionnez un pays",
     "selectStatePlaceholder": "Sélectionnez un état",
     "selectCityPlaceholder": "Sélectionnez une ville",
-    "locationDescriptionPlaceholder": "situé au centre de la ville..."
+    "locationDescriptionPlaceholder": "situé au centre de la ville...",
+    "swimingPool": "Piscine",
+    "chooseAmenitiesDescription": "Choisissez les commodités de votre hôtel"
   },
   "Metadata": {
     "thankYou": {
@@ -380,6 +385,13 @@
     "hotelNew": {
       "title": "Ajouter un nouvel hôtel",
       "description": "Créez et configurez un nouvel hôtel pour votre établissement. Ajoutez des informations détaillées et des caractéristiques pour attirer les clients."
+    },
+    "Home": {
+      "description": "Découvrez Asma Hotel, votre destination de luxe pour des séjours inoubliables. Profitez de nos chambres élégantes, installations modernes et service exceptionnel pour une expérience hôtelière parfaite."
+    },
+    "HotelComparator": {
+      "title": "Comparateur de hôtels",
+      "description": "Comparez les prix et les caractéristiques des hôtels"
     }
   }
 }
