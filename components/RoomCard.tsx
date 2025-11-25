@@ -41,6 +41,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { toast } from "react-toastify";
+import Stripe from "stripe";
 import { v4 as uuidv4 } from "uuid";
 
 const RoomCard = ({
@@ -99,7 +100,7 @@ const RoomCard = ({
     const id = uuidv4();
     const newBookingOne = {
       id,
-      username: user!.firstName,
+      username: user!.firstName ?? "",
       user_email: user!.emailAddresses[0].emailAddress,
       user_id: user!.id,
       roomBooked: room.id,
@@ -120,7 +121,8 @@ const RoomCard = ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ newBookingOne }),
     });
-    const intentPayement = await response.json();
+    const intentPayement: { paymentIntent: Stripe.PaymentIntent } =
+      await response.json();
 
     const newBooking = {
       ...newBookingOne,

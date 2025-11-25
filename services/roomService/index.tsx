@@ -98,14 +98,20 @@ export const deleteRoom = async (formData: FormData) => {
         error: "you can't delete a room if you've got a reservation",
       };
     }
-    const { error } = await supabase.from("room").delete().eq("id", id);
+    const { error } = await supabase
+      .from("room")
+      .delete()
+      .eq("id", id as string);
     if (error) {
       return { success: false, error: error.message };
     }
     revalidatePath("/hotel/[hotelId]");
     return { success: true };
   } catch (error) {
-    return { success: false, error: error.message };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
 

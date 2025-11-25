@@ -25,9 +25,12 @@ export const addFavorite = async (favoriteHotel: OneFavoriteHotel) => {
     }
     revalidatePath("/");
     return { success: true };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Unexpected error:", error);
-    return { success: false, error: error.message };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
 
@@ -46,7 +49,10 @@ export const removeFavorite = async (hotelId: string, userId: string) => {
     revalidatePath("/favorites");
     return { success: true };
   } catch (error) {
-    return { success: false, error: error.message };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
 

@@ -37,11 +37,11 @@ export type Database = {
         Insert: {
           booked_At?: string;
           breakfastIncluded?: boolean;
-          clientSecret?: string;
+          clientSecret: string | null;
           created_at?: string;
           currency?: string;
           endDate: string;
-          hotelBooked?: string;
+          hotelBooked: string;
           hotelOwnerId: string;
           id: string;
           paymentIntentId: string;
@@ -50,8 +50,8 @@ export type Database = {
           startDate: string;
           totalPrice: number;
           user_email: string;
-          user_id?: string;
-          username?: string;
+          user_id: string;
+          username: string;
         };
         Update: {
           booked_At?: string;

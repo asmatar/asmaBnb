@@ -1,9 +1,9 @@
 "use server";
 import { createClerkSupabaseClient } from "@/lib/supabase/supabaseClient";
-import { bookings } from "@/store/Global";
+import { InsertBooking } from "@/types/tableType";
 import { revalidatePath } from "next/cache";
 
-export const createBooking = async (booking: bookings) => {
+export const createBooking = async (booking: InsertBooking) => {
   const supabase = await createClerkSupabaseClient();
 
   try {
@@ -16,7 +16,10 @@ export const createBooking = async (booking: bookings) => {
     }
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
 
@@ -24,14 +27,20 @@ export const deleteBooking = async (formData: FormData) => {
   const id = formData.get("id");
   const supabase = await createClerkSupabaseClient();
   try {
-    const { error } = await supabase.from("booking").delete().eq("id", id);
+    const { error } = await supabase
+      .from("booking")
+      .delete()
+      .eq("id", id as string);
     if (error) {
       return { success: false, error: error.message };
     }
     revalidatePath("/my-bookings");
     return { success: true };
   } catch (error) {
-    return { success: false, error: error.message };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
 export const getBookingFromOneRoom = async (id: string) => {
@@ -57,7 +66,24 @@ export const updateBooking = async (id: string) => {
     error.message;
   }
 };
-export const existingBooking = async (newBookingOne: any) => {
+
+export const existingBooking = async (
+  newBookingOne: Pick<
+    InsertBooking,
+    | "id"
+    | "username"
+    | "user_email"
+    | "user_id"
+    | "roomBooked"
+    | "hotelBooked"
+    | "hotelOwnerId"
+    | "startDate"
+    | "endDate"
+    | "currency"
+    | "totalPrice"
+    | "breakfastIncluded"
+  >,
+) => {
   const supabase = await createClerkSupabaseClient();
   try {
     const { data, error } = await supabase
@@ -71,6 +97,9 @@ export const existingBooking = async (newBookingOne: any) => {
     }
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
