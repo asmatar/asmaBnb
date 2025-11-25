@@ -5,7 +5,6 @@ import Image from "next/image";
 
 export function Logo() {
   const { theme } = useTheme();
-  console.log("theme---", theme);
   return (
     <div className="relative w-28 h-16">
       <Image

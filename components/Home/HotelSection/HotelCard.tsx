@@ -13,6 +13,8 @@ const HotelCard = ({
   city,
   id,
   isFavorite,
+  minPrice,
+  maxPrice,
   ...features
 }: HotelCardProps) => {
   const { isViewGrid } = useGlobalStore();
@@ -28,6 +30,8 @@ const HotelCard = ({
           city={city}
           id={id}
           isFavorite={isFavorite}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
           {...features}
         />
       </Link>
@@ -43,6 +47,8 @@ const HotelCard = ({
           city={city}
           id={id}
           isFavorite={isFavorite}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
           {...features}
         />
       </Link>

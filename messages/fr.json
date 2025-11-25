@@ -29,7 +29,9 @@
     "shopping": "Shopping",
     "freeParking": "Parking gratuit",
     "swimingPool": "Piscine",
-    "filterBy": "Filtrer par"
+    "filterBy": "Filtrer par",
+    "priceRange": "Prix de la chambre",
+    "priceRangeDescription": "Définissez votre budget"
   },
   "ToggleViewLayout": {
     "viewGrid": "Voir en grille",

@@ -20,6 +20,8 @@ const GridCardHotel = ({
   city,
   id,
   isFavorite,
+  minPrice,
+  maxPrice,
   ...features
 }: HotelCardProps) => {
   const t = useTranslations("HotelCard");
@@ -58,6 +60,11 @@ const GridCardHotel = ({
               </span>
             </div>
           ) : null}
+        </div>
+        <div className="absolute bottom-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+          <span className="font-semibold text-md text-white mb-1 line-clamp-1">
+            {minPrice}€ - {maxPrice}€
+          </span>
         </div>
       </div>
 

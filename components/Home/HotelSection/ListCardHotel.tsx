@@ -20,6 +20,8 @@ const ListCardHotel = ({
   city,
   id,
   isFavorite,
+  minPrice,
+  maxPrice,
   ...features
 }: HotelCardProps) => {
   const t = useTranslations("HotelCard");
@@ -50,16 +52,21 @@ const ListCardHotel = ({
         </div>
 
         <div className="p-4 w-2/3 transition-all duration-500 ">
-          <div className="mb-2">
-            <h3 className="font-semibold text-xl line-clamp-1">{title}</h3>
-            {country || city ? (
-              <div className="flex items-center gap-1 text-muted-foreground text-sm">
-                <MapPin className="w-3 h-3" />
-                <span>
-                  {city && country ? `${city}, ${country}` : city || country}
-                </span>
-              </div>
-            ) : null}
+          <div className="flex justify-between items-center">
+            <div className="mb-2">
+              <h3 className="font-semibold text-xl line-clamp-1">{title}</h3>
+              {country || city ? (
+                <div className="flex items-center gap-1 text-muted-foreground text-sm">
+                  <MapPin className="w-3 h-3" />
+                  <span>
+                    {city && country ? `${city}, ${country}` : city || country}
+                  </span>
+                </div>
+              ) : null}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {minPrice}€ - {maxPrice}€
+            </div>
           </div>
           <div className="mb-4">
             <TooltipProvider>

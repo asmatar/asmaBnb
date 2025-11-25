@@ -242,7 +242,7 @@ const RoomCard = ({
           </div>
           <Separator className="my-4" />
           <div className="flex gap-4 justify-between">
-            <div className="">
+            <div>
               {t("roomPrice")}:{" "}
               <span className="font-bold"> {room.roomPrice} €</span>
               <span className="text-xs"> /24hrs</span>

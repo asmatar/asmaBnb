@@ -187,7 +187,7 @@ const AddRoomForm = ({ room, setFormOpen }: AddRoomFormProps) => {
               </FormItem>
             )}
           />
-          <div className="">
+          <div>
             <FormLabel>{t("chooseRoomAmenities")}</FormLabel>
             <FormDescription>{t("whatMakeItSpecial")}</FormDescription>
             <div className="grid grid-cols-2 gap-2 mt-2">

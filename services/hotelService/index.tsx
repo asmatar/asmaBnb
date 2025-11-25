@@ -78,7 +78,7 @@ export const deleteHotel = async (id: string) => {
     revalidatePath("/my-hotels");
     return { success: true, roomData: roomData || [] };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: error as string };
   }
 };
 
@@ -115,6 +115,8 @@ export async function getFilteredHotels(filters: {
   shopping?: string;
   freeParking?: string;
   swimingPool?: string;
+  minPrice?: number;
+  maxPrice?: number;
   from: number;
   to: number;
 }) {
@@ -132,11 +134,13 @@ export async function getFilteredHotels(filters: {
     shopping,
     freeParking,
     swimingPool,
+    minPrice,
+    maxPrice,
     from = filters.from ?? 0,
     to = filters.to ?? 11,
   } = filters;
-  let query = supabase.from("hotel").select("*");
-
+  let query = supabase.from("hotel").select("*", { count: "exact" });
+  console.log("filters", filters);
   if (title) {
     query = query.ilike("title", `%${title}%`);
   }
@@ -149,7 +153,12 @@ export async function getFilteredHotels(filters: {
   if (city) {
     query = query.eq("city", city);
   }
-
+  if (minPrice) {
+    query = query.gte("max_price", minPrice);
+  }
+  if (maxPrice) {
+    query = query.lte("min_price", maxPrice);
+  }
   if (spa === "true") {
     query = query.eq("spa", true);
   }
@@ -175,7 +184,7 @@ export async function getFilteredHotels(filters: {
     query = query.eq("swimingPool", true);
   }
 
-  const { data, error } = await query.range(from, to);
+  const { data, error, count } = await query.range(from, to);
   if (error) {
     error.message;
   }
@@ -194,7 +203,7 @@ export async function getFilteredHotels(filters: {
         favorites && favorites.some((fav) => fav.hotel_id === hotel.id);
       return { ...hotel, isFavorite };
     });
-  return { data: hotelsWithFavorites };
+  return { data: hotelsWithFavorites, count };
 }
 
 export const getHotelLocation = async () => {
@@ -225,4 +234,20 @@ export async function getMyHotel(id: string) {
   }
 
   return data || [];
+}
+export async function getMinMaxRoomPrice() {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase.rpc("get_hotel_price_range");
+
+  if (error) {
+    console.error("Error fetching price range:", error.message);
+    return { min: 0, max: 0 };
+  }
+  if (Array.isArray(data) && data.length > 0) {
+    return {
+      min: data[0].min_price ?? 0,
+      max: data[0].max_price ?? 0,
+    };
+  }
+  return { min: 0, max: 0 };
 }

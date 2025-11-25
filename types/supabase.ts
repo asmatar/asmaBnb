@@ -143,6 +143,8 @@ export type Database = {
           title: string;
           update_at: string | null;
           user_id: string;
+          min_price: number;
+          max_price: number;
         };
         Insert: {
           bar?: boolean;
@@ -168,6 +170,8 @@ export type Database = {
           title: string;
           update_at?: string | null;
           user_id?: string;
+          min_price?: number;
+          max_price?: number;
         };
         Update: {
           bar?: boolean;
@@ -193,6 +197,8 @@ export type Database = {
           title?: string;
           update_at?: string | null;
           user_id?: string;
+          min_price?: number;
+          max_price?: number;
         };
         Relationships: [];
       };
@@ -291,6 +297,10 @@ export type Database = {
     };
     Functions: {
       requesting_user_id: { Args: never; Returns: string };
+      get_hotel_price_range: {
+        Args: never;
+        Returns: { min: number; max: number };
+      };
     };
     Enums: {
       [_ in never]: never;

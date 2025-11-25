@@ -28,7 +28,9 @@
     "shopping": "Shopping",
     "freeParking": "Free Parking",
     "swimingPool": "Swimming Pool",
-    "filterBy": "Filter by"
+    "filterBy": "Filter by",
+    "priceRange": "Price Range",
+    "priceRangeDescription": "Set your budget"
   },
   "ToggleViewLayout": {
     "viewGrid": "View in Grid",

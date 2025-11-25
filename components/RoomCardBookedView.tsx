@@ -24,13 +24,12 @@ export const RoomCardBookedView = ({
     date?.to ?? room.endDate,
     date?.from ?? room.startDate,
   );
-  console.log(room.startDate);
   const t = useTranslations("RoomCard");
   return (
     <div className="flex flex-col gap-2 w-full">
       <CardTitle>{t("bookingDetails")}</CardTitle>
       <div className="text-primary/90">
-        <div className="">
+        <div>
           {t("bookingDetailsDescription", {
             username: room.username,
             numberOfNightsBooked: numberOfNightsBooked,

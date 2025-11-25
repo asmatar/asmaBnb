@@ -2,7 +2,9 @@ import { getHotelLocation } from "@/services/hotelService";
 
 import Formulaire from "@/components/Home/SearchBar/Formulaire";
 import { SelectItem } from "@/components/ui/select";
+import { getMinMaxRoomPrice } from "@/services/hotelService";
 import { getTranslations } from "next-intl/server";
+
 export default async function SearchBar() {
   const t = await getTranslations("SearchBar");
   const location = await getHotelLocation();
@@ -14,7 +16,7 @@ export default async function SearchBar() {
       {country}
     </SelectItem>
   ));
-
+  const minMaxRoomPrice = await getMinMaxRoomPrice();
   return (
     <div className="w-full max-w-6xl mx-auto my-8 px-4">
       <div className="relative bg-gradient-to-r from-primary/10 to-primary/5 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-primary/20">
@@ -25,6 +27,8 @@ export default async function SearchBar() {
         </h2>
 
         <Formulaire
+          maxRoomPrice={minMaxRoomPrice.max}
+          minRoomPrice={minMaxRoomPrice.min}
           location={location ? location : []}
           countryOptions={countryOptions}
         />

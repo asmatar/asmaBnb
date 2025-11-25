@@ -27,7 +27,9 @@
     "shopping": "Shopping",
     "freeParking": "Parking gratuito",
     "swimingPool": "Piscina",
-    "filterBy": "Filtrado por"
+    "filterBy": "Filtrado por",
+    "priceRange": "Rango de precios",
+    "priceRangeDescription": "Establece tu presupuesto"
   },
   "ToggleViewLayout": {
     "viewGrid": "Ver en grilla",

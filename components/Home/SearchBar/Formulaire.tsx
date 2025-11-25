@@ -1,6 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Form, FormField } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SelectItem } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
@@ -22,7 +23,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "../../ui/button";
+import FieldSlider from "./FieldSlider";
 import { FilterCheckbox } from "./FilterCheckbox";
 import { LocationFields } from "./LocationFields";
 
@@ -33,8 +34,11 @@ type FormProps = {
     state: string | null;
     city: string | null;
   }[];
+  maxRoomPrice: number;
+  minRoomPrice: number;
 };
 export const searchHotelSchema = z.object({
+  price: z.number().array().optional(),
   title: z.string().optional(),
   country: z.string().optional(),
   state: z.string().optional(),
@@ -51,7 +55,12 @@ export const searchHotelSchema = z.object({
 
 export type SearchHotelFormValues = z.infer<typeof searchHotelSchema>;
 
-export default function Formulaire({ location, countryOptions }: FormProps) {
+export default function Formulaire({
+  location,
+  countryOptions,
+  maxRoomPrice,
+  minRoomPrice,
+}: FormProps) {
   const [filteredStates, setFilteredStates] = useState<string[]>([]);
   const [filteredCities, setFilteredCities] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -72,6 +81,7 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
       shopping: false,
       freeParking: false,
       swimingPool: false,
+      price: [minRoomPrice, maxRoomPrice],
     },
   });
   const router = useRouter();
@@ -94,14 +104,26 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
         if (key === "freeParking" && value !== true) return acc;
         if (key === "swimingPool" && value !== true) return acc;
         if (key === "spa" && value !== true) return acc;
+        if (
+          key === "price" &&
+          Array.isArray(value) &&
+          value.length === 2 &&
+          (value[0] !== 50 || value[1] !== 300)
+        ) {
+          return {
+            ...acc,
+            minPrice: value[0].toString(),
+            maxPrice: value[1].toString(),
+          };
+        }
         if (value !== undefined && value !== "") {
+          if (Array.isArray(value)) return acc;
           acc[key] = typeof value === "boolean" ? String(value) : value;
         }
         return acc;
       },
       {} as Record<string, string>,
     );
-
     const query = new URLSearchParams(formatedValues).toString();
     router.replace(`?${query}`);
   }
@@ -209,27 +231,23 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             />
           </div>
         </div>
-
-        <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
-          <div className="flex items-center gap-2">
-            {showFilters ? (
-              <>
-                <h3
-                  className={cn(
-                    "text-sm font-medium transition-all duration-500 ease-in-out",
-                    showFilters ? "opacity-100" : "opacity-0",
-                  )}
-                >
-                  {t("amenities")}
-                </h3>
-                {activeFilters > 0 && (
-                  <Badge className="bg-primary text-primary-foreground">
-                    {activeFilters}
-                  </Badge>
-                )}
-              </>
-            ) : null}
-          </div>
+        <div className="flex justify-between">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FieldSlider
+                  onValueChange={(price) => {
+                    field.onChange(price);
+                  }}
+                  value={field.value as [number, number]}
+                  maxRoomPrice={maxRoomPrice}
+                  minRoomPrice={minRoomPrice}
+                />
+              </FormItem>
+            )}
+          />
           <div className="flex items-center gap-2 flex-wrap">
             <Button
               type="button"
@@ -259,6 +277,28 @@ export default function Formulaire({ location, countryOptions }: FormProps) {
             >
               {showFilters ? t("hideFilters") : t("showFilters")}
             </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
+          <div className="flex items-center gap-2">
+            {showFilters ? (
+              <>
+                <h3
+                  className={cn(
+                    "text-sm font-medium transition-all duration-500 ease-in-out",
+                    showFilters ? "opacity-100" : "opacity-0",
+                  )}
+                >
+                  {t("amenities")}
+                </h3>
+                {activeFilters > 0 && (
+                  <Badge className="bg-primary text-primary-foreground">
+                    {activeFilters}
+                  </Badge>
+                )}
+              </>
+            ) : null}
           </div>
         </div>
 

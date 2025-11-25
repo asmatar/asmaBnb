@@ -4,7 +4,6 @@ import HotelCard from "@/components/Home/HotelSection/HotelCard";
 import NoHotelsFound from "@/components/Home/NoHotelsFound";
 import HotelViewStyleContainer from "@/components/HotelViewStyleContainer";
 import Pagination from "@/components/Pagination";
-import { getHotelCount } from "@/services/counterService";
 type searchParams = {
   title: string;
   country: string;
@@ -22,27 +21,9 @@ type searchParams = {
   to: number;
 };
 async function HotelList({ searchParams }: { searchParams: searchParams }) {
-  const { data } = await getFilteredHotels(searchParams);
-  const containsFilters: boolean = Object.keys(searchParams).some(
-    (value) =>
-      value === "title" ||
-      value === "country" ||
-      value === "state" ||
-      value === "city" ||
-      value === "spa" ||
-      value === "gym" ||
-      value === "bar" ||
-      value === "restaurant" ||
-      value === "freeWifi" ||
-      value === "shopping" ||
-      value === "freeParking" ||
-      value === "swimingPool",
-  );
-  // filtre qui ne fonctionne pas correctement----------------------------------
-  const hotelCount = await getHotelCount();
-  const totalPages = containsFilters
-    ? data && data.length / 12
-    : hotelCount && Math.ceil(hotelCount / 12);
+  const { data, count } = await getFilteredHotels(searchParams);
+
+  const totalPages = count && Math.ceil(count / 12);
 
   if (!data || data.length === 0) return <NoHotelsFound />;
 
@@ -53,6 +34,8 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
           <HotelCard
             key={hotel.id}
             id={hotel.id}
+            minPrice={hotel.min_price ?? "N/A"}
+            maxPrice={hotel.max_price ?? "N/A"}
             title={hotel.title!}
             description={hotel.description!}
             gym={hotel.gym!}
@@ -67,7 +50,6 @@ async function HotelList({ searchParams }: { searchParams: searchParams }) {
             country={hotel.country!}
             image={hotel.image}
             isFavorite={hotel.isFavorite ?? false}
-            /* price={hotel.price!} */
           />
         ))}
       </HotelViewStyleContainer>

@@ -265,7 +265,7 @@ const AddHotelForm = ({
                 </FormItem>
               )}
             />
-            <div className="">
+            <div>
               <FormLabel>{t("chooseAmenities")}</FormLabel>
               <FormDescription>
                 {t("chooseAmenitiesDescription")}
@@ -469,7 +469,6 @@ const AddHotelForm = ({
                           type="file"
                           ref={inputImageRef}
                           name="image"
-                          className=""
                           accept=".png, .jpg, .jpeg"
                           onChange={(event) => {
                             const file = event.target.files?.[0];

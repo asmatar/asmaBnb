@@ -18,14 +18,15 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
   return (
     <ul className="flex justify-center items-center gap-4 my-8 flex-wrap">
       {Array.from({ length: totalPages }, (_, index) => (
-        <button
-          key={index}
-          className="bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-primary/80 transition-all duration-300"
-          onClick={() => handlePageChange(index)}
-          aria-label={`Go to page ${index + 1}`}
-        >
-          {index + 1}
-        </button>
+        <li key={index}>
+          <button
+            className="bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-primary/80 transition-all duration-300"
+            onClick={() => handlePageChange(index)}
+            aria-label={`Go to page ${index + 1}`}
+          >
+            {index + 1}
+          </button>
+        </li>
       ))}
     </ul>
   );
