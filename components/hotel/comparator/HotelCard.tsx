@@ -84,10 +84,10 @@ const HotelCard = ({
                   return (
                     <li
                       key={key}
-                      className={`flex items-center gap-1.5 justify-start py-2 px-3 border border-border/40 rounded-md`}
+                      className={`flex items-center gap-1.5 justify-start py-2 px-3 border border-border/40 rounded-md bg-gray-500/20`}
                     >
-                      <Icon className="w-4 h-4 flex-shrink-0" />
-                      <span className="text-xs">{key} non disponible</span>
+                      <Icon className="w-4 h-4 flex-shrink-0 text-gray-400" />
+                      <span className="text-xs">{key}</span>
                     </li>
                   );
                 }
@@ -97,8 +97,8 @@ const HotelCard = ({
                     key={key}
                     className={`flex items-center gap-1.5 justify-start py-2 px-3 border border-border/40 rounded-md`}
                   >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-xs">{t(translationKey)}</span>
+                    <Icon className="w-4 h-4 flex-shrink-0 text-green-500" />
+                    <span className="text-xs ">{t(translationKey)}</span>
                   </li>
                 );
               })}
