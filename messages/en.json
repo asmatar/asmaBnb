@@ -233,6 +233,7 @@
     "toggleTheme": "Toggle Theme"
   },
   "Header": {
+    "comparator": "Comparator",
     "home": "Home",
     "welcome": "Welcome",
     "dashboard": "Dashboard",

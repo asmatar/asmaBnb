@@ -16,6 +16,7 @@ import { getTranslations } from "next-intl/server";
 import { FaHeart } from "react-icons/fa6";
 import { LuLayoutDashboard, LuLogOut } from "react-icons/lu";
 import { TbBrandBooking } from "react-icons/tb";
+import ComparatorLink from "./ComparatorLink";
 
 export const LoginView = async ({
   username,
@@ -79,6 +80,9 @@ export const LoginView = async ({
               <span className="text-sm">{t("savedProperties")}</span>
             </DropdownMenuItem>
           </Link>
+
+          <ComparatorLink />
+
           {isHost && <IsHostView />}
 
           <DropdownMenuSeparator />

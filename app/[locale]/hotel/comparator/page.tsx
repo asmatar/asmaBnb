@@ -40,7 +40,6 @@ const page = async ({
     ];
     return !excludeFeatures.includes(feature);
   });
-  console.log("features", features);
   return (
     <section className="flex flex-col gap-8">
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">

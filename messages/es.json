@@ -229,6 +229,7 @@
     "toggleTheme": "Cambiar tema"
   },
   "Header": {
+    "comparator": "Comparador",
     "home": "Inicio",
     "welcome": "Bienvenido",
     "dashboard": "Panel de control",
