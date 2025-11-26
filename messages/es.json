@@ -348,6 +348,25 @@
     "swimingPool": "Piscina",
     "locationDescriptionPlaceholder": "ubicado en el centro de la ciudad..."
   },
+  "Comparator": {
+    "country": "País",
+    "city": "Ciudad",
+    "state": "Estado/Región",
+    "min_price": "Precio mínimo",
+    "max_price": "Precio máximo",
+    "gym": "Gimnasio",
+    "spa": "Spa",
+    "bar": "Bar",
+    "restaurant": "Restaurante",
+    "freeWifi": "Wifi gratuito",
+    "freeParking": "Parking gratuito",
+    "shopping": "Shopping",
+    "swimingPool": "Piscina",
+    "bikeRental": "Alquiler de bicicletas",
+    "laundry": "Lavandería",
+    "movieNights": "Noches de cine",
+    "coffeeShop": "Cafetería"
+  },
   "Metadata": {
     "thankYou": {
       "title": "Gracias",

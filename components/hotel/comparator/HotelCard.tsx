@@ -4,9 +4,7 @@ import { MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-type ComparatorHotelCardProps = HotelCardProps & {
-  hotelNumber?: number;
-};
+type ComparatorHotelCardProps = Omit<HotelCardProps, "isFavorite" | "id">;
 
 const HotelCard = ({
   title,
@@ -16,7 +14,6 @@ const HotelCard = ({
   city,
   minPrice,
   maxPrice,
-  hotelNumber = 1,
   ...features
 }: ComparatorHotelCardProps) => {
   const t = useTranslations("HotelCard");
@@ -44,11 +41,6 @@ const HotelCard = ({
             </div>
           )}
           {/* Hotel Number Badge */}
-          <div className="absolute top-4 bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-full left-4 z-10">
-            <span className="text-sm font-semibold text-primary">
-              Hôtel {hotelNumber}
-            </span>
-          </div>
         </div>
 
         {/* Content Section */}
@@ -86,10 +78,19 @@ const HotelCard = ({
             <h4 className="text-md text-foreground">Équipements</h4>
             <ul className="grid grid-cols-2 gap-2">
               {(Object.keys(featuresConfig) as FeaturesKeys[]).map((key) => {
-                if (!features[key]) return null;
-
                 const { icon: Icon, translationKey } =
                   featuresConfig[key as FeaturesKeys];
+                if (!features[key]) {
+                  return (
+                    <li
+                      key={key}
+                      className={`flex items-center gap-1.5 justify-start py-2 px-3 border border-border/40 rounded-md`}
+                    >
+                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <span className="text-xs">{key} non disponible</span>
+                    </li>
+                  );
+                }
 
                 return (
                   <li

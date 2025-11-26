@@ -353,6 +353,25 @@
     "selectCityPlaceholder": "Select City",
     "locationDescriptionPlaceholder": "located in the center of the city..."
   },
+  "Comparator": {
+    "country": "Country",
+    "city": "City",
+    "state": "State/Region",
+    "min_price": "Minimum Price",
+    "max_price": "Maximum Price",
+    "gym": "Gym",
+    "spa": "Spa",
+    "bar": "Bar",
+    "restaurant": "Restaurant",
+    "freeWifi": "Free Wifi",
+    "freeParking": "Free Parking",
+    "shopping": "Shopping",
+    "swimingPool": "Swimming Pool",
+    "bikeRental": "Bike Rental",
+    "laundry": "Laundry",
+    "movieNights": "Movie Nights",
+    "coffeeShop": "Coffee Shop"
+  },
   "Metadata": {
     "thankYou": {
       "title": "Thank You",

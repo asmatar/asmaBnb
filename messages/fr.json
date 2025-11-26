@@ -353,6 +353,25 @@
     "swimingPool": "Piscine",
     "chooseAmenitiesDescription": "Choisissez les commodités de votre hôtel"
   },
+  "Comparator": {
+    "country": "Pays",
+    "city": "Ville",
+    "state": "État/Région",
+    "min_price": "Prix minimum",
+    "max_price": "Prix maximum",
+    "gym": "Gym",
+    "spa": "Spa",
+    "bar": "Bar",
+    "restaurant": "Restaurant",
+    "freeWifi": "Wifi gratuit",
+    "freeParking": "Parking gratuit",
+    "shopping": "Shopping",
+    "swimingPool": "Piscine",
+    "bikeRental": "Location de vélos",
+    "laundry": "Blanchisserie",
+    "movieNights": "Soirées cinéma",
+    "coffeeShop": "Café"
+  },
   "Metadata": {
     "thankYou": {
       "title": "Merci",

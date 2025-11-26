@@ -8,7 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getSelectedHotels } from "@/services/hotelService";
+import { Hotel } from "@/types/tableType";
 import { getTranslations } from "next-intl/server";
+
 export const generateMetadata = async () => {
   const t = await getTranslations("Metadata");
   return {
@@ -16,50 +18,6 @@ export const generateMetadata = async () => {
     description: t("HotelComparator.description"),
   };
 };
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
 
 const page = async ({
   searchParams,
@@ -68,7 +26,21 @@ const page = async ({
 }) => {
   const { hotel1, hotel2 } = await searchParams;
   const hotels = await getSelectedHotels([hotel1, hotel2]);
-  console.log("hotels------------------->", hotels);
+  const t = await getTranslations("Comparator");
+  const features = Object.keys(hotels[0]).filter((feature) => {
+    const excludeFeatures = [
+      "id",
+      "title",
+      "description",
+      "image",
+      "created_at",
+      "update_at",
+      "user_id",
+      "locationDescription",
+    ];
+    return !excludeFeatures.includes(feature);
+  });
+  console.log("features", features);
   return (
     <section className="flex flex-col gap-8">
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -82,11 +54,9 @@ const page = async ({
                 image={hotel.image}
                 country={hotel.country}
                 city={hotel.city ?? ""}
-                minPrice={hotel.min_price}
-                maxPrice={hotel.max_price}
+                minPrice={hotel.min_price ?? "NA"}
+                maxPrice={hotel.max_price ?? "NA"}
                 gym={hotel.gym}
-                id="1"
-                isFavorite={false}
                 spa={hotel.spa}
                 bar={hotel.bar}
                 restaurant={hotel.restaurant}
@@ -106,17 +76,34 @@ const page = async ({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Caracteristiques</TableHead>
-              <TableHead>Hotel 1</TableHead>
-              <TableHead>Hotel 2</TableHead>
+              <TableHead className="text-md font-semibold">
+                Caracteristiques
+              </TableHead>
+              {hotels.map((hotel) => (
+                <TableHead
+                  key={hotel.title}
+                  className="text-center text-md font-semibold"
+                >
+                  {hotel.title}
+                </TableHead>
+              ))}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
+            {features.map((feature) => (
+              <TableRow key={feature}>
+                <TableCell>{t(feature)}</TableCell>
+                {hotels.map((hotel) =>
+                  typeof hotel[feature as keyof Hotel] === "boolean" ? (
+                    <TableCell key={hotel.title} className="text-center">
+                      {hotel[feature as keyof Hotel] ? "✅" : "❌"}
+                    </TableCell>
+                  ) : (
+                    <TableCell key={hotel.title} className="text-center">
+                      {hotel[feature as keyof Hotel] ?? "NA"}
+                    </TableCell>
+                  ),
+                )}
               </TableRow>
             ))}
           </TableBody>

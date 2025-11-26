@@ -58,6 +58,7 @@ export const getOneHotel = async (id: string) => {
   }
   return data;
 };
+
 export const deleteHotel = async (id: string) => {
   const supabase = await createClerkSupabaseClient();
   try {
