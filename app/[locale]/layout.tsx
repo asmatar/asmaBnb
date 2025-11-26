@@ -66,7 +66,7 @@ export default async function RootLayout({
                 theme="light"
                 limit={3}
               />
-              <ComparatorNavigationCTA href="/hotels-comparator">
+              <ComparatorNavigationCTA href="/hotel/comparator">
                 {t("viewComparatorHotels")}
               </ComparatorNavigationCTA>
             </ClientThemeProvider>

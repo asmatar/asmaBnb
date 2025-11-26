@@ -48,7 +48,8 @@ const Favorites = async () => {
               freeWifi={favorite.hotel.freeWifi}
               shopping={favorite.hotel.shopping}
               freeParking={favorite.hotel.freeParking}
-              /* price={favorite.price!} */
+              minPrice={favorite.hotel.min_price}
+              maxPrice={favorite.hotel.max_price}
               image={favorite.hotel.image}
               isFavorite={true}
             />

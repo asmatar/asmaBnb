@@ -8,7 +8,18 @@ import { revalidatePath } from "next/cache";
 export const getHotels = async () => {
   const supabase = await createClerkSupabaseClient();
   const { data, error } = await supabase.from("hotel").select("*, favorite(*)");
-  // const { data, error } = await supabase.from("hotel").select("*");
+  if (error) {
+    error.message;
+    return [];
+  }
+  return data;
+};
+export const getSelectedHotels = async (ids: string[]) => {
+  const supabase = await createClerkSupabaseClient();
+  const { data, error } = await supabase
+    .from("hotel")
+    .select("*")
+    .in("id", ids);
   if (error) {
     error.message;
     return [];

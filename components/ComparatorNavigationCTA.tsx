@@ -11,7 +11,10 @@ const ComparatorNavigationCTA = ({
 }) => {
   const { comparator } = useGlobalStore();
   return comparator.length === 2 ? (
-    <Link href={href} className="fixed bottom-4 right-6 animate-bounce ">
+    <Link
+      href={href + "/?hotel1=" + comparator[0] + "&hotel2=" + comparator[1]}
+      className="fixed bottom-4 right-6 animate-bounce z-[100]"
+    >
       <div className="text-xs font-medium text-primary bg-background border px-3 py-1.5 rounded-lg">
         {children} →
       </div>
