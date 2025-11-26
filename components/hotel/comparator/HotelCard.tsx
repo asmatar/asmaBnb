@@ -22,7 +22,7 @@ const HotelCard = ({
 
   return (
     <>
-      <div className="relative bg-card rounded-xl border border-border/40 mt-12">
+      <div className="relative bg-card rounded-xl border border-border/40 ">
         {/* Image Section */}
         <div className="relative h-80 w-full">
           {image ? (
